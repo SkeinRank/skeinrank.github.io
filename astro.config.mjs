@@ -3,8 +3,8 @@ import starlight from '@astrojs/starlight';
 
 // For the organization Pages repository, keep `base` unset:
 //   https://github.com/SkeinRank/skeinrank.github.io -> https://skeinrank.github.io
-// When the custom domain is connected, GitHub Pages will serve the same build at:
-//   https://skeinrank.io
+// Keep every crawl/social URL aligned with the currently verified GitHub Pages domain.
+// Switch to https://skeinrank.io only after the custom domain is connected and verified.
 export default defineConfig({
   site: 'https://skeinrank.github.io',
   integrations: [
@@ -16,9 +16,13 @@ export default defineConfig({
         src: './src/assets/logo.png',
         alt: 'SkeinRank',
       },
-      favicon: '/skeinrank-favicon.png',
+      favicon: '/favicon.ico',
       customCss: ['./src/styles/custom.css'],
       head: [
+        {
+          tag: 'link',
+          attrs: { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
+        },
         {
           tag: 'link',
           attrs: { rel: 'apple-touch-icon', href: '/skeinrank-apple-touch-icon.png' },
@@ -50,7 +54,7 @@ export default defineConfig({
         },
         {
           tag: 'meta',
-          attrs: { property: 'og:image', content: 'https://skeinrank.io/skeinrank-og.png' },
+          attrs: { property: 'og:image', content: 'https://skeinrank.github.io/skeinrank-og.png' },
         },
         {
           tag: 'meta',
@@ -82,7 +86,7 @@ export default defineConfig({
         },
         {
           tag: 'meta',
-          attrs: { name: 'twitter:image', content: 'https://skeinrank.io/skeinrank-og.png' },
+          attrs: { name: 'twitter:image', content: 'https://skeinrank.github.io/skeinrank-og.png' },
         },
         {
           tag: 'script',
