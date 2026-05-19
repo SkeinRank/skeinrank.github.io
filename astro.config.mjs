@@ -6,7 +6,7 @@ import starlight from '@astrojs/starlight';
 // When the custom domain is connected, GitHub Pages will serve the same build at:
 //   https://skeinrank.io
 export default defineConfig({
-  site: 'https://skeinrank.io',
+  site: 'https://skeinrank.github.io',
   integrations: [
     starlight({
       title: 'SkeinRank',
