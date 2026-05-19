@@ -1,0 +1,48 @@
+---
+title: Passport output
+description: Explainable traces for extraction, filtering, and review.
+---
+
+A passport is the explainability layer around extraction. It helps answer:
+
+- Which dictionary snapshot was used?
+- Which aliases matched?
+- Which canonical values were accepted?
+- Which values were filtered out?
+- Which warnings should a reviewer see?
+
+## Example shape
+
+```json
+{
+  "snapshot": {
+    "version": "infra_incidents@2026-05-11-v1",
+    "source": "file"
+  },
+  "alias_matcher_backend": "aho_corasick",
+  "accepted": [
+    {
+      "slot": "TOOL",
+      "value": "kubernetes",
+      "source": "alias",
+      "matched_text": "k8s"
+    }
+  ],
+  "filtered_out": [],
+  "warnings": []
+}
+```
+
+## Why it matters
+
+For internal search and terminology governance, it is not enough to return a score.
+Teams need to review why a term was found, whether it came from a trusted alias, and whether a proposed dictionary change would make search noisier.
+
+## Design direction
+
+SkeinRank should keep passport output bounded and useful:
+
+- enough detail for debugging;
+- stable enough for tests;
+- compact enough for UI review;
+- explicit about filters and warnings.

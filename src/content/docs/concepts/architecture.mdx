@@ -1,0 +1,35 @@
+---
+title: Architecture
+description: Runtime extraction stays separate from terminology governance.
+---
+
+SkeinRank is designed around a split between a fast runtime path and a slower control-plane path.
+
+<div class="sr-split">
+  <div class="sr-status-box">
+    <h3>Runtime path</h3>
+    <p>Local SDK/CLI, dictionary snapshots, document text extraction, alias matching, canonicalization, passport output, and optional FastAPI extraction endpoints.</p>
+    <div class="sr-badge-row"><span class="sr-badge ready">Fast</span><span class="sr-badge ready">Local</span><span class="sr-badge ready">Deterministic</span></div>
+  </div>
+  <div class="sr-status-box">
+    <h3>Control-plane path</h3>
+    <p>Governance API, PostgreSQL terminology store, roles, suggestions, stop lists, API tokens, snapshots, Elasticsearch evidence checks, and enrichment jobs.</p>
+    <div class="sr-badge-row"><span class="sr-badge preview">Preview</span><span class="sr-badge preview">Review workflow</span><span class="sr-badge preview">UI/API</span></div>
+  </div>
+</div>
+
+## Current packages
+
+| Package | Role |
+| --- | --- |
+| `skeinrank-core` | Core SDK, CLI, extraction, canonicalization, document helpers. |
+| `skeinrank-server` | FastAPI service wrapper for extraction and rerank contracts. |
+| `skeinrank-provider-elasticsearch` | Optional Elasticsearch provider and enrichment CLI. |
+| `skeinrank-governance` | SQLAlchemy/Alembic foundation for terminology governance. |
+| `skeinrank-governance-api` | FastAPI control-plane API for profiles, terms, aliases, users, roles, tokens, suggestions, and snapshots. |
+| `skeinrank-ui` | React/TypeScript governance console. |
+
+## Snapshot-first direction
+
+The governance layer should publish snapshots. Runtime extraction should consume snapshots.
+That keeps the online matching path simple and avoids turning every extraction request into a database-backed workflow.

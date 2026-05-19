@@ -1,0 +1,48 @@
+---
+title: Mental model
+description: How SkeinRank thinks about noisy technical language.
+---
+
+SkeinRank starts from a simple observation: technical teams rarely write the same concept the same way.
+
+```text
+k8s, kube, kuber, kubernetes
+pg, postgres, psql, postgresql
+api server, api-server, kube-apiserver
+```
+
+Search systems can miss useful documents when these variants are not normalized.
+SkeinRank adds a deterministic terminology layer before or alongside retrieval.
+
+## Core idea
+
+<div class="sr-pipeline">
+  <div class="sr-flow">
+    <div class="sr-flow-step"><strong>Dictionary</strong><span>Canonical values, aliases, slots, lifecycle statuses, stop lists.</span></div>
+    <div class="sr-flow-step"><strong>Matcher</strong><span>Fast local alias lookup with deterministic output.</span></div>
+    <div class="sr-flow-step"><strong>Attributes</strong><span>Structured canonical values that can be attached to text or documents.</span></div>
+    <div class="sr-flow-step"><strong>Passport</strong><span>Trace explaining where each attribute came from.</span></div>
+    <div class="sr-flow-step"><strong>Retrieval</strong><span>Search, rerank, evidence review, enrichment, or governance workflows.</span></div>
+  </div>
+</div>
+
+## Why not just embeddings?
+
+Embeddings help with semantic similarity, but they do not always provide clear, stable, auditable terminology decisions.
+SkeinRank is not a replacement for embeddings. It is a complementary layer that gives retrieval systems more explicit signals.
+
+## Practical result
+
+A messy sentence:
+
+```text
+k8s rollout uses pg database
+```
+
+Can produce stable canonical values:
+
+```json
+["kubernetes", "postgresql"]
+```
+
+And a reviewable trace that explains which alias produced which canonical term.

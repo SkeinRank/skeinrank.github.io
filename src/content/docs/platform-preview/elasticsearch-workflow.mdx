@@ -1,0 +1,86 @@
+---
+title: Elasticsearch workflow
+description: Bind profiles to Elasticsearch indexes, run enrichment, audit snapshots, and verify runtime search behavior.
+---
+
+The Elasticsearch workflow connects terminology governance with a real search index.
+It is the main bridge between “we manage a dictionary” and “runtime search uses domain-aware signals”.
+
+## Runtime model
+
+```text
+Profile → Binding → Enrichment job → Runtime snapshot → Search Playground / API
+```
+
+A binding is the key object: it connects one terminology profile to one Elasticsearch index, alias, or scoped collection.
+
+To run the local platform stack first, follow the [Docker beta quickstart](/getting-started/docker-beta-quickstart/).
+
+## Intended flow
+
+<div class="sr-pipeline">
+  <div class="sr-flow">
+    <div class="sr-flow-step"><strong>1. Create binding</strong><span>Choose profile, index/alias, text fields, target field, and optional discriminator.</span></div>
+    <div class="sr-flow-step"><strong>2. Run dry-run</strong><span>Preview matched aliases and canonical values without writing to Elasticsearch.</span></div>
+    <div class="sr-flow-step"><strong>3. Run enrichment</strong><span>Write canonical attributes or execute the selected rollout strategy.</span></div>
+    <div class="sr-flow-step"><strong>4. Audit snapshot</strong><span>Confirm which runtime version is pinned to the binding.</span></div>
+    <div class="sr-flow-step"><strong>5. Test search</strong><span>Use Search Playground to inspect canonical query, aliases, snapshot, and hits.</span></div>
+  </div>
+</div>
+
+
+## API handoff
+
+After Search Playground confirms the expected behavior, connect your application through the runtime API:
+
+```json
+{
+  "binding_id": 42,
+  "query": "k8s pg timeout",
+  "size": 10,
+  "canonical_boost": 3.0
+}
+```
+
+Use the [API integration guide](/reference/api-integration/) to wire the binding-aware search pattern into an existing backend, search UI, or RAG service.
+
+## Binding fields
+
+| Field | Meaning |
+| --- | --- |
+| Profile | The terminology dictionary used for canonicalization and enrichment. |
+| Index / alias | The Elasticsearch collection where documents are read or written. |
+| Text fields | Source fields used during matching and enrichment. |
+| Target field | Field where SkeinRank enrichment output is written. |
+| Discriminator | Optional field/value used when one index contains multiple domains. |
+| Time window | Optional timestamp filter for bounded enrichment jobs. |
+| Write strategy | Controls whether enrichment writes in place, writes to a target index, or prepares a rollout pattern. |
+
+## Many profiles on one index
+
+When a company stores multiple domains in the same index, model it with multiple bindings.
+
+```text
+binding #1: profile infra   → index company_docs → team=infra
+binding #2: profile legal   → index company_docs → team=legal
+binding #3: profile support → index company_docs → team=support
+```
+
+This is why the Integrations graph view is useful: it shows profiles, bindings, shared indexes, and snapshots as a topology rather than isolated rows.
+
+## Operator panel
+
+The Enrichment jobs panel is meant for operational work:
+
+- see active, failed, and succeeded jobs;
+- run default jobs for bindings;
+- cancel active jobs;
+- inspect recent job history;
+- move from binding configuration to rollout operations without hunting through forms.
+
+## Safe public positioning
+
+```text
+Elasticsearch enrichment is available as a preview workflow for testing terminology evidence, binding setup, dry-runs, enrichment jobs, and runtime snapshot audit.
+Production deployment guidance is documented separately from the platform model.
+```

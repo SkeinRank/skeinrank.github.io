@@ -1,0 +1,100 @@
+---
+title: Governance console workflow
+description: How the SkeinRank console turns terminology changes into runtime search context.
+---
+
+The governance console is the product-facing control plane for SkeinRank.
+It is designed for teams that need to manage terminology safely before it affects search, retrieval, or RAG workflows.
+
+The console should be read as a beta workflow: the core ideas are implemented and testable, while deployment and production hardening are documented separately as the project matures.
+
+## Console workflow at a glance
+
+<div class="sr-pipeline">
+  <div class="sr-flow">
+    <div class="sr-flow-step"><strong>Dashboard</strong><span>See setup readiness, runtime state, failed jobs, and next actions.</span></div>
+    <div class="sr-flow-step"><strong>Terms</strong><span>Create profiles, canonical terms, aliases, and terminology workspace state.</span></div>
+    <div class="sr-flow-step"><strong>Integrations</strong><span>Create bindings, run dry-runs, launch enrichment jobs, and inspect graph view.</span></div>
+    <div class="sr-flow-step"><strong>Snapshots</strong><span>Audit the active runtime version used by each binding.</span></div>
+    <div class="sr-flow-step"><strong>Search Playground</strong><span>Verify canonical query output and search hits before integration.</span></div>
+  </div>
+</div>
+
+## Console modules
+
+<div class="sr-status-grid">
+  <div class="sr-status-box">
+    <h3>Dashboard</h3>
+    <p>A compact command center for setup progress, system readiness, binding health, recent jobs, and next actions.</p>
+  </div>
+  <div class="sr-status-box">
+    <h3>Terms</h3>
+    <p>Terminology profiles, canonical terms, aliases, profile management, and evidence checks for terms.</p>
+  </div>
+  <div class="sr-status-box">
+    <h3>Suggestions</h3>
+    <p>Proposal flow for contributors and review queue for moderators/admins. Supports alias and canonical term suggestions.</p>
+  </div>
+  <div class="sr-status-box">
+    <h3>Guardrails</h3>
+    <p>Global and profile-scoped stop-list controls that prevent noisy terms or aliases from entering the dictionary.</p>
+  </div>
+  <div class="sr-status-box">
+    <h3>Integrations</h3>
+    <p>Elasticsearch bindings, dry-runs, enrichment jobs, operator job panel, and topology graph view.</p>
+  </div>
+  <div class="sr-status-box">
+    <h3>Snapshots</h3>
+    <p>Runtime audit view for active snapshots, stale bindings, pending versions, job history, and rollback availability.</p>
+  </div>
+  <div class="sr-status-box">
+    <h3>Search Playground</h3>
+    <p>Result-first runtime test page for canonical query preview, matched aliases, runtime snapshot, and search hits.</p>
+  </div>
+  <div class="sr-status-box">
+    <h3>API Access and Users</h3>
+    <p>Personal tokens, service accounts, roles, account status, and admin controls for API usage.</p>
+  </div>
+</div>
+
+## Recommended first-run path
+
+1. Start the local beta stack with the [Docker beta quickstart](/getting-started/docker-beta-quickstart/).
+2. Open **Dashboard** and review the setup checklist.
+3. Create or import a terminology profile in **Terms**.
+4. Add canonical values and aliases.
+5. Use **Suggestions** and **Guardrails** if changes need review or stop-list protection.
+6. Create an Elasticsearch binding in **Integrations**.
+7. Run a dry-run to inspect what would be written.
+8. Run enrichment when the binding is ready.
+9. Check **Snapshots** to confirm the active runtime version.
+10. Open **Search Playground** and test a query such as `k8s pg timeout`.
+11. Use **API Access** to prepare integration with an external backend or search UI.
+12. Follow the [API integration guide](/reference/api-integration/) to call the runtime endpoints from your application.
+
+## Role model
+
+| Role | Intended behavior |
+| --- | --- |
+| Admin | Full control: users, profiles, terms, aliases, tokens, bindings, jobs, snapshots, and service accounts. |
+| Moderator | Terminology editing, suggestions review, guardrails, evidence checks, and operational review. |
+| Contributor | Read terminology and submit suggestions for review. |
+
+## What changed from the early preview
+
+Earlier drafts presented the console as profile CRUD plus runtime snapshot export.
+The current platform model is binding-first:
+
+```text
+Profile defines terminology.
+Binding defines runtime search context.
+Snapshot defines the immutable version used by that binding.
+```
+
+Runtime snapshots should not be treated as manual files that users export from the Terms page.
+They are managed through bindings, enrichment jobs, and snapshot audit screens.
+
+<div class="sr-callout">
+  <h3>Beta positioning</h3>
+  <p>Use “governance console beta” or “platform preview” until the Docker deployment path, upgrade flow, and production hardening are documented and tested end-to-end.</p>
+</div>

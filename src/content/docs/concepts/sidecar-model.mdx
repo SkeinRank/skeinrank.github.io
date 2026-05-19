@@ -1,0 +1,94 @@
+---
+title: Side-car model
+description: How SkeinRank fits beside search, Elasticsearch, and RAG systems.
+---
+
+SkeinRank is intended to be a side-car control plane for domain terminology.
+It does not need to replace Elasticsearch, a vector database, a RAG backend, or an existing search UI.
+
+Instead, it manages the terminology intelligence that those systems usually lack.
+
+## What SkeinRank owns
+
+<div class="sr-status-grid">
+  <div class="sr-status-box">
+    <h3>Terminology governance</h3>
+    <p>Profiles, canonical terms, aliases, suggestions, stop lists, roles, and review workflows.</p>
+  </div>
+  <div class="sr-status-box">
+    <h3>Search context</h3>
+    <p>Bindings that connect a terminology profile to an Elasticsearch index, fields, filters, and runtime snapshot.</p>
+  </div>
+  <div class="sr-status-box">
+    <h3>Enrichment</h3>
+    <p>Dry-runs and jobs that write canonical attributes or prepare rollout metadata for downstream retrieval.</p>
+  </div>
+  <div class="sr-status-box">
+    <h3>Runtime verification</h3>
+    <p>Search Playground, snapshots, and audit screens that show what is actually used during search.</p>
+  </div>
+</div>
+
+## What your existing stack keeps owning
+
+Your existing systems can keep their current responsibilities:
+
+- the product search UI;
+- authorization and user workspace context;
+- Elasticsearch, OpenSearch, vector DB, or hybrid retrieval layer;
+- RAG orchestration and answer generation;
+- application-specific ranking and result rendering.
+
+SkeinRank adds a governed terminology layer around those systems.
+
+## Integration shape
+
+```text
+User / Search UI
+      ↓
+Application backend chooses binding_id
+      ↓
+SkeinRank runtime API canonicalizes and plans the query
+      ↓
+Elasticsearch / retrieval system runs search with domain-aware signals
+      ↓
+Results return to the existing application
+```
+
+For a selected search scope such as “Infra incidents”, the application can call SkeinRank with a specific binding:
+
+```json
+{
+  "binding_id": 42,
+  "query": "k8s pg timeout",
+  "size": 10
+}
+```
+
+SkeinRank can then use the pinned runtime snapshot for that binding rather than guessing globally which dictionary is correct.
+
+For request examples and backend integration patterns, see the [API integration guide](/reference/api-integration/).
+
+## Why side-car instead of embedded rules
+
+Hard-coding terminology rules inside a search service is fast at first but difficult to govern later.
+A side-car gives teams a separate place to:
+
+- propose and review aliases;
+- protect noisy terms with guardrails;
+- dry-run changes before writing enrichment output;
+- see which snapshot is active;
+- roll out terminology changes without redeploying the main application;
+- explain why a query was canonicalized.
+
+## What it is not
+
+SkeinRank is not meant to be hidden magic.
+It should make terminology decisions visible and reviewable.
+
+```text
+Embeddings answer “what is semantically similar?”
+SkeinRank answers “which domain terms did we explicitly recognize and canonicalize?”
+```
+
+These signals can work together in hybrid search or RAG pipelines.

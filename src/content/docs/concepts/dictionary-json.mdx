@@ -1,0 +1,71 @@
+---
+title: Dictionary JSON
+description: The migration-friendly dictionary shape used by the local SDK and governance workflows.
+---
+
+The dictionary JSON shape is designed to be simple enough for scripts and notebooks, but stable enough to import/export through the governance API later.
+
+## Minimal shape
+
+```json
+{
+  "profile_name": "infra_incidents",
+  "profile_description": "Infrastructure incident terminology",
+  "terms": [
+    {
+      "canonical_value": "kubernetes",
+      "slot": "TOOL",
+      "aliases": [
+        "k8s",
+        { "value": "kube", "confidence": 0.95 }
+      ]
+    }
+  ],
+  "profile_stop_list": [
+    { "value": "tmp", "target": "alias", "reason": "too generic" }
+  ],
+  "global_stop_list": [
+    { "value": "unknown", "target": "both", "reason": "global noise" }
+  ]
+}
+```
+
+## Terms
+
+A term defines a canonical value and its semantic slot.
+
+```json
+{
+  "canonical_value": "postgresql",
+  "slot": "DATABASE",
+  "aliases": ["pg", "postgres", "psql"]
+}
+```
+
+## Aliases
+
+Aliases can be strings or objects with metadata.
+
+```json
+"k8s"
+```
+
+```json
+{ "value": "kube", "confidence": 0.95 }
+```
+
+## Stop lists
+
+Stop lists reduce noisy matches. Use them for short values, generic words, or terms that look like aliases but are too ambiguous in your corpus.
+
+```json
+{ "value": "tmp", "target": "alias", "reason": "too generic" }
+```
+
+## Recommended workflow
+
+1. Start with a small dictionary.
+2. Validate it locally.
+3. Run extraction on representative documents.
+4. Add stop-list entries for false positives.
+5. Import the dictionary into the governance platform when the UI/API workflow is ready.

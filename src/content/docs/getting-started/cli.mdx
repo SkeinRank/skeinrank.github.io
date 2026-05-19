@@ -1,0 +1,51 @@
+---
+title: CLI
+description: Local commands for validating dictionaries, extracting terms, canonicalizing text, and reading documents.
+---
+
+The `skeinrank` CLI is the most direct way to test a company dictionary locally.
+
+## Validate a dictionary
+
+```bash
+skeinrank validate-dictionary company_dictionary.json
+skeinrank validate-dictionary company_dictionary.json --json
+```
+
+## Extract from raw text
+
+```bash
+skeinrank extract "k8s rollout uses pg database" \
+  --text \
+  --dictionary company_dictionary.json
+```
+
+Useful flags:
+
+- `--compact` for smaller JSON output
+- `--max-matches` to bound output size
+- `--context-chars` to control highlight context
+- `--output` to write results to a file
+
+## Extract from a document
+
+```bash
+skeinrank extract incident-runbook.md \
+  --dictionary company_dictionary.json
+```
+
+Supported lightweight formats include text-like files, Markdown, logs, CSV/TSV, JSON/JSONL, YAML-like files, HTML, and DOCX. PDF extraction is available when `pypdf` is installed by the caller.
+
+## Canonicalize text
+
+```bash
+skeinrank canonicalize "k8s rollout uses pg database" \
+  --text \
+  --dictionary company_dictionary.json
+```
+
+## Extract plain document text
+
+```bash
+skeinrank document-text incident-runbook.docx --output incident-runbook.txt
+```

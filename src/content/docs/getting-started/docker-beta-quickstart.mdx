@@ -1,0 +1,244 @@
+---
+title: Docker beta quickstart
+description: Run the SkeinRank governance console, API, PostgreSQL, Elasticsearch, RabbitMQ worker, and optional observability stack with Docker Compose.
+---
+
+This quickstart is the fastest way to try the **SkeinRank platform beta** instead of only the local SDK/CLI.
+It starts the governance console, API, PostgreSQL, Elasticsearch, RabbitMQ/Celery worker, and the services needed for the current profile → binding → enrichment → snapshot → search workflow.
+
+<div class="sr-callout">
+  <h3>Beta deployment path</h3>
+  <p>This guide is for local evaluation and beta dogfooding. Do not expose the dev stack directly to the public internet. Production hardening, image publishing, upgrade notes, and reverse-proxy guidance are tracked separately.</p>
+</div>
+
+## What this starts
+
+<div class="sr-status-grid sr-status-grid-compact">
+  <div class="sr-status-box"><h3>Governance UI</h3><p>React console for Dashboard, Terms, Suggestions, Guardrails, Integrations, Snapshots, Search Playground, API Access, and Users.</p></div>
+  <div class="sr-status-box"><h3>Governance API</h3><p>FastAPI backend for profiles, terms, bindings, jobs, runtime search, tokens, and users.</p></div>
+  <div class="sr-status-box"><h3>PostgreSQL</h3><p>Stores profiles, terms, aliases, suggestions, bindings, users, tokens, and job metadata.</p></div>
+  <div class="sr-status-box"><h3>Elasticsearch</h3><p>Document/search index used by evidence checks, dry-runs, enrichment, and runtime search preview.</p></div>
+  <div class="sr-status-box"><h3>RabbitMQ + worker</h3><p>Runs async enrichment jobs and background processing used by the platform preview.</p></div>
+  <div class="sr-status-box"><h3>Optional observability</h3><p>Prometheus, Grafana, and OpenTelemetry collector through the Compose observability profile.</p></div>
+</div>
+
+## Requirements
+
+- Docker Desktop or Docker Engine with Compose V2
+- Git
+- At least several GB of free RAM for PostgreSQL, Elasticsearch, RabbitMQ, API, worker, and UI
+- Node.js/Python are not required for the Docker path unless you also develop packages locally
+
+Check Compose:
+
+```bash
+docker compose version
+```
+
+## 1. Clone the monorepo
+
+```bash
+git clone https://github.com/SkeinRank/skeinrank.git
+cd skeinrank
+```
+
+## 2. Create local environment files
+
+Start from the example files in the repository:
+
+```bash
+cp .env.example .env
+```
+
+For local beta testing, check these values in `.env`:
+
+```dotenv
+SKEINRANK_GOVERNANCE_API_AUTH_ENABLED=true
+SKEINRANK_GOVERNANCE_API_BOOTSTRAP_ADMIN=true
+SKEINRANK_GOVERNANCE_API_ADMIN_USERNAME=admin
+SKEINRANK_GOVERNANCE_API_ADMIN_PASSWORD=change-me-local-only
+VITE_SKEINRANK_GOVERNANCE_API_URL=http://127.0.0.1:8010
+```
+
+<div class="sr-callout">
+  <h3>Shell environment has priority</h3>
+  <p>If a variable is already exported in your terminal, Docker Compose can use that value instead of the value from <code>.env</code>. If auth behaves unexpectedly, run <code>env | grep SKEINRANK_GOVERNANCE_API_AUTH</code> and unset stale variables.</p>
+</div>
+
+Useful check:
+
+```bash
+env | grep SKEINRANK_GOVERNANCE_API_AUTH
+```
+
+If you see an old value that should not apply:
+
+```bash
+unset SKEINRANK_GOVERNANCE_API_AUTH_ENABLED
+```
+
+## 3. Start the beta stack
+
+Use the dev Compose file from the monorepo root:
+
+```bash
+docker compose -f docker-compose.dev.yml up --build -d
+```
+
+If you also want Prometheus, Grafana, and the OpenTelemetry collector:
+
+```bash
+docker compose -f docker-compose.dev.yml --profile observability up --build -d
+```
+
+## 4. Check service status
+
+```bash
+docker compose -f docker-compose.dev.yml ps
+```
+
+With the observability profile:
+
+```bash
+docker compose -f docker-compose.dev.yml --profile observability ps
+```
+
+Expected local entry points:
+
+| Service | URL |
+| --- | --- |
+| Governance console | `http://127.0.0.1:5173` |
+| Governance API | `http://127.0.0.1:8010` |
+| API health | `http://127.0.0.1:8010/healthz` |
+| API readiness | `http://127.0.0.1:8010/readyz` |
+| Prometheus, optional | `http://127.0.0.1:9090` |
+| Grafana, optional | `http://127.0.0.1:3000` |
+
+Check auth is enabled:
+
+```bash
+curl -i http://127.0.0.1:8010/v1/auth/me
+```
+
+A protected dev stack should return:
+
+```text
+HTTP/1.1 401 Unauthorized
+{"detail":"Missing bearer token"}
+```
+
+## 5. Sign in and follow the console workflow
+
+Open the console:
+
+```text
+http://127.0.0.1:5173
+```
+
+Then follow this path:
+
+<div class="sr-pipeline">
+  <div class="sr-flow">
+    <div class="sr-flow-step"><strong>1. Dashboard</strong><span>Check setup readiness and the next action.</span></div>
+    <div class="sr-flow-step"><strong>2. Terms</strong><span>Create or import a terminology profile with canonical terms and aliases.</span></div>
+    <div class="sr-flow-step"><strong>3. Integrations</strong><span>Create an Elasticsearch binding and run a dry-run.</span></div>
+    <div class="sr-flow-step"><strong>4. Enrichment</strong><span>Run a default enrichment job from the jobs panel.</span></div>
+    <div class="sr-flow-step"><strong>5. Search Playground</strong><span>Test a query such as <code>k8s pg timeout</code>.</span></div>
+  </div>
+</div>
+
+A binding is the key runtime unit:
+
+```text
+profile + index/alias + text fields + target field + optional discriminator + runtime snapshot
+```
+
+For shared indexes, create multiple bindings:
+
+```text
+binding #1: profile infra   → index company_docs → team=infra
+binding #2: profile legal   → index company_docs → team=legal
+binding #3: profile support → index company_docs → team=support
+```
+
+## 6. Stop the stack
+
+Stop containers but keep dev volumes:
+
+```bash
+docker compose -f docker-compose.dev.yml down
+```
+
+With observability profile:
+
+```bash
+docker compose -f docker-compose.dev.yml --profile observability down
+```
+
+Reset all dev data, including PostgreSQL, Elasticsearch, and RabbitMQ volumes:
+
+```bash
+docker compose -f docker-compose.dev.yml --profile observability down -v --remove-orphans
+```
+
+<div class="sr-callout">
+  <h3>Data reset warning</h3>
+  <p><code>down -v</code> deletes local dev data. Use it only when you intentionally want a clean PostgreSQL/Elasticsearch/RabbitMQ state.</p>
+</div>
+
+## Troubleshooting
+
+### Compose says no configuration file was found
+
+Run Compose from the monorepo root and pass the dev file explicitly:
+
+```bash
+docker compose -f docker-compose.dev.yml down
+```
+
+The file name itself is not a command:
+
+```bash
+# Wrong
+docker-compose.dev.yml down
+```
+
+### Auth looks disabled even though `.env` says true
+
+Check for exported variables in your shell:
+
+```bash
+env | grep SKEINRANK_GOVERNANCE_API_AUTH
+```
+
+Remove stale values and recreate the API/UI containers:
+
+```bash
+unset SKEINRANK_GOVERNANCE_API_AUTH_ENABLED
+docker compose -f docker-compose.dev.yml --profile observability up -d --force-recreate governance-api governance-worker ui
+```
+
+### A migration container exited
+
+Inspect logs:
+
+```bash
+docker compose -f docker-compose.dev.yml logs --tail=200 governance-migrate
+```
+
+For the observability profile:
+
+```bash
+docker compose -f docker-compose.dev.yml --profile observability logs --tail=200 governance-migrate
+```
+
+## What this guide does not cover yet
+
+- Production reverse proxy and TLS setup
+- Published GHCR/Docker Hub image tags
+- Upgrade compatibility policy
+- Backup/restore procedure
+- Security hardening checklist
+- Public SaaS or multi-tenant deployment
+
+Those topics belong to the deployment and production-readiness docs rather than the local Docker beta quickstart.

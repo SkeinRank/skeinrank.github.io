@@ -1,0 +1,132 @@
+---
+title: Profiles, bindings, and snapshots
+description: The runtime model behind SkeinRank governance and search integration.
+---
+
+SkeinRank becomes easier to understand when the core runtime objects are separated.
+
+```text
+Profile = what the terminology means
+Binding = where and how that terminology is applied
+Snapshot = which immutable version is safe for runtime search
+```
+
+These three concepts keep editing, rollout, and search behavior from being mixed together.
+
+## Quick definitions
+
+<div class="sr-status-grid">
+  <div class="sr-status-box">
+    <h3>Profile</h3>
+    <p>A terminology profile is a controlled dictionary: canonical values, aliases, slots, stop lists, and review rules for one domain.</p>
+    <div class="sr-badge-row"><span class="sr-badge ready">Dictionary</span><span class="sr-badge ready">Editable</span></div>
+  </div>
+  <div class="sr-status-box">
+    <h3>Binding</h3>
+    <p>A binding connects one profile to one Elasticsearch index, alias, or document scope. It is the main runtime search context.</p>
+    <div class="sr-badge-row"><span class="sr-badge preview">Runtime context</span><span class="sr-badge preview">Search scope</span></div>
+  </div>
+  <div class="sr-status-box">
+    <h3>Snapshot</h3>
+    <p>A snapshot is the immutable profile version pinned to a binding after enrichment or rollout. Runtime search should use this stable version.</p>
+    <div class="sr-badge-row"><span class="sr-badge preview">Immutable</span><span class="sr-badge preview">Auditable</span></div>
+  </div>
+  <div class="sr-status-box">
+    <h3>Job</h3>
+    <p>An enrichment job is the operation that applies a binding to documents, performs dry-runs or writes, and can activate runtime snapshot state.</p>
+    <div class="sr-badge-row"><span class="sr-badge preview">Dry-run</span><span class="sr-badge preview">Rollout</span></div>
+  </div>
+</div>
+
+## Why binding is the production context
+
+A profile alone says which dictionary to use. It does not say:
+
+- which index or alias to search;
+- which fields contain source text;
+- which target field stores enrichment output;
+- which discriminator/filter scopes documents;
+- which snapshot is currently safe for runtime;
+- which alias or rollout state is active.
+
+A binding owns those decisions.
+
+```json
+{
+  "binding_id": 42,
+  "profile": "infra_incidents",
+  "index": "company_docs",
+  "text_fields": ["title", "body"],
+  "target_field": "skeinrank.attributes",
+  "runtime_snapshot": "infra_incidents@2026-05-runtime"
+}
+```
+
+## Common mapping patterns
+
+<table class="sr-mini-table">
+  <thead>
+    <tr>
+      <th>Pattern</th>
+      <th>How to model it</th>
+      <th>Why</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>1 profile → 1 index</strong></td>
+      <td>Create one binding.</td>
+      <td>The simplest path for a single domain corpus.</td>
+    </tr>
+    <tr>
+      <td><strong>1 profile → many indexes</strong></td>
+      <td>Create one binding per index.</td>
+      <td>Each index can have its own fields, jobs, and snapshot version.</td>
+    </tr>
+    <tr>
+      <td><strong>Many profiles → 1 index</strong></td>
+      <td>Create multiple bindings to the same index and use a discriminator such as <code>team</code>, <code>doc_type</code>, or <code>workspace_id</code>.</td>
+      <td>One binding should stay atomic: one profile, one search context, one runtime snapshot.</td>
+    </tr>
+  </tbody>
+</table>
+
+## Many profiles on one index
+
+If one Elasticsearch index contains multiple domains, do not attach several profiles to the same binding.
+Instead, create several bindings that share the index.
+
+```text
+binding #1: profile infra   → index company_docs → team=infra
+binding #2: profile legal   → index company_docs → team=legal
+binding #3: profile support → index company_docs → team=support
+```
+
+This keeps enrichment, rollback, snapshot audit, and runtime canonicalization predictable.
+
+## Runtime search rule
+
+Production search should prefer a binding-aware request:
+
+```json
+{
+  "binding_id": 42,
+  "query": "k8s pg timeout",
+  "size": 10
+}
+```
+
+The binding tells SkeinRank which runtime snapshot and search scope to use.
+A profile-only request can still be useful for preview or local experimentation, but it is not enough to represent production search context.
+
+## Recommended operator flow
+
+<div class="sr-pipeline">
+  <div class="sr-flow">
+    <div class="sr-flow-step"><strong>1. Create profile</strong><span>Add canonical terms, aliases, slots, and guardrails.</span></div>
+    <div class="sr-flow-step"><strong>2. Create binding</strong><span>Connect one profile to one index or scoped document collection.</span></div>
+    <div class="sr-flow-step"><strong>3. Dry-run</strong><span>Preview what enrichment would write without changing documents.</span></div>
+    <div class="sr-flow-step"><strong>4. Enrich</strong><span>Run a job and activate or update runtime snapshot state.</span></div>
+    <div class="sr-flow-step"><strong>5. Verify search</strong><span>Use Search Playground to inspect canonical query, aliases, and hits.</span></div>
+  </div>
+</div>

@@ -1,0 +1,93 @@
+---
+title: Quickstart
+description: Try SkeinRank with a small dictionary and one noisy technical sentence.
+---
+
+This quickstart demonstrates the smallest useful SkeinRank path: dictionary → text → canonical values.
+It does not require the governance API, UI, PostgreSQL, Elasticsearch, or background workers.
+
+For the full platform beta with the governance console, bindings, enrichment jobs, snapshots, and Search Playground, use the [Docker beta quickstart](/getting-started/docker-beta-quickstart/).
+
+## 1. Create a dictionary
+
+Save this as `company_dictionary.json`:
+
+```json
+{
+  "profile_name": "infra_incidents",
+  "profile_description": "Small infrastructure incident dictionary",
+  "terms": [
+    {
+      "canonical_value": "kubernetes",
+      "slot": "TOOL",
+      "aliases": ["k8s", "kube", "kuber"]
+    },
+    {
+      "canonical_value": "postgresql",
+      "slot": "DATABASE",
+      "aliases": ["pg", "postgres", "psql"]
+    }
+  ],
+  "profile_stop_list": [],
+  "global_stop_list": []
+}
+```
+
+## 2. Validate the dictionary
+
+```bash
+skeinrank validate-dictionary company_dictionary.json
+```
+
+## 3. Extract terms from text
+
+```bash
+skeinrank extract "k8s rollout uses pg database" \
+  --text \
+  --dictionary company_dictionary.json
+```
+
+Expected canonical values:
+
+```json
+["kubernetes", "postgresql"]
+```
+
+## 4. Canonicalize the text
+
+```bash
+skeinrank canonicalize "k8s rollout uses pg database" \
+  --text \
+  --dictionary company_dictionary.json
+```
+
+Expected output:
+
+```text
+kubernetes rollout uses postgresql database
+```
+
+## 5. Use Python instead
+
+```python
+from skeinrank import load_dictionary, extract_terms, canonicalize_text
+
+dictionary = load_dictionary("company_dictionary.json")
+
+result = extract_terms(
+    "k8s rollout uses pg database",
+    dictionary=dictionary,
+)
+print(result.canonical_values)
+
+canonicalized = canonicalize_text(
+    "k8s rollout uses pg database",
+    dictionary=dictionary,
+)
+print(canonicalized.text)
+```
+
+<div class="sr-callout">
+  <h3>Why this path is the public MVP</h3>
+  <p>It shows the core value without needing a full platform deployment. The UI, PostgreSQL store, and Elasticsearch enrichment workflow can be introduced after the end-to-end case is tested.</p>
+</div>

@@ -1,0 +1,112 @@
+---
+title: End-to-end demo
+description: A textual walkthrough of the SkeinRank platform workflow before the screenshot-based product tour.
+---
+
+This page describes the intended beta demo path.
+A screenshot-based product tour will be added after the console screens and Docker beta quickstart are finalized.
+
+## Scenario
+
+An infrastructure team searches internal documents for:
+
+```text
+k8s pg timeout
+```
+
+Relevant documents use mixed terminology:
+
+```text
+k8s, kube, kubernetes
+pg, postgres, postgresql
+timeout, deadline exceeded, connection timeout
+```
+
+SkeinRank helps the team govern those aliases and verify that runtime search uses the correct canonical terminology.
+
+## Demo walkthrough
+
+### 1. Create a terminology profile
+
+Create a profile named `infra_incidents`.
+Add canonical terms such as:
+
+| Canonical value | Slot | Aliases |
+| --- | --- | --- |
+| `kubernetes` | `TOOL` | `k8s`, `kube` |
+| `postgresql` | `DATABASE` | `pg`, `postgres`, `psql` |
+| `timeout` | `SYMPTOM` | `deadline exceeded`, `connection timeout` |
+
+### 2. Review suggestions and guardrails
+
+Use Suggestions to propose aliases without giving every contributor direct write access.
+Use Guardrails to block noisy values such as short or ambiguous aliases.
+
+### 3. Create an Elasticsearch binding
+
+Create a binding that applies `infra_incidents` to the documents index.
+
+```text
+profile: infra_incidents
+index: company_docs
+text fields: title, body
+target field: skeinrank.attributes
+discriminator: team=infra
+```
+
+### 4. Run a dry-run
+
+Dry-run previews what SkeinRank would write without changing Elasticsearch.
+This is useful before approving a dictionary change or running a full enrichment job.
+
+### 5. Run enrichment
+
+Run an enrichment job for the binding.
+The job applies the selected profile to documents in the selected index scope and updates runtime state.
+
+### 6. Audit the runtime snapshot
+
+Open Snapshots and confirm that the binding has an active snapshot.
+This answers the question:
+
+```text
+Which immutable terminology version is runtime search using right now?
+```
+
+### 7. Verify Search Playground
+
+Open Search Playground, select the binding, and run:
+
+```text
+k8s pg timeout
+```
+
+Expected result:
+
+```text
+canonical query: kubernetes postgresql timeout
+matched aliases: k8s → kubernetes, pg → postgresql
+runtime snapshot: infra_incidents@...
+```
+
+### 8. Integrate through API
+
+After the behavior is verified, an application backend can follow the [API integration guide](/reference/api-integration/) and call SkeinRank by binding:
+
+```json
+{
+  "binding_id": 42,
+  "query": "k8s pg timeout",
+  "size": 10
+}
+```
+
+The application can then combine SkeinRank output with its existing search or RAG pipeline. For an "All docs" scope, call `/v1/search/multi` with explicit binding IDs rather than guessing one global profile.
+
+## What this demo should prove
+
+- SkeinRank is not just a dictionary CRUD UI.
+- Profiles, bindings, and snapshots create a safe runtime model.
+- Enrichment can be operated and audited.
+- Search Playground shows the value immediately.
+- External applications can integrate through binding-aware runtime APIs.

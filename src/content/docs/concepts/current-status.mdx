@@ -1,0 +1,57 @@
+---
+title: Current status
+description: What is ready, what is beta, and what should not be over-marketed yet.
+---
+
+This page is intentionally explicit. The public website should look professional without pretending the whole platform is already a production v1.0 distribution.
+
+## Available now
+
+- Local dictionary validation
+- Local text extraction and canonicalization
+- Local document text helpers
+- Public Python SDK path
+- Lightweight `skeinrank` CLI
+- FastAPI extraction endpoint
+- Demo corpus and evaluation artifacts
+- Explainable passport/debug output
+
+## Beta / platform preview
+
+- Governance API
+- PostgreSQL-backed terminology store
+- React governance console
+- Dashboard command center
+- Terms, Suggestions, Guardrails, API Access, and Users
+- Elasticsearch bindings, dry-runs, evidence snapshots, enrichment jobs, alias-swap metadata, and rollback metadata
+- Runtime snapshots audit
+- Search Playground for binding-aware query preview and search verification
+- Integrations graph view for Profile → Binding → Index → Snapshot topology
+- Docker Compose beta quickstart for local platform evaluation
+- API integration documentation for binding-aware runtime search
+
+## Not positioned as finished yet
+
+- Production-ready v1.0 deployment story
+- Public hosted SaaS offering
+- Multi-tenant product packaging
+- Upgrade guides and compatibility policy
+- Full security and privacy hardening guide
+- Public pricing or commercial SaaS positioning
+
+## Recommended website tone
+
+Use this tone until the product is fully tested and released as a production distribution:
+
+```text
+SkeinRank is available today as a local SDK/CLI for terminology extraction and canonicalization.
+The governance console can be tested through the Docker beta quickstart as a beta control plane for profiles, bindings, enrichment, snapshots, and search verification.
+```
+
+## Recommended product framing
+
+```text
+SkeinRank is an open-source side-car control plane for domain-aware search and RAG.
+It helps teams manage terminology profiles, bind them to search indexes, run enrichment jobs,
+audit runtime snapshots, and verify canonicalized search behavior.
+```

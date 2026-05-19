@@ -1,0 +1,72 @@
+---
+title: Python SDK
+description: Use SkeinRank from notebooks, scripts, and local evaluation workflows.
+---
+
+The SDK path is designed for notebooks, scripts, small evaluations, and future bot-driven dictionary checks.
+
+## Load a dictionary
+
+```python
+from skeinrank import load_dictionary
+
+dictionary = load_dictionary("company_dictionary.json")
+```
+
+## Extract canonical values
+
+```python
+from skeinrank import extract_terms
+
+result = extract_terms(
+    "This runbook describes a k8s rollout backed by pg.",
+    dictionary=dictionary,
+)
+
+print(result.canonical_values)
+```
+
+## Canonicalize text
+
+```python
+from skeinrank import canonicalize_text
+
+canonicalized = canonicalize_text(
+    "k8s rollout uses pg database",
+    dictionary=dictionary,
+)
+
+print(canonicalized.text)
+```
+
+## Extract from documents
+
+```python
+from skeinrank import extract_terms_from_document
+
+result = extract_terms_from_document(
+    "incident-runbook.md",
+    dictionary=dictionary,
+)
+
+print(result.document.file_name)
+print(result.extraction.canonical_values)
+```
+
+## Public objects
+
+The stable local SDK surface is expected to include:
+
+- `Dictionary`, `DictionaryTerm`, `DictionaryAlias`, `DictionaryStopListEntry`
+- `load_dictionary(...)`
+- `validate_dictionary(...)`
+- `extract_terms(...)`
+- `canonicalize_text(...)`
+- `load_document_text(...)`
+- `extract_terms_from_document(...)`
+- `ExtractionResult`, `TermMatch`, `CanonicalizedText`
+
+<div class="sr-callout">
+  <h3>Design direction</h3>
+  <p>The SDK should stay deterministic, local, and easy to test. The platform can manage terminology, but runtime extraction should not require a live database query for every request.</p>
+</div>

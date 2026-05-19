@@ -1,0 +1,345 @@
+---
+title: API integration
+description: How an external application should call SkeinRank as a side-car for binding-aware search and canonicalization.
+---
+
+This page explains how to integrate an external backend, internal search UI, or RAG service with the SkeinRank governance API.
+
+The recommended production pattern is **binding-aware**:
+
+```text
+application search scope → binding_id → SkeinRank runtime API → existing search/RAG stack
+```
+
+A binding is the runtime context that tells SkeinRank which profile, index, fields, discriminator, and runtime snapshot should be used for a query.
+
+<div class="sr-callout">
+  <h3>Use the console first</h3>
+  <p>Before integrating an application, use the governance console to create a profile, create a binding, run enrichment, audit the snapshot, and verify the behavior in Search Playground.</p>
+</div>
+
+## Runtime integration flow
+
+<div class="sr-pipeline">
+  <div class="sr-flow">
+    <div class="sr-flow-step"><strong>1. Choose scope</strong><span>Your app decides which search area the user is in.</span></div>
+    <div class="sr-flow-step"><strong>2. Resolve binding</strong><span>Map that scope to a saved <code>binding_id</code>.</span></div>
+    <div class="sr-flow-step"><strong>3. Plan or search</strong><span>Call <code>/v1/query/plan</code> or <code>/v1/search</code>.</span></div>
+    <div class="sr-flow-step"><strong>4. Render signals</strong><span>Use canonical query, aliases, snapshot, and hits.</span></div>
+    <div class="sr-flow-step"><strong>5. Audit changes</strong><span>Use snapshots and jobs to explain runtime behavior.</span></div>
+  </div>
+</div>
+
+## Base URL
+
+For the local Docker beta stack, the API listens on:
+
+```bash
+export SKEINRANK_API_URL="http://127.0.0.1:8010"
+```
+
+The governance console uses the same API through `VITE_SKEINRANK_GOVERNANCE_API_URL`.
+
+## Authentication
+
+When auth is enabled, API calls require a bearer token:
+
+```http
+Authorization: Bearer <token>
+```
+
+For local testing, exchange the bootstrap admin credentials for a short-lived auth token:
+
+```bash
+curl -s -X POST "$SKEINRANK_API_URL/v1/auth/login" \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"change-me-local-only"}'
+```
+
+Then export the returned `access_token`:
+
+```bash
+export SKEINRANK_TOKEN="<copy access_token here>"
+```
+
+Check the current user:
+
+```bash
+curl -s "$SKEINRANK_API_URL/v1/auth/me" \
+  -H "Authorization: Bearer $SKEINRANK_TOKEN"
+```
+
+For application integrations, prefer a **service account token** created from the API Access page or through the service-account token endpoint:
+
+```http
+POST /v1/auth/service-accounts/{account_name}/tokens
+```
+
+Personal tokens are useful for developer testing:
+
+```http
+POST /v1/auth/api-tokens
+```
+
+<div class="sr-callout">
+  <h3>Token handling</h3>
+  <p>Token create responses return the plaintext token once. Store it in your application secret manager and do not commit it to source control.</p>
+</div>
+
+## Resolve bindings for your application
+
+The external application should know which search context the user selected.
+For example:
+
+```text
+Infra incidents → binding_id 42
+Product docs    → binding_id 51
+Legal docs      → binding_id 77
+```
+
+You can list saved Elasticsearch bindings:
+
+```bash
+curl -s "$SKEINRANK_API_URL/v1/governance/elasticsearch/bindings" \
+  -H "Authorization: Bearer $SKEINRANK_TOKEN"
+```
+
+Optionally filter by profile:
+
+```bash
+curl -s "$SKEINRANK_API_URL/v1/governance/elasticsearch/bindings?profile_name=infra_incidents" \
+  -H "Authorization: Bearer $SKEINRANK_TOKEN"
+```
+
+A binding response includes fields such as `id`, `profile_name`, `index_name`, `text_fields`, `target_field`, `filter_field`, `filter_value`, `snapshot_status`, and `last_successful_snapshot_version`.
+
+## Preview query understanding
+
+Use query planning when you want to inspect how SkeinRank understands a query without executing Elasticsearch search.
+This is the API equivalent of the Search Playground preview action.
+
+```http
+POST /v1/query/plan
+```
+
+```bash
+curl -s -X POST "$SKEINRANK_API_URL/v1/query/plan" \
+  -H "Authorization: Bearer $SKEINRANK_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "binding_id": 42,
+    "query": "k8s pg timeout",
+    "size": 10,
+    "canonical_boost": 3.0,
+    "include_evidence": true
+  }'
+```
+
+Important response fields:
+
+<table class="sr-mini-table">
+  <thead>
+    <tr><th>Field</th><th>Meaning</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>canonical_query</code></td><td>The query after alias replacement, for example <code>kubernetes postgresql timeout</code>.</td></tr>
+    <tr><td><code>matched_aliases</code></td><td>Aliases recognized in the input query.</td></tr>
+    <tr><td><code>canonical_values</code></td><td>Canonical values that can be used as retrieval signals.</td></tr>
+    <tr><td><code>snapshot_version</code></td><td>The runtime snapshot used for the binding, when available.</td></tr>
+    <tr><td><code>elasticsearch</code></td><td>The generated Elasticsearch DSL preview.</td></tr>
+    <tr><td><code>warnings</code></td><td>Helpful messages such as missing aliases or profile-only fallback.</td></tr>
+  </tbody>
+</table>
+
+## Execute runtime search
+
+Use search when you want SkeinRank to execute the generated Elasticsearch query through the configured binding.
+
+```http
+POST /v1/search
+```
+
+```bash
+curl -s -X POST "$SKEINRANK_API_URL/v1/search" \
+  -H "Authorization: Bearer $SKEINRANK_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "binding_id": 42,
+    "query": "k8s pg timeout",
+    "size": 10,
+    "canonical_boost": 3.0,
+    "include_source": true,
+    "source_fields": ["title", "body", "skeinrank.attributes"],
+    "include_evidence": true
+  }'
+```
+
+A search response includes both the query understanding payload and Elasticsearch hits:
+
+```json
+{
+  "binding_id": 42,
+  "query": "k8s pg timeout",
+  "canonical_query": "kubernetes postgresql timeout",
+  "matched_aliases": ["k8s", "pg"],
+  "canonical_values": ["kubernetes", "postgresql"],
+  "snapshot_version": "infra_incidents@2026-05-runtime",
+  "hits": [
+    {
+      "id": "doc-001",
+      "index": "company_docs",
+      "score": 12.4,
+      "source": {
+        "title": "Kubernetes timeout during PostgreSQL failover"
+      },
+      "skeinrank": {
+        "canonical_values": ["kubernetes", "postgresql"]
+      }
+    }
+  ],
+  "warnings": []
+}
+```
+
+## Canonicalize text without search
+
+Use canonicalization when your application wants terminology normalization but not Elasticsearch execution.
+
+```http
+POST /v1/text/canonicalize
+```
+
+```bash
+curl -s -X POST "$SKEINRANK_API_URL/v1/text/canonicalize" \
+  -H "Authorization: Bearer $SKEINRANK_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "binding_id": 42,
+    "text": "Investigate k8s pg timeout after rollout",
+    "mode": "replace",
+    "include_evidence": true
+  }'
+```
+
+Supported modes are:
+
+| Mode | Use case |
+| --- | --- |
+| `annotate` | Return matches and evidence without changing the text. |
+| `replace` | Return canonicalized text such as `kubernetes postgresql timeout`. |
+| `attributes` | Return extracted canonical values and slots for downstream processing. |
+
+## Search across multiple bindings
+
+When your product has an “All docs” or “All workspaces” search scope, call multi-search with explicit bindings.
+
+```http
+POST /v1/search/multi
+```
+
+```bash
+curl -s -X POST "$SKEINRANK_API_URL/v1/search/multi" \
+  -H "Authorization: Bearer $SKEINRANK_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "binding_ids": [42, 51, 77],
+    "query": "phoenix timeout",
+    "size": 10,
+    "per_binding_size": 5,
+    "canonical_boost": 3.0,
+    "include_source": true
+  }'
+```
+
+This keeps each binding isolated while still returning merged hits.
+The response reports `succeeded_bindings`, `failed_bindings`, per-binding results, and merged hits.
+
+## External backend pattern
+
+A backend should usually map application context to a binding rather than asking users to type binding IDs.
+
+```ts
+const scopeToBinding: Record<string, number> = {
+  infra_incidents: 42,
+  product_docs: 51,
+  legal_docs: 77,
+};
+
+export async function runSkeinRankSearch(scope: string, query: string) {
+  const bindingId = scopeToBinding[scope];
+  if (!bindingId) {
+    throw new Error(`Unknown search scope: ${scope}`);
+  }
+
+  const response = await fetch(`${process.env.SKEINRANK_API_URL}/v1/search`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.SKEINRANK_TOKEN}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      binding_id: bindingId,
+      query,
+      size: 10,
+      canonical_boost: 3,
+      include_source: true,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`SkeinRank search failed: ${response.status}`);
+  }
+
+  return response.json();
+}
+```
+
+## What to render in an application
+
+A search UI does not need to expose every internal field.
+Useful product-level signals are:
+
+- `canonical_query` — show how the query was normalized;
+- `matched_aliases` and `replacements` — explain why it changed;
+- `snapshot_version` — audit which runtime version was used;
+- `warnings` — surface configuration issues to admins;
+- `hits` — render search results normally.
+
+For operator or admin UIs, link back to the SkeinRank console:
+
+```text
+Search issue → open binding in Integrations → audit snapshot → inspect jobs
+```
+
+## Error handling
+
+<table class="sr-mini-table">
+  <thead>
+    <tr><th>Status</th><th>Typical reason</th><th>Action</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>401</code></td><td>Missing or invalid bearer token.</td><td>Create or refresh a token.</td></tr>
+    <tr><td><code>403</code></td><td>The token owner role is not allowed to call the endpoint.</td><td>Use a service account with the right role.</td></tr>
+    <tr><td><code>422</code></td><td>Required fields are missing, such as <code>binding_id</code>, <code>query</code>, or text fields.</td><td>Validate the request body before sending.</td></tr>
+    <tr><td><code>503</code></td><td>Elasticsearch is not configured or cannot be reached.</td><td>Check the integration configuration and service health.</td></tr>
+  </tbody>
+</table>
+
+## Avoid these integration mistakes
+
+- Do not use `profile_name` alone for production search if you already have bindings.
+- Do not hard-code alias rules inside the application backend.
+- Do not bypass snapshots when explaining runtime search behavior.
+- Do not expose admin tokens to browsers; use an application backend or service account.
+- Do not treat the Search Playground as the integration surface. It mirrors the runtime APIs but is not the API itself.
+
+## Local interactive docs
+
+When the governance API is running locally, FastAPI also exposes interactive documentation:
+
+```text
+http://127.0.0.1:8010/docs
+http://127.0.0.1:8010/redoc
+```
+
+Use this page for the product-level integration pattern, and use the local OpenAPI UI for exact request/response schemas while the beta API is still evolving.

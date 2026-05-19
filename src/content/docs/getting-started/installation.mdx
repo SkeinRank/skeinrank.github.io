@@ -1,0 +1,89 @@
+---
+title: Installation
+description: Install SkeinRank locally from PyPI/TestPyPI or from a source checkout.
+---
+
+SkeinRank can be tried in two ways:
+
+- local SDK/CLI for dictionary validation, extraction, and canonicalization;
+- Docker beta stack for the governance console, API, PostgreSQL, Elasticsearch, RabbitMQ worker, and optional observability profile.
+
+## Requirements
+
+- Python 3.10+
+- Node.js 22+ for this website scaffold
+- Poetry for source checkout development
+- Docker Compose V2 for the platform beta stack
+
+
+## Run the platform beta with Docker
+
+For the full governance console path, use the Docker beta quickstart:
+
+```bash
+git clone https://github.com/SkeinRank/skeinrank.git
+cd skeinrank
+cp .env.example .env
+docker compose -f docker-compose.dev.yml up --build -d
+```
+
+Then open:
+
+```text
+http://127.0.0.1:5173
+```
+
+Read the full guide for auth, observability, reset commands, and troubleshooting:
+
+[Open Docker beta quickstart](/getting-started/docker-beta-quickstart/)
+
+## Install the core package
+
+When the package is available on PyPI:
+
+```bash
+python -m pip install skeinrank
+```
+
+For TestPyPI smoke testing:
+
+```bash
+python -m pip install \
+  --index-url https://test.pypi.org/simple/ \
+  --extra-index-url https://pypi.org/simple/ \
+  skeinrank
+```
+
+## Install from the repository
+
+```bash
+git clone https://github.com/SkeinRank/skeinrank.git
+cd skeinrank/packages/skeinrank-core
+poetry install
+poetry run pytest -q
+```
+
+## Website local run
+
+This ZIP is a separate website repository scaffold.
+
+```bash
+npm install
+npm run dev
+```
+
+Open the local URL printed by Astro, usually:
+
+```text
+http://localhost:4321
+```
+
+## GitHub Pages target
+
+Use a separate repository:
+
+```text
+SkeinRank/skeinrank.github.io
+```
+
+That repository can serve GitHub Pages at `https://skeinrank.github.io` and later use the custom domain `https://skeinrank.io` through GitHub Pages settings and DNS.

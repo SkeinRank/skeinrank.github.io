@@ -1,0 +1,125 @@
+---
+title: REST API
+description: Current REST API surface for the local SDK server and the governance platform beta.
+---
+
+SkeinRank currently exposes two HTTP surfaces:
+
+1. the lightweight runtime/server package for local extraction and reranking experiments;
+2. the governance API used by the platform beta, console, bindings, jobs, snapshots, and runtime search.
+
+For product-level application integration, start with the [API integration guide](/reference/api-integration/).
+
+## Lightweight server package
+
+The lightweight server package exposes a small HTTP surface for extraction and retrieval experiments:
+
+<table class="sr-mini-table">
+  <thead>
+    <tr><th>Method</th><th>Path</th><th>Purpose</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>GET</code></td><td><code>/healthz</code></td><td>Basic health check.</td></tr>
+    <tr><td><code>GET</code></td><td><code>/diagnostics</code></td><td>Diagnostic information for the lightweight server.</td></tr>
+    <tr><td><code>POST</code></td><td><code>/v1/attributes/extract</code></td><td>Extract and canonicalize attributes from text.</td></tr>
+    <tr><td><code>POST</code></td><td><code>/v1/rerank/es</code></td><td>Run an Elasticsearch-oriented reranking flow.</td></tr>
+  </tbody>
+</table>
+
+Use this path when you want the smallest API surface around the core package.
+
+## Governance API health and observability
+
+The governance API includes health, readiness, metrics, and platform summary endpoints.
+
+<table class="sr-mini-table">
+  <thead>
+    <tr><th>Method</th><th>Path</th><th>Purpose</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>GET</code></td><td><code>/livez</code></td><td>Liveness check.</td></tr>
+    <tr><td><code>GET</code></td><td><code>/healthz</code></td><td>Basic API health check.</td></tr>
+    <tr><td><code>GET</code></td><td><code>/readyz</code></td><td>Readiness check for dependencies.</td></tr>
+    <tr><td><code>GET</code></td><td><code>/metrics</code></td><td>Prometheus-compatible metrics when enabled.</td></tr>
+    <tr><td><code>GET</code></td><td><code>/v1/dashboard/summary</code></td><td>Dashboard command-center summary used by the console.</td></tr>
+    <tr><td><code>GET</code></td><td><code>/v1/snapshots/summary</code></td><td>Runtime snapshot audit summary used by the console.</td></tr>
+  </tbody>
+</table>
+
+## Auth and API access
+
+<table class="sr-mini-table">
+  <thead>
+    <tr><th>Method</th><th>Path</th><th>Purpose</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>POST</code></td><td><code>/v1/auth/login</code></td><td>Exchange username/password for a bearer token.</td></tr>
+    <tr><td><code>POST</code></td><td><code>/v1/auth/logout</code></td><td>Revoke the current bearer token.</td></tr>
+    <tr><td><code>GET</code></td><td><code>/v1/auth/me</code></td><td>Return the current user and role.</td></tr>
+    <tr><td><code>GET</code></td><td><code>/v1/auth/api-tokens</code></td><td>List masked personal API tokens for the current user.</td></tr>
+    <tr><td><code>POST</code></td><td><code>/v1/auth/api-tokens</code></td><td>Create a copy-once personal API token.</td></tr>
+    <tr><td><code>GET</code></td><td><code>/v1/auth/service-accounts</code></td><td>List service accounts. Admin role required.</td></tr>
+    <tr><td><code>POST</code></td><td><code>/v1/auth/service-accounts</code></td><td>Create a service account. Admin role required.</td></tr>
+    <tr><td><code>POST</code></td><td><code>/v1/auth/service-accounts/&#123;account_name&#125;/tokens</code></td><td>Create a copy-once service account token. Admin role required.</td></tr>
+  </tbody>
+</table>
+
+## Runtime search API
+
+These are the endpoints an external application is most likely to call.
+
+<table class="sr-mini-table">
+  <thead>
+    <tr><th>Method</th><th>Path</th><th>Purpose</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>POST</code></td><td><code>/v1/text/canonicalize</code></td><td>Canonicalize text using a profile or binding context.</td></tr>
+    <tr><td><code>POST</code></td><td><code>/v1/query/plan</code></td><td>Preview canonical query, matched aliases, and Elasticsearch DSL without executing search.</td></tr>
+    <tr><td><code>POST</code></td><td><code>/v1/search</code></td><td>Execute binding-aware runtime search against Elasticsearch.</td></tr>
+    <tr><td><code>POST</code></td><td><code>/v1/search/multi</code></td><td>Execute search across multiple binding contexts and merge hits.</td></tr>
+  </tbody>
+</table>
+
+Recommended production request shape:
+
+```json
+{
+  "binding_id": 42,
+  "query": "k8s pg timeout",
+  "size": 10,
+  "canonical_boost": 3.0
+}
+```
+
+Use the [API integration guide](/reference/api-integration/) for examples and application patterns.
+
+## Governance control-plane API
+
+The governance API also exposes control-plane endpoints for console workflows.
+Common groups include:
+
+<table class="sr-mini-table">
+  <thead>
+    <tr><th>Group</th><th>Example paths</th><th>Purpose</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Profiles and terms</td><td><code>/v1/governance/profiles</code>, <code>/v1/governance/profiles/&#123;profile_name&#125;/terms</code></td><td>Manage terminology profiles, canonical terms, and aliases.</td></tr>
+    <tr><td>Suggestions</td><td><code>/v1/governance/profiles/&#123;profile_name&#125;/suggestions</code></td><td>Create, review, approve, reject, and refresh evidence for suggestions.</td></tr>
+    <tr><td>Guardrails</td><td><code>/v1/governance/global-stop-list</code>, <code>/v1/governance/profiles/&#123;profile_name&#125;/stop-list</code></td><td>Manage global and profile-scoped stop lists.</td></tr>
+    <tr><td>Elasticsearch bindings</td><td><code>/v1/governance/elasticsearch/bindings</code></td><td>Create bindings and list runtime search contexts.</td></tr>
+    <tr><td>Dry-runs and evidence</td><td><code>/v1/governance/elasticsearch/bindings/&#123;binding_id&#125;/dry-run</code>, <code>/v1/governance/elasticsearch/bindings/&#123;binding_id&#125;/evidence</code></td><td>Preview enrichment and collect evidence from indexed documents.</td></tr>
+    <tr><td>Enrichment jobs</td><td><code>/v1/governance/elasticsearch/bindings/&#123;binding_id&#125;/jobs</code></td><td>Start and operate enrichment jobs for a binding.</td></tr>
+  </tbody>
+</table>
+
+## Local OpenAPI UI
+
+When the governance API is running locally, FastAPI exposes interactive schema docs:
+
+```text
+http://127.0.0.1:8010/docs
+http://127.0.0.1:8010/redoc
+```
+
+Use those local pages for exact schemas while the beta API is still evolving.
+This website keeps the public documentation focused on stable integration patterns and product concepts.
