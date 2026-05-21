@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import dashboardPreview from '../assets/screenshots/dashboard-runtime-control-center-dark.png';
+
 const repoUrl = 'https://github.com/SkeinRank/skeinrank';
 const workflowUrl = '/platform-preview/governance-console/';
 const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
@@ -155,6 +158,67 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
         </article>
       </div>
     </section>
+
+    <section class="sr-section sr-console-preview" aria-labelledby="sr-console-preview-title">
+      <div class="sr-preview-heading">
+        <p class="sr-section-label">Platform preview</p>
+        <h2 id="sr-console-preview-title">A real governance console, seeded with runtime data.</h2>
+        <p>
+          Run the Docker beta stack and seed the platform demo to see profiles, bindings, snapshots,
+          enrichment jobs, and search behavior in one local console.
+        </p>
+      </div>
+
+      <div class="sr-preview-stage" aria-label="SkeinRank governance console dashboard preview">
+        <div class="sr-preview-mobile-proof" aria-label="Seeded preview summary">
+          <span><strong>24 docs</strong> seeded knowledge base</span>
+          <span><strong>29 aliases</strong> governed terminology</span>
+          <span><strong>Job #2</strong> enrichment succeeded</span>
+        </div>
+
+        <div class="sr-preview-frame">
+          <div class="sr-preview-toolbar" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+            <strong>platform_ops · platform_knowledge_base</strong>
+          </div>
+          <Image
+            class="sr-preview-image sr-preview-image-dashboard"
+            src={dashboardPreview}
+            alt="SkeinRank dashboard showing a runtime-ready terminology profile, binding health, enrichment jobs, and system readiness."
+            width={1600}
+            format="webp"
+            quality={82}
+            loading="lazy"
+          />
+        </div>
+
+        <div class="sr-preview-proof-grid" aria-label="Platform preview proof points">
+          <article>
+            <span>Seeded demo</span>
+            <strong>24 docs · 15 terms · 29 aliases</strong>
+            <p>Use <code>make demo-reset</code> to populate the local stack with a realistic platform operations knowledge base.</p>
+          </article>
+          <article>
+            <span>Runtime ready</span>
+            <strong>binding + pinned snapshot</strong>
+            <p>Validate that canonical terms are attached to a concrete Elasticsearch search context before serving runtime queries.</p>
+          </article>
+          <article>
+            <span>Evidence workflow</span>
+            <strong>suggestions, jobs, playground</strong>
+            <p>Review aliases with evidence, publish enrichment output, and test canonical queries from the UI.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="sr-preview-actions" aria-label="Platform preview actions">
+        <a class="sr-btn sr-btn-primary" href={dockerQuickstartUrl}>Run seeded preview</a>
+        <a class="sr-btn sr-btn-secondary" href="/platform-preview/end-to-end-demo/">Read demo workflow</a>
+      </div>
+    </section>
+
 
     <section class="sr-problem-solution" aria-labelledby="sr-problem-title">
       <div>
@@ -962,6 +1026,170 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
     padding: 0.95rem;
   }
 
+  .sr-console-preview {
+    position: relative;
+    gap: 1.35rem;
+    padding: clamp(1.15rem, 3vw, 1.65rem);
+    overflow: hidden;
+    border: 1px solid var(--sr-border);
+    border-radius: var(--sr-radius-lg);
+    background:
+      radial-gradient(circle at 14% 0%, color-mix(in srgb, var(--sr-cyan) 16%, transparent), transparent 22rem),
+      radial-gradient(circle at 86% 2%, color-mix(in srgb, var(--sr-accent) 18%, transparent), transparent 24rem),
+      linear-gradient(145deg, color-mix(in srgb, var(--sr-card-soft) 70%, transparent), color-mix(in srgb, var(--sr-surface-strong) 86%, transparent));
+    box-shadow: var(--sr-shadow);
+  }
+
+  .sr-preview-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(17rem, 0.55fr);
+    gap: clamp(1rem, 3vw, 2rem);
+    align-items: end;
+  }
+
+  .sr-preview-heading .sr-section-label {
+    grid-column: 1 / -1;
+    margin-bottom: -0.1rem;
+  }
+
+  .sr-preview-heading h2 {
+    max-width: 13ch;
+  }
+
+  .sr-preview-heading p:not(.sr-section-label) {
+    margin: 0;
+    color: var(--sr-text-soft);
+    font-size: 1.02rem;
+    line-height: 1.7;
+  }
+
+  .sr-preview-stage {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .sr-preview-mobile-proof {
+    display: none;
+  }
+
+  .sr-preview-frame {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--sr-border-strong) 84%, transparent);
+    border-radius: 1.45rem;
+    background:
+      linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(2, 6, 23, 0.92));
+    box-shadow:
+      0 28px 90px rgba(2, 6, 23, 0.42),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  .sr-preview-frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 14%),
+      radial-gradient(circle at 88% 4%, rgba(139, 92, 246, 0.14), transparent 18rem);
+  }
+
+  .sr-preview-toolbar {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 0.42rem;
+    min-height: 2.35rem;
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+    background: rgba(2, 6, 23, 0.72);
+  }
+
+  .sr-preview-toolbar span {
+    width: 0.62rem;
+    height: 0.62rem;
+    border-radius: 999px;
+    background: rgba(148, 163, 184, 0.45);
+  }
+
+  .sr-preview-toolbar span:first-child {
+    background: #ef4444;
+  }
+
+  .sr-preview-toolbar span:nth-child(2) {
+    background: #f59e0b;
+  }
+
+  .sr-preview-toolbar span:nth-child(3) {
+    background: #22c55e;
+  }
+
+  .sr-preview-toolbar strong {
+    margin-inline-start: 0.45rem;
+    color: rgba(226, 232, 240, 0.8);
+    font-size: 0.76rem;
+    font-weight: 850;
+    letter-spacing: 0.02em;
+  }
+
+  .sr-preview-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: top left;
+  }
+
+  .sr-preview-proof-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
+  }
+
+  .sr-preview-proof-grid article {
+    padding: 1rem;
+    border: 1px solid var(--sr-border);
+    border-radius: 1.1rem;
+    background: color-mix(in srgb, var(--sr-card) 78%, transparent);
+  }
+
+  .sr-preview-proof-grid span {
+    display: inline-flex;
+    margin-bottom: 0.55rem;
+    color: var(--sr-cyan);
+    font-size: 0.72rem;
+    font-weight: 950;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .sr-preview-proof-grid strong {
+    display: block;
+    color: var(--sr-text);
+    font-size: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .sr-preview-proof-grid p {
+    margin: 0.5rem 0 0;
+    color: var(--sr-text-soft);
+    font-size: 0.92rem;
+    line-height: 1.62;
+  }
+
+  .sr-preview-proof-grid code {
+    color: var(--sr-cyan);
+  }
+
+  .sr-preview-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
   .sr-dashboard-head,
   .sr-dashboard-row,
   .sr-dashboard-footer {
@@ -1083,6 +1311,20 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
     .sr-pipeline-v2,
     .sr-feature-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+
+    .sr-preview-heading {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+
+    .sr-preview-heading h2 {
+      max-width: 17ch;
+    }
+
+    .sr-preview-proof-grid {
+      grid-template-columns: 1fr;
     }
 
     .sr-feature-primary {
@@ -2346,11 +2588,115 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
     .sr-cta > div {
       min-width: 0;
     }
+
+
+    .sr-console-preview {
+      padding: clamp(1.05rem, 4.6vw, 1.35rem);
+      border-radius: 1.45rem;
+    }
+
+    .sr-preview-heading {
+      gap: 0.9rem;
+    }
+
+    .sr-preview-heading .sr-section-label {
+      margin-bottom: 0;
+    }
+
+    .sr-preview-heading h2 {
+      max-width: 14ch;
+    }
+
+    .sr-preview-stage {
+      gap: 0.8rem;
+    }
+
+    .sr-preview-mobile-proof {
+      display: grid;
+      gap: 0.55rem;
+      grid-template-columns: 1fr;
+      padding: 0.85rem;
+      border: 1px solid color-mix(in srgb, var(--sr-cyan) 28%, var(--sr-border));
+      border-radius: 1rem;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(34, 211, 238, 0.12), transparent 12rem),
+        color-mix(in srgb, var(--sr-card) 80%, transparent);
+    }
+
+    .sr-preview-mobile-proof span {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.8rem;
+      color: var(--sr-text-soft);
+      font-size: 0.84rem;
+      line-height: 1.35;
+    }
+
+    .sr-preview-mobile-proof strong {
+      color: var(--sr-text);
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .sr-preview-frame {
+      border-radius: 1.05rem;
+    }
+
+    .sr-preview-toolbar {
+      min-height: 2.2rem;
+      padding-inline: 0.68rem;
+    }
+
+    .sr-preview-toolbar strong {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .sr-preview-image,
+    .sr-preview-image-dashboard {
+      min-height: 0;
+      aspect-ratio: auto;
+      object-fit: contain;
+      object-position: top left;
+    }
+
+    .sr-preview-proof-grid {
+      gap: 0.7rem;
+    }
+
+    .sr-preview-proof-grid article {
+      padding: 0.9rem;
+    }
   }
 
   @media (max-width: 420px) {
     .sr-shell > :where(.sr-problem-solution, .sr-section, .sr-dashboard-section, .sr-status-section, .sr-cta) {
       margin-inline: clamp(0.95rem, 4.4vw, 1.1rem);
+    }
+  }
+
+  @media (max-width: 420px) {
+    .sr-preview-heading h2 {
+      font-size: clamp(2rem, 11.5vw, 2.45rem);
+    }
+
+    .sr-preview-frame {
+      margin-inline: -0.15rem;
+    }
+
+    .sr-preview-mobile-proof span {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.16rem;
+    }
+
+    .sr-preview-image,
+    .sr-preview-image-dashboard {
+      min-height: 0;
+      object-fit: contain;
+      object-position: top left;
     }
   }
 

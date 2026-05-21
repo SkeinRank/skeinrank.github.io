@@ -240,6 +240,134 @@
     return menu;
   };
 
+
+  const themeCycle = (() => {
+    const modes = ['auto', 'light', 'dark'];
+    const nextMode = {
+      auto: 'light',
+      light: 'dark',
+      dark: 'auto',
+    };
+    const labels = {
+      auto: 'System theme',
+      light: 'Light',
+      dark: 'Dark',
+    };
+
+    const normalize = (value) => modes.includes(value) ? value : 'auto';
+
+    const makeThemeIcon = (mode) => {
+      const template = document.querySelector('#theme-icons');
+      const icon = template?.content.querySelector(`.${mode}`)?.cloneNode(true);
+      if (icon instanceof SVGElement) return icon;
+
+      const fallback = document.createElement('span');
+      fallback.setAttribute('aria-hidden', 'true');
+      fallback.textContent = mode === 'dark' ? '☾' : mode === 'light' ? '☼' : '◐';
+      return fallback;
+    };
+
+    const render = (button, mode) => {
+      const normalized = normalize(mode);
+      const label = labels[normalized];
+      button.replaceChildren();
+
+      const iconWrap = document.createElement('span');
+      iconWrap.className = 'sr-theme-cycle-icon';
+      iconWrap.appendChild(makeThemeIcon(normalized));
+
+      const text = document.createElement('span');
+      text.className = 'sr-theme-cycle-label';
+      text.textContent = label;
+
+      button.append(iconWrap, text);
+      button.setAttribute('aria-label', `${label}. Click to switch theme.`);
+      button.title = 'Click to switch theme';
+    };
+
+    const setNativeValue = (select, mode) => {
+      const normalized = normalize(mode);
+      select.value = normalized;
+      select.dispatchEvent(new Event('input', { bubbles: true }));
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+      return normalized;
+    };
+
+    const hideNativePicker = (picker, select, nativeLabel) => {
+      picker.classList.add('sr-theme-cycle');
+      nativeLabel.classList.add('sr-theme-cycle-native');
+      nativeLabel.setAttribute('aria-hidden', 'true');
+      nativeLabel.hidden = true;
+      nativeLabel.style.display = 'none';
+      select.setAttribute('tabindex', '-1');
+
+      select.querySelectorAll('option').forEach((option) => {
+        if (option.value === 'auto') option.textContent = 'System theme';
+      });
+    };
+
+    const mountPicker = (picker) => {
+      if (!(picker instanceof HTMLElement)) return;
+
+      const select = picker.querySelector('select');
+      const nativeLabel = picker.querySelector('label');
+      if (!(select instanceof HTMLSelectElement) || !(nativeLabel instanceof HTMLElement)) return;
+
+      hideNativePicker(picker, select, nativeLabel);
+
+      if (picker.dataset.srThemeCycle === 'mounted') return;
+
+      const existingButton = picker.querySelector('.sr-theme-cycle-button');
+      if (existingButton instanceof HTMLButtonElement) {
+        picker.dataset.srThemeCycle = 'mounted';
+        return;
+      }
+
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'sr-theme-cycle-button';
+      button.dataset.srThemeCycleButton = 'true';
+      render(button, select.value || 'auto');
+
+      button.addEventListener('click', () => {
+        const current = normalize(select.value || 'auto');
+        const next = setNativeValue(select, nextMode[current]);
+        render(button, next);
+      });
+
+      select.addEventListener('change', () => {
+        render(button, select.value || 'auto');
+      });
+
+      picker.dataset.srThemeCycle = 'mounted';
+      picker.appendChild(button);
+    };
+
+    const mount = () => {
+      document.querySelectorAll('starlight-theme-select:not([data-sr-theme-cycle="mounted"])').forEach(mountPicker);
+    };
+
+    const observe = () => {
+      let scheduled = false;
+      const observer = new MutationObserver(() => {
+        if (scheduled) return;
+        scheduled = true;
+        window.requestAnimationFrame(() => {
+          scheduled = false;
+          mount();
+        });
+      });
+
+      const target = document.body || document.documentElement;
+      observer.observe(target, {
+        childList: true,
+        subtree: true,
+      });
+    };
+
+    return { mount, observe };
+  })();
+
   const mount = () => {
     const currentPath = normalizePath(window.location.pathname);
     document.documentElement.classList.toggle('sr-home-page', currentPath === '/');
@@ -254,6 +382,7 @@
     }
 
     header.classList.add('sr-product-header');
+    themeCycle.mount();
 
     const searchGroup = header.querySelector('site-search')?.parentElement;
     if (currentPath === '/' && searchGroup && !document.querySelector('.sr-home-mobile-menu')) {
@@ -267,4 +396,6 @@
   if (!mounted) {
     window.addEventListener('load', mount, { once: true });
   }
+
+  themeCycle.observe();
 })();

@@ -1,100 +1,447 @@
 ---
-title: Governance console workflow
-description: How the SkeinRank console turns terminology changes into runtime search context.
+title: Governance console
+description: "A practical overview of the SkeinRank platform preview: dashboard, terminology governance, bindings, evidence review, runtime snapshots, and search testing."
 ---
 
-The governance console is the product-facing control plane for SkeinRank.
-It is designed for teams that need to manage terminology safely before it affects search, retrieval, or RAG workflows.
+import { Image } from 'astro:assets';
+import dashboardPreview from '../../../assets/screenshots/dashboard-runtime-control-center-dark.png';
+import terminologyPreview from '../../../assets/screenshots/terminology-workspace-dark.png';
+import integrationsPreview from '../../../assets/screenshots/integrations-bindings-dark.png';
+import suggestionsPreview from '../../../assets/screenshots/suggestions-evidence-review-dark.png';
+import searchPreview from '../../../assets/screenshots/search-playground-dark.png';
+import snapshotsPreview from '../../../assets/screenshots/snapshots-release-cockpit-dark.png';
 
-The console should be read as a beta workflow: the core ideas are implemented and testable, while deployment and production hardening are documented separately as the project matures.
+<div class="sr-platform-overview">
 
-## Console workflow at a glance
+<section class="sr-platform-intro" aria-label="Platform preview overview">
+  <p class="sr-platform-eyebrow">Platform preview</p>
+  <p class="sr-platform-lead">This page explains what the current SkeinRank console is for and how the main workspaces fit together. The preview is organized around one practical loop: govern terminology, bind it to a search context, verify it with evidence, publish a snapshot, and test the runtime query behavior.</p>
 
-<div class="sr-pipeline">
-  <div class="sr-flow">
-    <div class="sr-flow-step"><strong>Dashboard</strong><span>See setup readiness, runtime state, failed jobs, and next actions.</span></div>
-    <div class="sr-flow-step"><strong>Terms</strong><span>Create profiles, canonical terms, aliases, and terminology workspace state.</span></div>
-    <div class="sr-flow-step"><strong>Integrations</strong><span>Create bindings, run dry-runs, launch enrichment jobs, and inspect graph view.</span></div>
-    <div class="sr-flow-step"><strong>Snapshots</strong><span>Audit the active runtime version used by each binding.</span></div>
-    <div class="sr-flow-step"><strong>Search Playground</strong><span>Verify canonical query output and search hits before integration.</span></div>
+  <div class="sr-platform-proof-grid" aria-label="What the preview demonstrates">
+    <article>
+      <span>Seeded demo</span>
+      <strong>24 docs · 15 terms · 29 aliases</strong>
+      <p>Enough local data to see real states instead of empty screens.</p>
+    </article>
+    <article>
+      <span>Runtime model</span>
+      <strong>profile → binding → snapshot</strong>
+      <p>The console shows which terminology version is safe for a concrete search surface.</p>
+    </article>
+    <article>
+      <span>Governance loop</span>
+      <strong>evidence · review · publish · test</strong>
+      <p>Alias changes are not just stored; they can be inspected before runtime use.</p>
+    </article>
+  </div>
+</section>
+
+<figure class="sr-platform-shot sr-platform-shot-hero">
+  <div class="sr-platform-windowbar" aria-hidden="true">
+    <span></span>
+    <span></span>
+    <span></span>
+    <strong>platform_ops · platform_knowledge_base</strong>
+  </div>
+  <button
+    class="sr-platform-shot-trigger"
+    type="button"
+    data-sr-lightbox-src={dashboardPreview.src}
+    data-sr-lightbox-alt="SkeinRank dashboard with runtime readiness, profile status, aliases, Elasticsearch binding health, enrichment jobs, and next actions."
+    aria-label="Open screenshot preview"
+  >
+    <Image
+        class="sr-platform-screenshot"
+        src={dashboardPreview}
+        alt="SkeinRank dashboard with runtime readiness, profile status, aliases, Elasticsearch binding health, enrichment jobs, and next actions."
+        width={1600}
+        format="webp"
+        quality={84}
+        loading="eager"
+      />
+  </button>
+  <figcaption>
+    The dashboard is the starting point: it shows whether the seeded profile, binding, job, snapshot, and runtime dependencies are ready.
+  </figcaption>
+</figure>
+
+</div>
+
+## How to read the preview
+
+<div class="sr-platform-overview">
+
+<div class="sr-platform-context-grid">
+  <article>
+    <h3>Who it is for</h3>
+    <p>Search platform engineers, ML/RAG engineers, support tooling owners, and reviewers who need a visible workflow for domain terminology instead of scattered synonym files.</p>
+  </article>
+  <article>
+    <h3>What it proves</h3>
+    <p>SkeinRank is not only a canonicalization library. The platform preview demonstrates lifecycle: discover, review, bind, enrich, snapshot, and test terminology in a runtime context.</p>
+  </article>
+  <article>
+    <h3>Where to start</h3>
+    <p>Use the dashboard first, then move through Terminology, Bindings, Evidence, Snapshots, and Search Playground as a single operator workflow.</p>
+  </article>
+</div>
+
+</div>
+
+## Workflow at a glance
+
+<div class="sr-platform-overview">
+
+<div class="sr-platform-flow" aria-label="SkeinRank console workflow">
+  <article>
+    <span>01</span>
+    <h3>Govern</h3>
+    <p>Create canonical terms, attach aliases, assign slots, and keep noisy values out of the profile.</p>
+  </article>
+  <article>
+    <span>02</span>
+    <h3>Bind</h3>
+    <p>Connect a profile to an index or alias, choose fields, and make the runtime search context explicit.</p>
+  </article>
+  <article>
+    <span>03</span>
+    <h3>Verify</h3>
+    <p>Use evidence, dry-runs, and job state to check whether terminology matches real documents.</p>
+  </article>
+  <article>
+    <span>04</span>
+    <h3>Publish</h3>
+    <p>Pin an immutable snapshot so query-time APIs use a stable and auditable version.</p>
+  </article>
+  <article>
+    <span>05</span>
+    <h3>Test</h3>
+    <p>Run queries such as <code>k8s pg timeout</code> and inspect canonicalization plus search hits.</p>
+  </article>
+</div>
+
+<div class="sr-platform-rule">
+  <strong>Runtime rule:</strong>
+  <span>Profile defines terminology. Binding defines where and how that terminology is applied. Snapshot defines the immutable version served to runtime search.</span>
+</div>
+
+</div>
+
+## Dashboard
+
+<div class="sr-platform-overview">
+
+<section class="sr-platform-module" aria-label="Dashboard workspace overview">
+  <div class="sr-platform-module-copy">
+    <p>The dashboard is the control center for the local platform preview. It makes the current setup state visible before a downstream search UI, backend, or agent depends on the output.</p>
+    <div class="sr-platform-point-grid">
+      <article>
+        <strong>Readiness</strong>
+        <p>Check API, Elasticsearch, RabbitMQ, Celery, seeded data, and runtime prerequisites.</p>
+      </article>
+      <article>
+        <strong>Search context</strong>
+        <p>See profile, aliases, binding health, active snapshot, enrichment jobs, and next actions together.</p>
+      </article>
+      <article>
+        <strong>Operator route</strong>
+        <p>Jump from a missing setup step to the workspace that fixes it instead of guessing what failed.</p>
+      </article>
+    </div>
+  </div>
+
+  <figure class="sr-platform-shot">
+    <button
+      class="sr-platform-shot-trigger"
+      type="button"
+      data-sr-lightbox-src={dashboardPreview.src}
+      data-sr-lightbox-alt="Dashboard workspace with setup progress, runtime readiness, binding health, recent enrichment jobs, and next actions."
+      aria-label="Open screenshot preview"
+    >
+      <Image
+            class="sr-platform-screenshot"
+            src={dashboardPreview}
+            alt="Dashboard workspace with setup progress, runtime readiness, binding health, recent enrichment jobs, and next actions."
+            width={1600}
+            format="webp"
+            quality={84}
+            loading="lazy"
+          />
+    </button>
+    <figcaption>Use this page first when you need to understand whether the local preview is ready.</figcaption>
+  </figure>
+</section>
+
+</div>
+
+## Terminology
+
+<div class="sr-platform-overview">
+
+<section class="sr-platform-module" aria-label="Terminology workspace overview">
+  <div class="sr-platform-module-copy">
+    <p>The terminology workspace is where domain language becomes governed product data. It keeps canonical values, aliases, slots, and profile-level state visible instead of hiding them in code, CSV files, or Elasticsearch synonym lists.</p>
+    <div class="sr-platform-point-grid">
+      <article>
+        <strong>Canonical values</strong>
+        <p>Create the stable terms that downstream canonicalization and search workflows should use.</p>
+      </article>
+      <article>
+        <strong>Aliases and slots</strong>
+        <p>Keep variants such as <code>k8s</code>, <code>kube</code>, or <code>pg</code> attached to a clear schema role.</p>
+      </article>
+      <article>
+        <strong>Review surface</strong>
+        <p>Give reviewers and integration owners a readable place to understand what will enter runtime.</p>
+      </article>
+    </div>
+  </div>
+
+  <figure class="sr-platform-shot">
+    <button
+      class="sr-platform-shot-trigger"
+      type="button"
+      data-sr-lightbox-src={terminologyPreview.src}
+      data-sr-lightbox-alt="Terminology workspace with canonical terms, aliases, slots, profile controls, and evidence actions."
+      aria-label="Open screenshot preview"
+    >
+      <Image
+            class="sr-platform-screenshot"
+            src={terminologyPreview}
+            alt="Terminology workspace with canonical terms, aliases, slots, profile controls, and evidence actions."
+            width={1600}
+            format="webp"
+            quality={84}
+            loading="lazy"
+          />
+    </button>
+    <figcaption>Terms and aliases are managed as reviewable platform state, not as hidden search-engine configuration.</figcaption>
+  </figure>
+</section>
+
+</div>
+
+## Bindings
+
+<div class="sr-platform-overview">
+
+<section class="sr-platform-module" aria-label="Bindings workspace overview">
+  <div class="sr-platform-module-copy">
+    <p>Bindings are the production runtime object. A profile says what terminology means; a binding says where that terminology is applied, which fields are read, where enriched output is written, and which snapshot the runtime should trust.</p>
+    <div class="sr-platform-point-grid">
+      <article>
+        <strong>Concrete search scope</strong>
+        <p>Attach a profile to an Elasticsearch index or alias and configure the target and source text fields.</p>
+      </article>
+      <article>
+        <strong>Safe enrichment</strong>
+        <p>Run dry-runs, limit documents, inspect jobs, and avoid writing runtime output before the binding is ready.</p>
+      </article>
+      <article>
+        <strong>Topology</strong>
+        <p>Explain how profile, binding, job, and snapshot are connected for a specific search surface.</p>
+      </article>
+    </div>
+  </div>
+
+  <figure class="sr-platform-shot">
+    <button
+      class="sr-platform-shot-trigger"
+      type="button"
+      data-sr-lightbox-src={integrationsPreview.src}
+      data-sr-lightbox-alt="Integrations workspace with Elasticsearch binding configuration, text fields, dry-run controls, enrichment jobs, and graph view."
+      aria-label="Open screenshot preview"
+    >
+      <Image
+            class="sr-platform-screenshot"
+            src={integrationsPreview}
+            alt="Integrations workspace with Elasticsearch binding configuration, text fields, dry-run controls, enrichment jobs, and graph view."
+            width={1600}
+            format="webp"
+            quality={84}
+            loading="lazy"
+          />
+    </button>
+    <figcaption>Binding-first configuration makes runtime search explicit instead of relying on a global current dictionary.</figcaption>
+  </figure>
+</section>
+
+</div>
+
+## Evidence review
+
+<div class="sr-platform-overview">
+
+<section class="sr-platform-module" aria-label="Evidence review workspace overview">
+  <div class="sr-platform-module-copy">
+    <p>SkeinRank should not automatically turn every proposed synonym into production behavior. Evidence review gives operators a place to inspect where a candidate alias appears, decide whether it is meaningful, and keep noisy terms out of runtime search.</p>
+    <div class="sr-platform-point-grid">
+      <article>
+        <strong>Proposal state</strong>
+        <p>Review suggested aliases before accepting terminology changes into the governed profile.</p>
+      </article>
+      <article>
+        <strong>Document evidence</strong>
+        <p>Use snippets from real indexed documents to validate whether an alias matches the intended domain context.</p>
+      </article>
+      <article>
+        <strong>Noise control</strong>
+        <p>Close the loop between contributors, moderators, and the runtime dictionary before publishing.</p>
+      </article>
+    </div>
+  </div>
+
+  <figure class="sr-platform-shot">
+    <button
+      class="sr-platform-shot-trigger"
+      type="button"
+      data-sr-lightbox-src={suggestionsPreview.src}
+      data-sr-lightbox-alt="Suggestions and evidence review workspace showing alias proposals, reviewer state, and document evidence previews."
+      aria-label="Open screenshot preview"
+    >
+      <Image
+            class="sr-platform-screenshot"
+            src={suggestionsPreview}
+            alt="Suggestions and evidence review workspace showing alias proposals, reviewer state, and document evidence previews."
+            width={1600}
+            format="webp"
+            quality={84}
+            loading="lazy"
+          />
+    </button>
+    <figcaption>Evidence turns alias review into a document-grounded decision instead of a blind synonym approval.</figcaption>
+  </figure>
+</section>
+
+</div>
+
+## Snapshots
+
+<div class="sr-platform-overview">
+
+<section class="sr-platform-module" aria-label="Snapshots workspace overview">
+  <div class="sr-platform-module-copy">
+    <p>Snapshots are the safe handoff from governance to runtime. They make it clear which terminology version is active, whether a binding is stale, and what downstream search behavior should be considered production-ready.</p>
+    <div class="sr-platform-point-grid">
+      <article>
+        <strong>Immutable version</strong>
+        <p>Pin a stable terminology release instead of serving whatever happens to be edited most recently.</p>
+      </article>
+      <article>
+        <strong>Binding status</strong>
+        <p>See which bindings are active, stale, pending, or waiting for a new runtime snapshot.</p>
+      </article>
+      <article>
+        <strong>Auditability</strong>
+        <p>Connect enrichment jobs and query-time behavior to a version that can be inspected or rolled back.</p>
+      </article>
+    </div>
+  </div>
+
+  <figure class="sr-platform-shot">
+    <button
+      class="sr-platform-shot-trigger"
+      type="button"
+      data-sr-lightbox-src={snapshotsPreview.src}
+      data-sr-lightbox-alt="Snapshots workspace showing active runtime releases, binding snapshot status, pending versions, and rollback-oriented audit data."
+      aria-label="Open screenshot preview"
+    >
+      <Image
+            class="sr-platform-screenshot"
+            src={snapshotsPreview}
+            alt="Snapshots workspace showing active runtime releases, binding snapshot status, pending versions, and rollback-oriented audit data."
+            width={1600}
+            format="webp"
+            quality={84}
+            loading="lazy"
+          />
+    </button>
+    <figcaption>Snapshots make the runtime version explicit and auditable for every binding.</figcaption>
+  </figure>
+</section>
+
+</div>
+
+## Search Playground
+
+<div class="sr-platform-overview">
+
+<section class="sr-platform-module" aria-label="Search Playground workspace overview">
+  <div class="sr-platform-module-copy">
+    <p>The Search Playground is the operator-facing proof step. It shows how a query becomes governed runtime context through the selected binding and its pinned snapshot before you wire SkeinRank into an external backend, UI, or agent workflow.</p>
+    <div class="sr-platform-point-grid">
+      <article>
+        <strong>Canonical query</strong>
+        <p>Preview how <code>k8s pg timeout</code> can become a normalized query with matched aliases.</p>
+      </article>
+      <article>
+        <strong>Runtime metadata</strong>
+        <p>Inspect the selected profile, binding, and snapshot used for query-time behavior.</p>
+      </article>
+      <article>
+        <strong>Search result check</strong>
+        <p>Validate whether terminology changes improve recall without creating obvious search noise.</p>
+      </article>
+    </div>
+  </div>
+
+  <figure class="sr-platform-shot">
+    <button
+      class="sr-platform-shot-trigger"
+      type="button"
+      data-sr-lightbox-src={searchPreview.src}
+      data-sr-lightbox-alt="Search Playground showing a canonical query preview, matched aliases, selected runtime snapshot, and Elasticsearch results."
+      aria-label="Open screenshot preview"
+    >
+      <Image
+            class="sr-platform-screenshot"
+            src={searchPreview}
+            alt="Search Playground showing a canonical query preview, matched aliases, selected runtime snapshot, and Elasticsearch results."
+            width={1600}
+            format="webp"
+            quality={84}
+            loading="lazy"
+          />
+    </button>
+    <figcaption>The playground connects governance changes to the actual query path that downstream systems will use.</figcaption>
+  </figure>
+</section>
+
+</div>
+
+## Run the seeded preview
+
+<div class="sr-platform-overview">
+
+<section class="sr-platform-run-card" aria-label="Run the local seeded preview">
+  <div class="sr-platform-run-copy">
+    <p class="sr-platform-eyebrow">Local demo</p>
+    <h3>Start the stack and load the platform operations dataset.</h3>
+    <p>The seeded demo gives the console realistic terminology, bindings, evidence, snapshots, and search behavior so the overview above maps to screens you can run locally.</p>
+  </div>
+
+  <div class="sr-platform-terminal" aria-label="Run the seeded preview commands">
+    <div class="sr-platform-terminal-bar">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <strong>local preview</strong>
+      <button class="sr-platform-copy-button" type="button" data-sr-copy-button>Copy</button>
+    </div>
+    <pre><code>docker compose -f docker-compose.dev.yml up --build -d
+make demo-reset</code></pre>
+  </div>
+</section>
+
+</div>
+
+<div class="sr-platform-lightbox" data-sr-platform-lightbox hidden role="dialog" aria-modal="true" aria-label="Screenshot preview">
+  <div class="sr-platform-lightbox-stage">
+    <button class="sr-platform-lightbox-close" type="button" data-sr-lightbox-close aria-label="Close screenshot preview">×</button>
+    <div class="sr-platform-lightbox-frame">
+      <img data-sr-lightbox-image alt="" />
+    </div>
   </div>
 </div>
 
-## Console modules
-
-<div class="sr-status-grid">
-  <div class="sr-status-box">
-    <h3>Dashboard</h3>
-    <p>A compact command center for setup progress, system readiness, binding health, recent jobs, and next actions.</p>
-  </div>
-  <div class="sr-status-box">
-    <h3>Terms</h3>
-    <p>Terminology profiles, canonical terms, aliases, profile management, and evidence checks for terms.</p>
-  </div>
-  <div class="sr-status-box">
-    <h3>Suggestions</h3>
-    <p>Proposal flow for contributors and review queue for moderators/admins. Supports alias and canonical term suggestions.</p>
-  </div>
-  <div class="sr-status-box">
-    <h3>Guardrails</h3>
-    <p>Global and profile-scoped stop-list controls that prevent noisy terms or aliases from entering the dictionary.</p>
-  </div>
-  <div class="sr-status-box">
-    <h3>Integrations</h3>
-    <p>Elasticsearch bindings, dry-runs, enrichment jobs, operator job panel, and topology graph view.</p>
-  </div>
-  <div class="sr-status-box">
-    <h3>Snapshots</h3>
-    <p>Runtime audit view for active snapshots, stale bindings, pending versions, job history, and rollback availability.</p>
-  </div>
-  <div class="sr-status-box">
-    <h3>Search Playground</h3>
-    <p>Result-first runtime test page for canonical query preview, matched aliases, runtime snapshot, and search hits.</p>
-  </div>
-  <div class="sr-status-box">
-    <h3>API Access and Users</h3>
-    <p>Personal tokens, service accounts, roles, account status, and admin controls for API usage.</p>
-  </div>
-</div>
-
-## Recommended first-run path
-
-1. Start the local beta stack with the [Docker beta quickstart](/getting-started/docker-beta-quickstart/).
-2. Open **Dashboard** and review the setup checklist.
-3. Create or import a terminology profile in **Terms**.
-4. Add canonical values and aliases.
-5. Use **Suggestions** and **Guardrails** if changes need review or stop-list protection.
-6. Create an Elasticsearch binding in **Integrations**.
-7. Run a dry-run to inspect what would be written.
-8. Run enrichment when the binding is ready.
-9. Check **Snapshots** to confirm the active runtime version.
-10. Open **Search Playground** and test a query such as `k8s pg timeout`.
-11. Use **API Access** to prepare integration with an external backend or search UI.
-12. Follow the [API integration guide](/reference/api-integration/) to call the runtime endpoints from your application.
-
-## Role model
-
-| Role | Intended behavior |
-| --- | --- |
-| Admin | Full control: users, profiles, terms, aliases, tokens, bindings, jobs, snapshots, and service accounts. |
-| Moderator | Terminology editing, suggestions review, guardrails, evidence checks, and operational review. |
-| Contributor | Read terminology and submit suggestions for review. |
-
-## What changed from the early preview
-
-Earlier drafts presented the console as profile CRUD plus runtime snapshot export.
-The current platform model is binding-first:
-
-```text
-Profile defines terminology.
-Binding defines runtime search context.
-Snapshot defines the immutable version used by that binding.
-```
-
-Runtime snapshots should not be treated as manual files that users export from the Terms page.
-They are managed through bindings, enrichment jobs, and snapshot audit screens.
-
-<div class="sr-callout">
-  <h3>Beta positioning</h3>
-  <p>Use “governance console beta” or “platform preview” until the Docker deployment path, upgrade flow, and production hardening are documented and tested end-to-end.</p>
-</div>
+<script src="/platform-preview-lightbox.js" defer></script>
