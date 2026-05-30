@@ -19,6 +19,9 @@ for (const asset of requiredAssets) {
 
 const landing = readFileSync('src/components/LandingHome.astro', 'utf8');
 assert.match(landing, /sr-diagram-showcase/, 'landing should render the new overview diagram section');
+assert.ok(!landing.includes('<div class="sr-hero-proof"'), 'landing should not render the stretched hero proof strip');
+assert.ok(!landing.includes('<div class="sr-mobile-flow"'), 'landing should not render the extra mobile flow cards below hero CTAs');
+assert.match(landing, /Docker beta/, 'landing hero should use the compact primary CTA label');
 assert.match(landing, /controlPlaneOverview/, 'landing should import the control-plane diagram');
 assert.match(landing, /mcpAgentDiagram/, 'landing should include the MCP/agent diagram');
 assert.ok(

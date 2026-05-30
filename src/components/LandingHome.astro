@@ -7,7 +7,6 @@ import terminologyLifecycleDiagram from '../assets/diagrams/terminology-as-code-
 import mcpAgentDiagram from '../assets/diagrams/mcp-agent-integration.jpeg';
 
 const repoUrl = 'https://github.com/SkeinRank/skeinrank';
-const workflowUrl = '/platform-preview/governance-console/';
 const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
 ---
 
@@ -17,22 +16,21 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
       <div class="sr-hero-copy sr-hero-copy-core sr-world-copy">
         <div class="sr-kicker">
           <span class="sr-pulse" aria-hidden="true"></span>
-          Open-source terminology control plane for search and RAG
+          Open-source domain language control plane for search, RAG, and agents
         </div>
 
         <h1 id="sr-home-title">Turn messy aliases into governed search context.</h1>
 
         <p class="sr-subtitle">
-          SkeinRank sits beside your search stack, normalizes domain jargon, pins runtime snapshots,
-          and makes every query context explicit through profiles, bindings, and evidence workflows.
+          SkeinRank sits beside existing search, RAG, and agent systems. It turns aliases, acronyms,
+          and internal jargon into explicit runtime context through profiles, bindings, snapshots, and evidence.
         </p>
 
         <div class="sr-actions" aria-label="Primary actions">
-          <a class="sr-btn sr-btn-primary" href={dockerQuickstartUrl}>Run Docker beta</a>
-          <a class="sr-btn sr-btn-secondary" href={workflowUrl}>Explore console workflow</a>
-          <a class="sr-btn sr-btn-ghost" href={repoUrl}>View on GitHub</a>
+          <a class="sr-btn sr-btn-primary" href={dockerQuickstartUrl}>Docker beta</a>
+          <a class="sr-btn sr-btn-secondary" href="/concepts/architecture/">Architecture</a>
+          <a class="sr-btn sr-btn-ghost" href={repoUrl}>GitHub</a>
         </div>
-
       </div>
 
       <div class="sr-world-visual" aria-label="Terminology pipeline from aliases to runtime search context">
@@ -139,27 +137,6 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
           </div>
         </div>
 
-      </div>
-
-      <div class="sr-mobile-flow" aria-label="Compact SkeinRank pipeline for mobile screens">
-        <article class="sr-mobile-flow-card">
-          <span>Messy aliases</span>
-          <strong>k8s · kube · pg · postgres</strong>
-        </article>
-
-        <div class="sr-mobile-flow-arrow" aria-hidden="true">↓</div>
-
-        <article class="sr-mobile-flow-card sr-mobile-flow-card-core">
-          <span>SkeinRank</span>
-          <strong>profiles · bindings · snapshots</strong>
-        </article>
-
-        <div class="sr-mobile-flow-arrow" aria-hidden="true">↓</div>
-
-        <article class="sr-mobile-flow-card">
-          <span>Runtime context</span>
-          <strong>canonical query · evidence · RAG</strong>
-        </article>
       </div>
     </section>
 
@@ -2881,6 +2858,262 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
   @media (max-width: 760px) {
     .sr-diagram-grid {
       grid-template-columns: 1fr;
+    }
+  }
+
+
+  /* Patch Site 22B: hero modernization and mobile polish. */
+  .sr-world-hero {
+    overflow: clip;
+  }
+
+  .sr-world-copy .sr-kicker {
+    max-width: max-content;
+    color: #67e8f9;
+    background: rgba(8, 145, 178, 0.13);
+    box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.06) inset;
+  }
+
+  :global(:root[data-theme='light']) .sr-world-copy .sr-kicker {
+    color: #0369a1;
+    background: rgba(14, 165, 233, 0.09);
+  }
+
+  .sr-world-copy h1 {
+    max-width: 11.2ch;
+    letter-spacing: -0.062em;
+  }
+
+  .sr-world-copy .sr-subtitle {
+    max-width: 42.5rem;
+  }
+
+  .sr-hero-proof {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.65rem;
+    margin-top: clamp(1.15rem, 2vw, 1.65rem);
+    max-width: 42rem;
+  }
+
+  .sr-hero-proof article {
+    min-width: 0;
+    padding: 0.78rem 0.85rem;
+    border: 1px solid rgba(148, 163, 184, 0.20);
+    border-radius: 1rem;
+    background:
+      radial-gradient(circle at 24% 0%, rgba(34, 211, 238, 0.10), transparent 70%),
+      rgba(15, 23, 42, 0.48);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045);
+  }
+
+  :global(:root[data-theme='light']) .sr-hero-proof article {
+    background:
+      radial-gradient(circle at 24% 0%, rgba(14, 165, 233, 0.10), transparent 70%),
+      rgba(255, 255, 255, 0.72);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.70);
+  }
+
+  .sr-hero-proof span {
+    display: block;
+    color: var(--sr-cyan);
+    font-size: 0.69rem;
+    font-weight: 950;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+  }
+
+  .sr-hero-proof strong {
+    display: block;
+    margin-top: 0.26rem;
+    color: var(--sr-text);
+    font-size: 0.92rem;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+
+  .sr-world-visual {
+    transform: translateZ(0);
+  }
+
+  .sr-world-card {
+    transition: transform 180ms ease, border-color 180ms ease;
+  }
+
+  .sr-world-card-core {
+    transform: translateY(-0.1rem);
+  }
+
+  .sr-world-card-core .sr-runtime-strip strong {
+    color: #e0f2fe;
+  }
+
+  :global(:root[data-theme='light']) .sr-world-card-core .sr-runtime-strip strong {
+    color: #0f172a;
+  }
+
+  @media (min-width: 1260px) {
+    .sr-world-hero {
+      grid-template-columns: minmax(26rem, 0.74fr) minmax(44rem, 1.26fr);
+    }
+  }
+
+  @media (max-width: 1250px) {
+    .sr-world-hero {
+      padding-block: clamp(2rem, 5vw, 3.4rem);
+    }
+
+    .sr-hero-proof {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .sr-world-copy h1 {
+      max-width: 10.8ch;
+      font-size: clamp(3rem, 12.2vw, 4.9rem);
+      line-height: 0.91;
+      letter-spacing: -0.055em;
+    }
+
+    .sr-world-copy .sr-subtitle {
+      max-width: 37rem;
+      margin-top: 1.08rem;
+      font-size: clamp(0.98rem, 3.35vw, 1.05rem);
+      line-height: 1.62;
+    }
+
+    .sr-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.68rem;
+      margin-top: 1.25rem;
+    }
+
+    .sr-actions .sr-btn {
+      width: 100%;
+      min-height: 3.05rem;
+      padding-inline: 1rem;
+    }
+
+    .sr-actions .sr-btn-ghost {
+      width: fit-content;
+      justify-self: center;
+      min-height: 2.5rem;
+      padding-inline: 0.8rem;
+    }
+
+    .sr-hero-proof {
+      grid-template-columns: 1fr;
+      gap: 0.52rem;
+      margin-top: 1rem;
+    }
+
+    .sr-hero-proof article {
+      display: grid;
+      grid-template-columns: minmax(6.6rem, auto) 1fr;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.72rem 0.82rem;
+    }
+
+    .sr-hero-proof span,
+    .sr-hero-proof strong {
+      margin: 0;
+    }
+
+    .sr-mobile-flow {
+      margin-top: 1rem;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(34, 211, 238, 0.16), transparent 12rem),
+        radial-gradient(circle at 88% 14%, rgba(139, 92, 246, 0.16), transparent 11rem),
+        linear-gradient(145deg, rgba(2, 6, 23, 0.72), rgba(15, 23, 42, 0.86));
+    }
+
+    .sr-mobile-flow-card strong {
+      font-size: clamp(0.95rem, 3.7vw, 1.04rem);
+    }
+  }
+
+  @media (max-width: 620px) {
+    .sr-world-copy .sr-kicker {
+      width: 100%;
+      justify-content: flex-start;
+      font-size: 0.69rem;
+      line-height: 1.25;
+      white-space: normal;
+    }
+
+    .sr-world-copy h1 {
+      max-width: 9.9ch;
+      font-size: clamp(2.75rem, 15vw, 4.2rem);
+    }
+
+    .sr-hero-proof article {
+      grid-template-columns: 1fr;
+      gap: 0.18rem;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .sr-world-copy h1 {
+      max-width: 10.2ch;
+      font-size: clamp(2.45rem, 14.6vw, 3.55rem);
+    }
+
+    .sr-world-copy .sr-subtitle {
+      font-size: 0.96rem;
+    }
+  }
+
+
+  /* Patch Site 22B.1: remove stretched proof/mobile cards and compact hero CTAs. */
+  .sr-hero-proof,
+  .sr-mobile-flow {
+    display: none !important;
+  }
+
+  .sr-world-copy .sr-actions {
+    align-items: center;
+    gap: 0.7rem;
+    margin-top: 1.55rem;
+  }
+
+  .sr-world-copy .sr-btn {
+    min-height: 2.65rem;
+    padding: 0.7rem 0.95rem;
+    font-size: 0.92rem;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 860px) {
+    .sr-world-copy .sr-actions {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, max-content));
+      justify-content: start;
+      gap: 0.55rem;
+      margin-top: 1.3rem;
+    }
+
+    .sr-world-copy .sr-btn {
+      width: auto;
+      min-height: 2.45rem;
+      padding: 0.66rem 0.78rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      letter-spacing: -0.01em;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .sr-world-copy .sr-actions {
+      grid-template-columns: repeat(2, minmax(0, max-content));
+    }
+
+    .sr-world-copy .sr-btn-ghost {
+      grid-column: 1 / -1;
+      justify-self: start;
     }
   }
 
