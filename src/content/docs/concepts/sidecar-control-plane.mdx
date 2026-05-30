@@ -1,0 +1,89 @@
+---
+title: Sidecar control plane
+description: How SkeinRank sits beside search, RAG, and AI-agent systems without replacing them.
+---
+
+import { Image } from 'astro:assets';
+import controlPlaneOverview from '../../../assets/diagrams/control-plane-overview.jpeg';
+
+SkeinRank is designed as a **sidecar control plane** for domain language. It does not replace Elasticsearch, OpenSearch, vector databases, RAG orchestration, or product search UIs.
+
+Instead, it gives those systems a governed layer for company-specific language: aliases, acronyms, canonical terms, bindings, snapshots, evidence, and runtime context.
+
+<figure class="sr-doc-diagram sr-doc-diagram-wide">
+  <Image
+    src={controlPlaneOverview}
+    alt="SkeinRank control plane architecture showing applications, SkeinRank runtime capabilities, execution targets, and support services."
+    width={1672}
+    format="webp"
+    quality={86}
+    loading="eager"
+  />
+  <figcaption>SkeinRank sits beside existing applications and turns domain language into explicit runtime context.</figcaption>
+</figure>
+
+## Why sidecar
+
+Embedding synonym rules directly in a search backend is fast at first, but it becomes hard to govern when teams need review, rollback, evidence, audit trails, and environment-specific rollout.
+
+A sidecar model keeps the responsibilities separate:
+
+<div class="sr-status-grid">
+  <div class="sr-status-box">
+    <h3>Application</h3>
+    <p>Owns user experience, authorization, workspace context, ranking UX, and result rendering.</p>
+    <div class="sr-badge-row"><span class="sr-badge ready">Product UX</span><span class="sr-badge ready">User scope</span></div>
+  </div>
+  <div class="sr-status-box">
+    <h3>Search / RAG stack</h3>
+    <p>Owns Elasticsearch, OpenSearch, vector search, reranking, retrieval orchestration, and answer generation.</p>
+    <div class="sr-badge-row"><span class="sr-badge ready">Retrieval</span><span class="sr-badge ready">Ranking</span></div>
+  </div>
+  <div class="sr-status-box">
+    <h3>SkeinRank</h3>
+    <p>Owns governed terminology, binding-aware context, snapshots, evidence review, and safe rollout of language changes.</p>
+    <div class="sr-badge-row"><span class="sr-badge preview">Control plane</span><span class="sr-badge preview">Runtime context</span></div>
+  </div>
+  <div class="sr-status-box">
+    <h3>Operators</h3>
+    <p>Review suggestions, validate evidence, publish snapshots, and decide which runtime bindings are active.</p>
+    <div class="sr-badge-row"><span class="sr-badge preview">Human-in-the-loop</span><span class="sr-badge preview">Audit</span></div>
+  </div>
+</div>
+
+## Integration shape
+
+```text
+Search UI / RAG backend / AI agent
+        ↓ chooses app or workspace scope
+SkeinRank runtime API
+        ↓ canonical query + route plan + context package
+Elasticsearch / OpenSearch / RAG / tool workflow
+```
+
+The application should usually pass a `binding_id` rather than a raw profile name. The binding represents where a profile applies, which fields are involved, and which snapshot is safe to use at runtime.
+
+## What SkeinRank should not own
+
+SkeinRank should not become the entire enterprise search engine. It should not own every ranking decision, every LLM prompt, or every product-specific search page.
+
+A clean boundary is:
+
+```text
+SkeinRank answers: "What does this company term mean in this runtime context?"
+Your search/RAG stack answers: "Which documents or actions should be returned?"
+```
+
+This lets SkeinRank remain a focused domain-language control plane that can be adopted beside existing infrastructure.
+
+## When to use this model
+
+The sidecar model is useful when:
+
+- one acronym has different meanings across teams;
+- internal aliases are scattered across code, docs, tickets, and prompts;
+- search quality changes need review before rollout;
+- RAG or agents need a stable context package;
+- teams need to explain why a query was canonicalized;
+- different indexes or tenants require different terminology snapshots.
+

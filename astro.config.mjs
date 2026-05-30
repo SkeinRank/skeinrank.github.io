@@ -125,11 +125,28 @@ export default defineConfig({
           items: [
             { label: 'Mental model', slug: 'concepts/mental-model' },
             { label: 'Side-car model', slug: 'concepts/sidecar-model' },
+            { label: 'Sidecar control plane', slug: 'concepts/sidecar-control-plane' },
             { label: 'Profiles, bindings, snapshots', slug: 'concepts/profiles-bindings-snapshots' },
+            { label: 'Binding runtime context', slug: 'concepts/bindings-runtime-context' },
+            { label: 'Snapshots', slug: 'concepts/snapshots' },
             { label: 'Dictionary JSON', slug: 'concepts/dictionary-json' },
             { label: 'Passport output', slug: 'concepts/passport-output' },
             { label: 'Architecture', slug: 'concepts/architecture' },
             { label: 'Current status', slug: 'concepts/current-status' },
+          ],
+        },
+        {
+          label: 'Integrations',
+          items: [
+            { label: 'MCP integration', slug: 'integrations/mcp' },
+          ],
+        },
+        {
+          label: 'Operations',
+          items: [
+            { label: 'GitOps delivery', slug: 'ops/gitops-delivery' },
+            { label: 'Blue/green rollout', slug: 'ops/blue-green-rollout' },
+            { label: 'Enrichment checkpointing', slug: 'ops/checkpointing' },
           ],
         },
         {

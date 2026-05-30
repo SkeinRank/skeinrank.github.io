@@ -1,0 +1,84 @@
+---
+title: Snapshots
+description: Immutable terminology versions for safe runtime rollout and rollback.
+---
+
+Snapshots are the deployment unit for governed terminology. A profile can change often during review, but runtime consumers should use a stable immutable snapshot.
+
+```text
+Editable profile state → reviewed change → published snapshot → binding runtime activation
+```
+
+## Why snapshots exist
+
+Without snapshots, every runtime call would depend on mutable database state. That makes search behavior hard to reproduce and rollback.
+
+Snapshots give SkeinRank a safer model:
+
+<div class="sr-status-grid">
+  <div class="sr-status-box">
+    <h3>Reproducibility</h3>
+    <p>Runtime behavior can be tied to the exact terminology version used during a query or enrichment job.</p>
+  </div>
+  <div class="sr-status-box">
+    <h3>Rollback</h3>
+    <p>If a terminology change adds noise, a binding can roll back to a previous known-good snapshot.</p>
+  </div>
+  <div class="sr-status-box">
+    <h3>Review boundary</h3>
+    <p>Draft changes can be reviewed and tested before they become part of runtime search behavior.</p>
+  </div>
+  <div class="sr-status-box">
+    <h3>Audit trail</h3>
+    <p>Operators can answer which canonical terms, aliases, and rules were active at a point in time.</p>
+  </div>
+</div>
+
+## What a snapshot should contain
+
+A runtime snapshot should include the data needed to canonicalize and explain a query without asking the mutable profile editor for live state.
+
+Typical contents:
+
+- profile identifier and version metadata;
+- canonical values and slots;
+- aliases and normalized forms;
+- stop lists and guardrails;
+- approved ambiguity decisions;
+- binding policy references;
+- checksum or content identity;
+- publish metadata and audit references.
+
+## Binding activation
+
+A binding can pin one active runtime snapshot:
+
+```json
+{
+  "binding_id": 42,
+  "profile_name": "infra_incidents",
+  "index_name": "company_incidents",
+  "active_snapshot": "infra_incidents@2026-05-30T21-00Z",
+  "snapshot_status": "ready"
+}
+```
+
+That lets different bindings move at different speeds:
+
+```text
+binding A → snapshot S3
+binding B → snapshot S2
+binding C → snapshot S1
+```
+
+This matters when teams need staged rollout, blue/green validation, or tenant-specific terminology.
+
+## Operational rule
+
+Use the database-backed profile editor for governance. Use published snapshots for runtime.
+
+```text
+Governance path = mutable, reviewable, auditable
+Runtime path = immutable, pinned, reproducible
+```
+

@@ -1,0 +1,100 @@
+---
+title: Blue/green rollout
+description: A rollout model for activating terminology snapshots safely across bindings.
+---
+
+Blue/green rollout is the safest way to ship terminology changes when search quality matters.
+
+The idea is simple:
+
+```text
+blue  = current active snapshot
+green = candidate snapshot
+```
+
+The green snapshot is validated before it becomes the active runtime version for a binding.
+
+## Why blue/green matters for terminology
+
+A small alias change can improve recall or add noise. For example, expanding `pg` globally may help infrastructure queries but harm document-search queries where `pg` means page.
+
+Blue/green rollout gives teams a way to validate before switching traffic.
+
+<div class="sr-status-grid">
+  <div class="sr-status-box">
+    <h3>Blue snapshot</h3>
+    <p>The currently active runtime version pinned to a production binding.</p>
+    <div class="sr-badge-row"><span class="sr-badge ready">Active</span><span class="sr-badge ready">Known-good</span></div>
+  </div>
+  <div class="sr-status-box">
+    <h3>Green snapshot</h3>
+    <p>The candidate version produced after review, import, enrichment, or apply planning.</p>
+    <div class="sr-badge-row"><span class="sr-badge preview">Candidate</span><span class="sr-badge preview">Validation</span></div>
+  </div>
+  <div class="sr-status-box">
+    <h3>Alias swap</h3>
+    <p>A controlled activation step that moves a binding or downstream alias from blue to green.</p>
+    <div class="sr-badge-row"><span class="sr-badge preview">Activation</span><span class="sr-badge preview">Rollback path</span></div>
+  </div>
+  <div class="sr-status-box">
+    <h3>Rollback</h3>
+    <p>If search quality regresses, repin the binding or alias to the previous snapshot.</p>
+    <div class="sr-badge-row"><span class="sr-badge ready">Safe recovery</span></div>
+  </div>
+</div>
+
+## Rollout checklist
+
+1. Publish a candidate snapshot.
+2. Run apply planning and evidence checks.
+3. Run smoke searches for representative queries.
+4. Compare canonical query output and matched aliases.
+5. Validate enrichment job status and target field health.
+6. Activate the candidate snapshot for the binding.
+7. Monitor search quality and operator feedback.
+8. Roll back if noise increases.
+
+## Example runtime state
+
+```json
+{
+  "binding_id": 42,
+  "blue_snapshot": "infra_incidents@2026-05-29T18-00Z",
+  "green_snapshot": "infra_incidents@2026-05-30T21-00Z",
+  "active_snapshot": "infra_incidents@2026-05-29T18-00Z",
+  "candidate_status": "validated"
+}
+```
+
+After activation:
+
+```json
+{
+  "binding_id": 42,
+  "active_snapshot": "infra_incidents@2026-05-30T21-00Z",
+  "previous_snapshot": "infra_incidents@2026-05-29T18-00Z"
+}
+```
+
+## What to measure
+
+A rollout should not be judged only by whether the job succeeded. It should be judged by whether search behavior improved.
+
+Track at least:
+
+- matched aliases per query;
+- canonical query output;
+- zero-result rate;
+- noisy term expansions;
+- evidence coverage;
+- rollback frequency;
+- representative query set results.
+
+## Practical default
+
+For the beta stage, keep the rollout rule conservative:
+
+```text
+Do not auto-activate high-impact terminology changes without a human review and a successful smoke check.
+```
+

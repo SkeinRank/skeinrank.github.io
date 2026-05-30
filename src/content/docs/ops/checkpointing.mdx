@@ -1,0 +1,56 @@
+---
+title: Enrichment checkpointing
+description: Pause, resume, and checkpointing expectations for long-running enrichment jobs.
+---
+
+Long-running enrichment jobs need operational safety. If a job scans a large index, it should be possible to understand progress, pause work, resume from a checkpoint, and avoid duplicating writes.
+
+## Job lifecycle
+
+<div class="sr-pipeline">
+  <div class="sr-flow">
+    <div class="sr-flow-step"><strong>Start</strong><span>Validate binding, profile, index, and job limits.</span></div>
+    <div class="sr-flow-step"><strong>Scan</strong><span>Read documents in deterministic batches.</span></div>
+    <div class="sr-flow-step"><strong>Checkpoint</strong><span>Persist cursor, counters, and snapshot context.</span></div>
+    <div class="sr-flow-step"><strong>Pause / resume</strong><span>Stop safely and continue from the last checkpoint.</span></div>
+    <div class="sr-flow-step"><strong>Finish</strong><span>Record summary, errors, and activation status.</span></div>
+  </div>
+</div>
+
+## What a checkpoint should include
+
+A checkpoint should capture enough state to make resume deterministic:
+
+- binding id;
+- profile and snapshot version used by the job;
+- index or alias name;
+- current cursor or search-after token;
+- processed / updated / skipped / failed counts;
+- batch limit and max document limit;
+- job mode such as dry-run or write;
+- last error summary;
+- timestamp.
+
+## Idempotency rule
+
+Resume should not duplicate writes. The safest approach is to make each document update idempotent by writing deterministic enrichment output for the same input snapshot.
+
+```text
+same document + same snapshot + same binding = same enrichment output
+```
+
+## Operator experience
+
+The UI should make the job state visible:
+
+- running, paused, resuming, succeeded, failed, cancelled;
+- last checkpoint time;
+- processed counts;
+- error sample;
+- active binding and target index;
+- whether a successful snapshot can be activated.
+
+## Beta guidance
+
+Checkpointing is especially important before running enrichment on large production indexes. For early beta usage, prefer small max-document limits, dry-runs, and staging bindings before full rollout.
+

@@ -1,0 +1,101 @@
+---
+title: MCP integration
+description: How Claude Desktop, Cursor, and agent frameworks can use SkeinRank runtime context.
+---
+
+import { Image } from 'astro:assets';
+import mcpAgentDiagram from '../../../assets/diagrams/mcp-agent-integration.jpeg';
+
+SkeinRank can expose domain-language context to AI agents through an MCP server. The goal is not to make agents guess company terminology from prompts. The goal is to let agents request governed context before they call search, RAG, or tool workflows.
+
+<figure class="sr-doc-diagram">
+  <Image
+    src={mcpAgentDiagram}
+    alt="MCP and agent integration diagram showing Claude Desktop, Cursor, LangGraph-style agents, skeinrank-mcp, runtime APIs, and search RAG tool orchestration outputs."
+    width={1672}
+    format="webp"
+    quality={84}
+    loading="eager"
+  />
+  <figcaption>MCP lets agents request scoped context packages from SkeinRank instead of hard-coding aliases in prompts.</figcaption>
+</figure>
+
+## What the MCP layer is for
+
+The MCP layer should expose a small set of agent-friendly tools around SkeinRank runtime behavior:
+
+<table class="sr-mini-table">
+  <thead>
+    <tr><th>Tool category</th><th>Purpose</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Canonicalization</td><td>Explain which aliases were recognized and which canonical values they map to.</td></tr>
+    <tr><td>Route planning</td><td>Return the binding-aware context package and suggested execution targets.</td></tr>
+    <tr><td>Evidence lookup</td><td>Show examples that support a term or alias decision.</td></tr>
+    <tr><td>Snapshot inspection</td><td>Tell the agent which immutable terminology version is active.</td></tr>
+  </tbody>
+</table>
+
+## Example agent flow
+
+```text
+Agent receives: "Check the pg timeout incident"
+        ↓
+Agent asks skeinrank-mcp for context in the infra workspace
+        ↓
+SkeinRank resolves pg → postgresql through the selected binding
+        ↓
+Agent calls search/RAG/tools with the canonical context package
+```
+
+## Scoped credentials
+
+Agent integrations should use scoped credentials rather than admin tokens.
+
+A good production credential should be limited by:
+
+- environment;
+- tenant or workspace;
+- allowed profiles or bindings;
+- read-only vs write access;
+- permitted tools;
+- expiration and rotation policy.
+
+<div class="sr-callout">
+  <h3>Recommended default</h3>
+  <p>Start with read-only MCP credentials that can canonicalize, plan routes, inspect snapshots, and read evidence. Keep profile edits and snapshot publication behind human review.</p>
+</div>
+
+## Claude Desktop, Cursor, and framework agents
+
+Different clients can use the same MCP server pattern:
+
+<div class="sr-status-grid">
+  <div class="sr-status-box">
+    <h3>Claude Desktop</h3>
+    <p>Useful for local exploration, architecture review, and asking questions over governed terminology.</p>
+  </div>
+  <div class="sr-status-box">
+    <h3>Cursor</h3>
+    <p>Useful when an IDE agent needs to understand repository-specific aliases, service names, and runtime bindings.</p>
+  </div>
+  <div class="sr-status-box">
+    <h3>LangGraph-style agents</h3>
+    <p>Useful when application agents need deterministic context before selecting search, RAG, or tool actions.</p>
+  </div>
+  <div class="sr-status-box">
+    <h3>Custom agents</h3>
+    <p>Useful for internal assistants that must use approved terminology, not prompt-only guesses.</p>
+  </div>
+</div>
+
+## What not to expose first
+
+Avoid giving agents broad write access too early. The first MCP surface should be conservative:
+
+```text
+read context → explain aliases → plan route → call downstream tools
+```
+
+Governance actions such as approving aliases, publishing snapshots, and changing binding policies should remain human-reviewed until the organization is ready for stricter automation.
+

@@ -1,0 +1,108 @@
+---
+title: Binding runtime context
+description: Why bindings, not profiles alone, are the production runtime context in SkeinRank.
+---
+
+import { Image } from 'astro:assets';
+import runtimeFlowDiagram from '../../../assets/diagrams/runtime-request-flow.jpeg';
+
+A **profile** defines terminology. A **binding** defines where and how that terminology is applied. A **snapshot** defines the immutable version that runtime consumers should use.
+
+```text
+Profile = what the terminology means
+Binding = where and how that terminology is applied
+Snapshot = which immutable version is safe to serve
+```
+
+<figure class="sr-doc-diagram">
+  <Image
+    src={runtimeFlowDiagram}
+    alt="Runtime request flow showing binding selection, SkeinRank runtime canonicalization, resolved context, and search RAG agent outputs."
+    width={1672}
+    format="webp"
+    quality={84}
+    loading="eager"
+  />
+  <figcaption>Runtime calls should prefer a binding because the binding pins search scope, policy, and snapshot version.</figcaption>
+</figure>
+
+## Why profiles are not enough
+
+A profile can tell SkeinRank that `k8s` maps to `kubernetes` or that `pg` may map to `postgresql`. It cannot fully answer production runtime questions such as:
+
+- Which index or alias should be searched?
+- Which text fields should be read?
+- Which target field stores enrichment output?
+- Which filter or discriminator scopes the documents?
+- Which snapshot version is active?
+- Which ambiguous alias interpretation is safe in this context?
+
+A binding owns those runtime decisions.
+
+## Recommended request shape
+
+Production runtime calls should use `binding_id` when available:
+
+```json
+{
+  "binding_id": 42,
+  "query": "k8s pg timeout",
+  "size": 10
+}
+```
+
+The application can map product UI scopes to bindings:
+
+<table class="sr-mini-table">
+  <thead>
+    <tr><th>Application scope</th><th>SkeinRank binding</th><th>Runtime behavior</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Infra incidents</td><td><code>infra_incidents_prod</code></td><td><code>pg</code> can resolve to PostgreSQL.</td></tr>
+    <tr><td>Docs platform</td><td><code>docs_platform_prod</code></td><td><code>pg</code> can resolve to page.</td></tr>
+    <tr><td>Product analytics</td><td><code>product_analytics_prod</code></td><td><code>pg</code> can resolve to product group.</td></tr>
+  </tbody>
+</table>
+
+## Common binding patterns
+
+<div class="sr-status-grid">
+  <div class="sr-status-box">
+    <h3>1 profile → 1 index</h3>
+    <p>The simplest path. Create one binding and pin one runtime snapshot for that corpus.</p>
+  </div>
+  <div class="sr-status-box">
+    <h3>1 profile → many indexes</h3>
+    <p>Create one binding per index because each index may use different fields, rollout state, or snapshot version.</p>
+  </div>
+  <div class="sr-status-box">
+    <h3>Many profiles → 1 index</h3>
+    <p>Create multiple scoped bindings using a discriminator such as <code>team</code>, <code>doc_type</code>, or <code>workspace_id</code>.</p>
+  </div>
+  <div class="sr-status-box">
+    <h3>All search</h3>
+    <p>Fan out across multiple bindings and merge results, or add a router layer that selects candidate bindings.</p>
+  </div>
+</div>
+
+## Profile-only mode
+
+Profile-only requests are still useful for preview, tests, local experimentation, dictionary linting, or documentation examples. They should not be the default production integration because they do not encode runtime scope.
+
+Use this rule:
+
+```text
+Profile-only mode = preview / development
+Binding-aware mode = production runtime
+```
+
+## Runtime guarantees
+
+Binding-aware runtime gives operators a stronger guarantee:
+
+```text
+same binding + same snapshot + same query = reproducible canonical context
+```
+
+That guarantee is what makes rollback, evidence review, and search regression testing possible.
+

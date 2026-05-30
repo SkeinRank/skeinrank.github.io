@@ -1,0 +1,113 @@
+---
+title: GitOps delivery
+description: A safe delivery model for terminology changes through JSON YAML dictionaries, CI checks, review, and runtime snapshots.
+---
+
+import { Image } from 'astro:assets';
+import terminologyLifecycleDiagram from '../../../assets/diagrams/terminology-as-code-lifecycle.jpeg';
+
+Terminology changes should be delivered with the same care as code changes. SkeinRank supports a Terminology-as-Code direction where JSON or YAML dictionaries can be linted, reviewed, planned, and applied into governed runtime snapshots.
+
+<figure class="sr-doc-diagram">
+  <Image
+    src={terminologyLifecycleDiagram}
+    alt="Terminology-as-Code lifecycle diagram from JSON YAML dictionaries through lint, evidence review, approval, immutable snapshots, GitOps deploy, and runtime serving."
+    width={1672}
+    format="webp"
+    quality={84}
+    loading="eager"
+  />
+  <figcaption>GitOps delivery turns reviewed terminology changes into versioned snapshots that can be activated by bindings.</figcaption>
+</figure>
+
+## Delivery lifecycle
+
+<div class="sr-pipeline">
+  <div class="sr-flow sr-flow-wide">
+    <div class="sr-flow-step"><strong>1. Author</strong><span>Edit JSON/YAML dictionaries in a repository.</span></div>
+    <div class="sr-flow-step"><strong>2. Lint</strong><span>Check schema, duplicates, stop-list collisions, and policy violations.</span></div>
+    <div class="sr-flow-step"><strong>3. Plan</strong><span>Preview create/update/delete impact before applying changes.</span></div>
+    <div class="sr-flow-step"><strong>4. Review</strong><span>Use PR review and evidence links to approve terminology changes.</span></div>
+    <div class="sr-flow-step"><strong>5. Apply</strong><span>Import approved changes into the governance API.</span></div>
+    <div class="sr-flow-step"><strong>6. Snapshot</strong><span>Publish immutable runtime state for selected bindings.</span></div>
+  </div>
+</div>
+
+## CI checks
+
+A lightweight CI pipeline should fail before merge when terminology changes are unsafe.
+
+Example checks:
+
+- dictionary schema is valid;
+- canonical values are normalized;
+- aliases are not duplicated inside a profile;
+- stop-list entries do not conflict with approved aliases;
+- required slots are present;
+- apply plan has no destructive changes unless explicitly allowed;
+- tests or fixtures still pass.
+
+## GitLab CI sketch
+
+```yaml
+stages: [lint, plan]
+
+terminology:lint:
+  stage: lint
+  script:
+    - skeinrank dictionary lint dictionaries/
+
+terminology:plan:
+  stage: plan
+  script:
+    - skeinrank dictionary plan dictionaries/ --output plan.json
+  artifacts:
+    paths:
+      - plan.json
+```
+
+The exact CLI commands should follow the installed SkeinRank package version in your repository. Keep examples close to the package docs and avoid inventing project-specific wrapper names in production runbooks.
+
+## ArgoCD / Flux shape
+
+GitOps systems should not directly mutate runtime state without validation. A safer shape is:
+
+```text
+Dictionary PR merged
+      ↓
+CI lint + plan passed
+      ↓
+Deployment job calls governance API apply endpoint
+      ↓
+Snapshot is published
+      ↓
+Binding is activated or staged
+```
+
+ArgoCD or Flux can deploy the service and configuration. The governance API should still own validation, audit, and snapshot publication.
+
+## Promotion environments
+
+A practical rollout path is:
+
+<table class="sr-mini-table">
+  <thead>
+    <tr><th>Environment</th><th>Purpose</th><th>Binding behavior</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Dev</td><td>Fast iteration and local demo dictionaries.</td><td>Profile-only preview is acceptable.</td></tr>
+    <tr><td>Staging</td><td>Evidence review, apply planning, and dry-run enrichment.</td><td>Bindings point to staging indexes or aliases.</td></tr>
+    <tr><td>Production</td><td>Low-noise runtime canonicalization and search/RAG context.</td><td>Bindings pin approved immutable snapshots.</td></tr>
+  </tbody>
+</table>
+
+## Rollback rule
+
+GitOps should make rollback boring:
+
+```text
+previous dictionary commit + previous snapshot + previous binding activation = recoverable runtime behavior
+```
+
+That is why snapshots and bindings are separate concepts.
+

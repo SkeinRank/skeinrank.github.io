@@ -36,3 +36,25 @@ assert.match(architecture, /mcpAgentDiagram/, 'architecture docs should include 
 
 const index = readFileSync('src/content/docs/index.mdx', 'utf8');
 assert.match(index, /Domain Language Control Plane/, 'home page metadata should use the updated product positioning');
+
+const astroConfig = readFileSync('astro.config.mjs', 'utf8');
+const expectedSidebarSlugs = [
+  'concepts/sidecar-control-plane',
+  'concepts/bindings-runtime-context',
+  'concepts/snapshots',
+  'integrations/mcp',
+  'ops/gitops-delivery',
+  'ops/blue-green-rollout',
+  'ops/checkpointing',
+];
+
+for (const slug of expectedSidebarSlugs) {
+  assert.match(astroConfig, new RegExp(`slug: ['"]${slug}['"]`), `${slug} should be linked from Starlight sidebar`);
+  assert.ok(
+    existsSync(`src/content/docs/${slug}.mdx`),
+    `${slug} sidebar entry should have a matching docs page`,
+  );
+}
+
+assert.match(astroConfig, /label: ['"]Integrations['"]/, 'sidebar should include an Integrations section');
+assert.match(astroConfig, /label: ['"]Operations['"]/, 'sidebar should include an Operations section');
