@@ -1,15 +1,15 @@
 # SkeinRank Website
 
-Public website and documentation for **SkeinRank** — an open-source terminology control plane for search, RAG, and enterprise knowledge workflows.
+Public website and documentation for **SkeinRank** — an open-source Domain Language Control Plane for enterprise search, RAG, and AI-agent workflows.
 
-SkeinRank helps teams turn messy aliases and domain jargon into governed runtime context: profiles, bindings, snapshots, evidence checks, and search-ready canonicalization.
+SkeinRank helps teams turn messy aliases and domain jargon into governed runtime context: profiles, bindings, snapshots, evidence checks, MCP integrations, and search-ready canonicalization.
 
 ## What this site contains
 
-- Product landing page for SkeinRank.
+- Product landing page for SkeinRank with hero and architecture diagrams.
 - Documentation for local evaluation and early adoption.
 - Quickstarts for Docker beta, CLI, and Python SDK usage.
-- Concept docs for profiles, bindings, snapshots, side-car deployment, dictionary JSON, and passport output.
+- Concept docs for profiles, bindings, snapshots, side-car deployment, dictionary JSON, passport output, and architecture flows.
 - Platform preview docs for the governance console and Elasticsearch workflow.
 
 ## Tech stack
@@ -66,6 +66,8 @@ src/components/          Landing page components
 src/content/docs/        Starlight documentation pages
 src/styles/custom.css    Site-wide product and docs styling
 public/                  Static assets, icons, robots.txt, social preview image
+src/assets/diagrams/      Product/system-design diagrams used by the landing page and docs
+src/assets/brand/         Reusable SkeinRank logo assets
 .github/workflows/       GitHub Pages deployment workflow
 ```
 

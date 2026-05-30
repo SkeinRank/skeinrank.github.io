@@ -1,21 +1,96 @@
 ---
 title: Architecture
-description: Runtime extraction stays separate from terminology governance.
+description: SkeinRank separates governed terminology control-plane workflows from fast binding-aware runtime context.
 ---
 
-SkeinRank is designed around a split between a fast runtime path and a slower control-plane path.
+import { Image } from 'astro:assets';
+import controlPlaneOverview from '../../../assets/diagrams/control-plane-overview.jpeg';
+import domainModelDiagram from '../../../assets/diagrams/domain-model.jpeg';
+import runtimeFlowDiagram from '../../../assets/diagrams/runtime-request-flow.jpeg';
+import terminologyLifecycleDiagram from '../../../assets/diagrams/terminology-as-code-lifecycle.jpeg';
+import mcpAgentDiagram from '../../../assets/diagrams/mcp-agent-integration.jpeg';
+
+SkeinRank is designed around a split between a fast runtime path and a slower control-plane path. The product goal is to make company-specific language governable, versioned, and safe to serve into search, RAG, and AI-agent workflows.
+
+<figure class="sr-doc-diagram sr-doc-diagram-wide">
+  <Image
+    src={controlPlaneOverview}
+    alt="SkeinRank control plane architecture showing applications, runtime capabilities, execution targets, and support services."
+    width={1672}
+    format="webp"
+    quality={86}
+    loading="eager"
+  />
+  <figcaption>SkeinRank sits beside existing applications and execution targets as a governed domain-language control plane.</figcaption>
+</figure>
 
 <div class="sr-split">
   <div class="sr-status-box">
     <h3>Runtime path</h3>
-    <p>Local SDK/CLI, dictionary snapshots, document text extraction, alias matching, canonicalization, passport output, and optional FastAPI extraction endpoints.</p>
-    <div class="sr-badge-row"><span class="sr-badge ready">Fast</span><span class="sr-badge ready">Local</span><span class="sr-badge ready">Deterministic</span></div>
+    <p>Binding-aware canonicalization, disambiguation, route planning, pinned snapshots, runtime context APIs, SDK/CLI usage, and optional FastAPI extraction endpoints.</p>
+    <div class="sr-badge-row"><span class="sr-badge ready">Fast</span><span class="sr-badge ready">Context-bound</span><span class="sr-badge ready">Deterministic</span></div>
   </div>
   <div class="sr-status-box">
     <h3>Control-plane path</h3>
-    <p>Governance API, PostgreSQL terminology store, roles, suggestions, stop lists, API tokens, snapshots, Elasticsearch evidence checks, and enrichment jobs.</p>
+    <p>Governance API, PostgreSQL terminology state, roles, suggestions, stop lists, API tokens, snapshots, Elasticsearch evidence checks, enrichment jobs, and review UI.</p>
     <div class="sr-badge-row"><span class="sr-badge preview">Preview</span><span class="sr-badge preview">Review workflow</span><span class="sr-badge preview">UI/API</span></div>
   </div>
+</div>
+
+## Runtime request flow
+
+<figure class="sr-doc-diagram">
+  <Image
+    src={runtimeFlowDiagram}
+    alt="Runtime request flow diagram showing incoming query, binding selection, canonicalization, disambiguation, route planning, resolved context, and execution targets."
+    width={1672}
+    format="webp"
+    quality={84}
+    loading="lazy"
+  />
+  <figcaption>Runtime calls should prefer an explicit binding because the binding defines the search scope, pinned snapshot, and policy context.</figcaption>
+</figure>
+
+## Domain model
+
+<figure class="sr-doc-diagram">
+  <Image
+    src={domainModelDiagram}
+    alt="SkeinRank domain model diagram with profiles, canonical terms, aliases, bindings, snapshots, runtime context, suggestions, evidence, and enrichment jobs."
+    width={1672}
+    format="webp"
+    quality={84}
+    loading="lazy"
+  />
+  <figcaption>Profiles define terminology. Bindings define runtime search context. Snapshots define the immutable version served to runtime consumers.</figcaption>
+</figure>
+
+## Terminology-as-Code and agents
+
+<div class="sr-doc-diagram-grid">
+  <figure class="sr-doc-diagram">
+    <Image
+      src={terminologyLifecycleDiagram}
+      alt="Terminology-as-Code lifecycle diagram from JSON YAML dictionaries through lint, evidence review, approval, immutable snapshots, GitOps deploy, and runtime serving."
+      width={1672}
+      format="webp"
+      quality={84}
+      loading="lazy"
+    />
+    <figcaption>Terminology-as-Code turns reviewed dictionary changes into immutable runtime snapshots.</figcaption>
+  </figure>
+
+  <figure class="sr-doc-diagram">
+    <Image
+      src={mcpAgentDiagram}
+      alt="MCP and agent integration diagram showing Claude Desktop, Cursor, LangGraph-style agents, skeinrank-mcp, runtime APIs, and search RAG tool orchestration outputs."
+      width={1672}
+      format="webp"
+      quality={84}
+      loading="lazy"
+    />
+    <figcaption>MCP integrations let agents ask for scoped runtime context before calling search, RAG, or tool workflows.</figcaption>
+  </figure>
 </div>
 
 ## Current packages
@@ -31,5 +106,4 @@ SkeinRank is designed around a split between a fast runtime path and a slower co
 
 ## Snapshot-first direction
 
-The governance layer should publish snapshots. Runtime extraction should consume snapshots.
-That keeps the online matching path simple and avoids turning every extraction request into a database-backed workflow.
+The governance layer should publish snapshots. Runtime extraction should consume snapshots. That keeps the online matching path simple and avoids turning every extraction request into a database-backed workflow.

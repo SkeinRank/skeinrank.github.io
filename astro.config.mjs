@@ -11,7 +11,7 @@ export default defineConfig({
     starlight({
       title: 'SkeinRank',
       description:
-        'Open-source terminology control plane that turns messy aliases into governed runtime context for search, RAG, and enterprise knowledge workflows.',
+        'Open-source Domain Language Control Plane that turns messy aliases into governed runtime context for enterprise search, RAG, and AI-agent workflows.',
       logo: {
         src: './src/assets/logo.png',
         alt: 'SkeinRank',
@@ -66,7 +66,7 @@ export default defineConfig({
         },
         {
           tag: 'meta',
-          attrs: { property: 'og:image:alt', content: 'SkeinRank — terminology control plane for search and RAG' },
+          attrs: { property: 'og:image:alt', content: 'SkeinRank — Domain Language Control Plane for search, RAG, and AI agents' },
         },
         {
           tag: 'meta',
@@ -74,14 +74,14 @@ export default defineConfig({
         },
         {
           tag: 'meta',
-          attrs: { name: 'twitter:title', content: 'SkeinRank — Terminology Control Plane for Search and RAG' },
+          attrs: { name: 'twitter:title', content: 'SkeinRank — Domain Language Control Plane for Search, RAG, and AI Agents' },
         },
         {
           tag: 'meta',
           attrs: {
             name: 'twitter:description',
             content:
-              'Open-source terminology control plane that turns messy aliases into governed runtime context for search, RAG, and enterprise knowledge workflows.',
+              'Open-source Domain Language Control Plane that turns messy aliases into governed runtime context for enterprise search, RAG, and AI-agent workflows.',
           },
         },
         {

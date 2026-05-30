@@ -1,6 +1,10 @@
 ---
 import { Image } from 'astro:assets';
-import dashboardPreview from '../assets/screenshots/dashboard-runtime-control-center-dark.png';
+import controlPlaneOverview from '../assets/diagrams/control-plane-overview.jpeg';
+import domainModelDiagram from '../assets/diagrams/domain-model.jpeg';
+import runtimeFlowDiagram from '../assets/diagrams/runtime-request-flow.jpeg';
+import terminologyLifecycleDiagram from '../assets/diagrams/terminology-as-code-lifecycle.jpeg';
+import mcpAgentDiagram from '../assets/diagrams/mcp-agent-integration.jpeg';
 
 const repoUrl = 'https://github.com/SkeinRank/skeinrank';
 const workflowUrl = '/platform-preview/governance-console/';
@@ -159,66 +163,114 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
       </div>
     </section>
 
-    <section class="sr-section sr-console-preview" aria-labelledby="sr-console-preview-title">
+    <section class="sr-section sr-console-preview sr-overview-preview" aria-labelledby="sr-console-preview-title">
       <div class="sr-preview-heading">
-        <p class="sr-section-label">Platform preview</p>
-        <h2 id="sr-console-preview-title">A real governance console, seeded with runtime data.</h2>
+        <p class="sr-section-label">System overview</p>
+        <h2 id="sr-console-preview-title">Show the control plane before showing console screens.</h2>
         <p>
-          Run the Docker beta stack and seed the platform demo to see profiles, bindings, snapshots,
-          enrichment jobs, and search behavior in one local console.
+          The first product story is not the old dashboard. SkeinRank sits beside search, RAG,
+          and agent workflows, then serves governed runtime context from profiles, bindings,
+          snapshots, and evidence-backed terminology changes.
         </p>
       </div>
 
-      <div class="sr-preview-stage" aria-label="SkeinRank governance console dashboard preview">
-        <div class="sr-preview-mobile-proof" aria-label="Seeded preview summary">
-          <span><strong>24 docs</strong> seeded knowledge base</span>
-          <span><strong>29 aliases</strong> governed terminology</span>
-          <span><strong>Job #2</strong> enrichment succeeded</span>
-        </div>
-
-        <div class="sr-preview-frame">
-          <div class="sr-preview-toolbar" aria-hidden="true">
-            <span></span>
-            <span></span>
-            <span></span>
-            <strong>platform_ops · platform_knowledge_base</strong>
-          </div>
+      <div class="sr-diagram-showcase" aria-label="SkeinRank control plane architecture overview">
+        <figure class="sr-diagram-hero-card">
           <Image
-            class="sr-preview-image sr-preview-image-dashboard"
-            src={dashboardPreview}
-            alt="SkeinRank dashboard showing a runtime-ready terminology profile, binding health, enrichment jobs, and system readiness."
-            width={1600}
+            class="sr-diagram-image"
+            src={controlPlaneOverview}
+            alt="SkeinRank control plane architecture showing applications, runtime capabilities, execution targets, and support services."
+            width={1672}
             format="webp"
-            quality={82}
+            quality={86}
             loading="lazy"
           />
-        </div>
+          <figcaption>
+            Control-plane overview: applications call SkeinRank before search, RAG, and runtime APIs consume governed context.
+          </figcaption>
+        </figure>
 
-        <div class="sr-preview-proof-grid" aria-label="Platform preview proof points">
+        <div class="sr-diagram-proof-grid" aria-label="Product architecture proof points">
           <article>
-            <span>Seeded demo</span>
-            <strong>24 docs · 15 terms · 29 aliases</strong>
-            <p>Use <code>make demo-reset</code> to populate the local stack with a realistic platform operations knowledge base.</p>
+            <span>Runtime context</span>
+            <strong>binding-aware request flow</strong>
+            <p>Queries can be canonicalized and routed with an explicit binding, pinned snapshot, and policy-aware context.</p>
           </article>
           <article>
-            <span>Runtime ready</span>
-            <strong>binding + pinned snapshot</strong>
-            <p>Validate that canonical terms are attached to a concrete Elasticsearch search context before serving runtime queries.</p>
+            <span>Governed model</span>
+            <strong>profiles · aliases · evidence</strong>
+            <p>Domain language becomes reviewable platform state instead of hidden synonym files or prompt-only heuristics.</p>
           </article>
           <article>
-            <span>Evidence workflow</span>
-            <strong>suggestions, jobs, playground</strong>
-            <p>Review aliases with evidence, publish enrichment output, and test canonical queries from the UI.</p>
+            <span>Integration layer</span>
+            <strong>MCP · APIs · GitOps</strong>
+            <p>Agents, search services, and CI workflows can consume the same terminology package and runtime model.</p>
           </article>
         </div>
-      </div>
-
-      <div class="sr-preview-actions" aria-label="Platform preview actions">
-        <a class="sr-btn sr-btn-primary" href={dockerQuickstartUrl}>Run seeded preview</a>
-        <a class="sr-btn sr-btn-secondary" href="/platform-preview/end-to-end-demo/">Read demo workflow</a>
       </div>
     </section>
 
+    <section class="sr-section sr-diagram-section" aria-labelledby="sr-diagram-title">
+      <div class="sr-section-heading">
+        <p class="sr-section-label">Architecture diagrams</p>
+        <h2 id="sr-diagram-title">A visual system-design layer for the website and docs.</h2>
+        <p>
+          These diagrams explain the product from multiple angles: data model, query-time routing,
+          Git-native terminology delivery, and MCP integration for agent workflows.
+        </p>
+      </div>
+
+      <div class="sr-diagram-grid">
+        <figure>
+          <Image
+            class="sr-diagram-image"
+            src={domainModelDiagram}
+            alt="SkeinRank domain model diagram with profiles, canonical terms, aliases, bindings, snapshots, runtime context, suggestions, evidence, and enrichment jobs."
+            width={1672}
+            format="webp"
+            quality={84}
+            loading="lazy"
+          />
+          <figcaption>Domain model: profiles, aliases, bindings, snapshots, evidence, and enrichment jobs.</figcaption>
+        </figure>
+        <figure>
+          <Image
+            class="sr-diagram-image"
+            src={runtimeFlowDiagram}
+            alt="Runtime request flow diagram showing binding selection, canonicalization, disambiguation, route planning, and execution targets."
+            width={1672}
+            format="webp"
+            quality={84}
+            loading="lazy"
+          />
+          <figcaption>Runtime request flow: query context becomes canonicalized, routed runtime context.</figcaption>
+        </figure>
+        <figure>
+          <Image
+            class="sr-diagram-image"
+            src={terminologyLifecycleDiagram}
+            alt="Terminology-as-Code lifecycle diagram showing JSON YAML authoring, lint validation, evidence review, approval, snapshot build, runtime binding, GitOps deploy, and serving search RAG agents."
+            width={1672}
+            format="webp"
+            quality={84}
+            loading="lazy"
+          />
+          <figcaption>Terminology-as-Code: reviewed dictionaries become immutable runtime snapshots.</figcaption>
+        </figure>
+        <figure>
+          <Image
+            class="sr-diagram-image"
+            src={mcpAgentDiagram}
+            alt="MCP and agent integration diagram showing Claude Desktop, Cursor, LangGraph-style agents, skeinrank-mcp, runtime APIs, and search RAG tool orchestration outputs."
+            width={1672}
+            format="webp"
+            quality={84}
+            loading="lazy"
+          />
+          <figcaption>MCP integration: agents ask SkeinRank for scoped runtime context before using tools.</figcaption>
+        </figure>
+      </div>
+    </section>
 
     <section class="sr-problem-solution" aria-labelledby="sr-problem-title">
       <div>
@@ -2697,6 +2749,138 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
       min-height: 0;
       object-fit: contain;
       object-position: top left;
+    }
+  }
+
+
+
+  /* Site Patch 22A: product diagrams replace the stale dashboard-first second screen. */
+  .sr-overview-preview {
+    gap: 1.55rem;
+  }
+
+  .sr-diagram-showcase {
+    display: grid;
+    grid-template-columns: minmax(0, 1.28fr) minmax(18rem, 0.72fr);
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .sr-diagram-hero-card,
+  .sr-diagram-grid figure {
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--sr-border);
+    border-radius: 1.25rem;
+    background: linear-gradient(145deg, var(--sr-surface-strong), var(--sr-card));
+    box-shadow: 0 24px 70px rgba(2, 6, 23, 0.28);
+  }
+
+  .sr-diagram-hero-card {
+    position: relative;
+  }
+
+  .sr-diagram-hero-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(180deg, transparent 64%, rgba(2, 6, 23, 0.28));
+  }
+
+  :global(:root[data-theme='light']) .sr-diagram-hero-card,
+  :global(:root[data-theme='light']) .sr-diagram-grid figure {
+    box-shadow: 0 18px 54px rgba(15, 23, 42, 0.10);
+  }
+
+  .sr-diagram-image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .sr-diagram-hero-card figcaption,
+  .sr-diagram-grid figcaption {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    padding: 0.85rem 1rem 1rem;
+    color: var(--sr-text-soft);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .sr-diagram-proof-grid {
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .sr-diagram-proof-grid article {
+    padding: 1rem;
+    border: 1px solid var(--sr-border);
+    border-radius: 1rem;
+    background:
+      radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--sr-cyan) 13%, transparent), transparent 45%),
+      linear-gradient(145deg, var(--sr-card), color-mix(in srgb, var(--sr-card-soft) 78%, transparent));
+  }
+
+  .sr-diagram-proof-grid span {
+    display: block;
+    color: var(--sr-cyan);
+    font-size: 0.76rem;
+    font-weight: 950;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .sr-diagram-proof-grid strong {
+    display: block;
+    margin-top: 0.42rem;
+    color: var(--sr-text);
+    font-size: 1.02rem;
+  }
+
+  .sr-diagram-proof-grid p {
+    margin: 0.45rem 0 0;
+    color: var(--sr-muted);
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  .sr-diagram-section {
+    padding: clamp(1.2rem, 3vw, 1.7rem);
+    border: 1px solid var(--sr-border);
+    border-radius: var(--sr-radius-lg);
+    background:
+      radial-gradient(circle at 12% 0%, color-mix(in srgb, var(--sr-cyan) 13%, transparent), transparent 24rem),
+      radial-gradient(circle at 88% 4%, color-mix(in srgb, var(--sr-accent) 16%, transparent), transparent 24rem),
+      linear-gradient(145deg, color-mix(in srgb, var(--sr-card-soft) 68%, transparent), color-mix(in srgb, var(--sr-surface-strong) 88%, transparent));
+  }
+
+  .sr-diagram-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .sr-diagram-grid figure {
+    align-self: start;
+  }
+
+  .sr-diagram-grid .sr-diagram-image {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  @media (max-width: 1080px) {
+    .sr-diagram-showcase {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .sr-diagram-grid {
+      grid-template-columns: 1fr;
     }
   }
 
