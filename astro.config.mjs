@@ -92,6 +92,10 @@ export default defineConfig({
           tag: 'script',
           attrs: { src: '/header-nav.js', defer: true },
         },
+        {
+          tag: 'script',
+          attrs: { src: '/platform-preview-lightbox.js', defer: true },
+        },
       ],
       expressiveCode: {
         themes: ['github-light', 'github-dark'],

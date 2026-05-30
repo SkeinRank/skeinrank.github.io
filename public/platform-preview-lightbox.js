@@ -1,11 +1,75 @@
 (() => {
   const LIGHTBOX_SELECTOR = '[data-sr-platform-lightbox]';
-  const TRIGGER_SELECTOR = '[data-sr-lightbox-src]';
+  const MANUAL_TRIGGER_SELECTOR = '[data-sr-lightbox-src]';
+  const AUTO_IMAGE_SELECTOR = '.sr-diagram-image, .sr-platform-screenshot';
   const COPY_SELECTOR = '[data-sr-copy-button]';
 
+  const createLightbox = () => {
+    const lightbox = document.createElement('div');
+    lightbox.className = 'sr-platform-lightbox';
+    lightbox.dataset.srPlatformLightbox = '';
+    lightbox.hidden = true;
+    lightbox.setAttribute('role', 'dialog');
+    lightbox.setAttribute('aria-modal', 'true');
+    lightbox.setAttribute('aria-label', 'Image preview');
+    lightbox.innerHTML = `
+      <div class="sr-platform-lightbox-stage">
+        <button class="sr-platform-lightbox-close" type="button" data-sr-lightbox-close aria-label="Close image preview">×</button>
+        <div class="sr-platform-lightbox-frame">
+          <img data-sr-lightbox-image alt="" />
+        </div>
+      </div>
+    `;
+    document.body.appendChild(lightbox);
+    return lightbox;
+  };
+
+  const getLightbox = () => document.querySelector(LIGHTBOX_SELECTOR) || createLightbox();
+
+  const resolveImageSrc = (image) => image.currentSrc || image.getAttribute('src') || image.src || '';
+
+  const getTriggerData = (trigger) => {
+    const manualSrc = trigger.getAttribute('data-sr-lightbox-src');
+    if (manualSrc) {
+      return {
+        src: manualSrc,
+        alt: trigger.getAttribute('data-sr-lightbox-alt') || 'SkeinRank image preview',
+      };
+    }
+
+    if (trigger.matches(AUTO_IMAGE_SELECTOR)) {
+      return {
+        src: resolveImageSrc(trigger),
+        alt: trigger.getAttribute('alt') || 'SkeinRank image preview',
+      };
+    }
+
+    const autoImage = trigger.querySelector?.(AUTO_IMAGE_SELECTOR);
+    if (autoImage) {
+      return {
+        src: resolveImageSrc(autoImage),
+        alt: autoImage.getAttribute('alt') || 'SkeinRank image preview',
+      };
+    }
+
+    return { src: '', alt: '' };
+  };
+
+  const setupUniversalImageTriggers = () => {
+    document.querySelectorAll(AUTO_IMAGE_SELECTOR).forEach((image) => {
+      if (image.dataset.srLightboxAutoBound === 'true') return;
+      if (image.closest(MANUAL_TRIGGER_SELECTOR)) return;
+      image.dataset.srLightboxAutoBound = 'true';
+      image.classList.add('sr-lightbox-enabled');
+      image.setAttribute('tabindex', '0');
+      image.setAttribute('role', 'button');
+      image.setAttribute('aria-label', `Open image preview: ${image.getAttribute('alt') || 'SkeinRank image'}`);
+    });
+  };
+
   const setupPlatformLightbox = () => {
-    const lightbox = document.querySelector(LIGHTBOX_SELECTOR);
-    if (!lightbox || lightbox.dataset.bound === 'true') return;
+    const lightbox = getLightbox();
+    if (lightbox.dataset.bound === 'true') return;
 
     const image = lightbox.querySelector('[data-sr-lightbox-image]');
     const closeButton = lightbox.querySelector('[data-sr-lightbox-close]');
@@ -13,7 +77,7 @@
 
     // The Starlight docs shell has its own fixed header/sidebar stacking contexts.
     // Keep the dialog as a direct body child so the fullscreen preview covers the
-    // whole viewport instead of being clipped by the markdown/content column.
+    // whole viewport instead of being clipped by markdown/content columns.
     if (lightbox.parentElement !== document.body) {
       document.body.appendChild(lightbox);
     }
@@ -36,12 +100,12 @@
     };
 
     const openLightbox = (trigger) => {
-      const src = trigger.getAttribute('data-sr-lightbox-src');
+      const { src, alt } = getTriggerData(trigger);
       if (!src) return;
 
       lastTrigger = trigger;
       image.src = src;
-      image.alt = trigger.getAttribute('data-sr-lightbox-alt') || 'SkeinRank console screenshot';
+      image.alt = alt || 'SkeinRank image preview';
       lightbox.hidden = false;
       setLocked(true);
       requestAnimationFrame(() => lightbox.classList.add('is-open'));
@@ -64,7 +128,9 @@
       const target = event.target;
       if (!(target instanceof Element)) return;
 
-      const trigger = target.closest(TRIGGER_SELECTOR);
+      const manualTrigger = target.closest(MANUAL_TRIGGER_SELECTOR);
+      const autoTrigger = target.closest(AUTO_IMAGE_SELECTOR);
+      const trigger = manualTrigger || autoTrigger;
       if (trigger) {
         event.preventDefault();
         openLightbox(trigger);
@@ -78,7 +144,20 @@
     });
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !lightbox.hidden) closeLightbox();
+      const target = event.target;
+      if (event.key === 'Escape' && !lightbox.hidden) {
+        closeLightbox();
+        return;
+      }
+
+      if (
+        (event.key === 'Enter' || event.key === ' ') &&
+        target instanceof Element &&
+        target.matches(AUTO_IMAGE_SELECTOR)
+      ) {
+        event.preventDefault();
+        openLightbox(target);
+      }
     });
   };
 
@@ -120,6 +199,7 @@
   };
 
   const setupPlatformInteractions = () => {
+    setupUniversalImageTriggers();
     setupPlatformLightbox();
     setupPlatformCopyButtons();
   };

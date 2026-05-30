@@ -1679,3 +1679,15 @@ starlight-theme-select.sr-theme-cycle select {
     grid-template-columns: 1fr;
   }
 }
+
+/* Site Patch 22F: make every product diagram and console screenshot open in the shared preview lightbox. */
+.sr-diagram-image.sr-lightbox-enabled,
+.sr-platform-screenshot.sr-lightbox-enabled {
+  cursor: zoom-in;
+}
+
+.sr-diagram-image.sr-lightbox-enabled:focus-visible,
+.sr-platform-screenshot.sr-lightbox-enabled:focus-visible {
+  outline: 2px solid var(--sr-platform-highlight, #22d3ee);
+  outline-offset: 4px;
+}

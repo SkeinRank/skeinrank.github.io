@@ -58,3 +58,26 @@ for (const slug of expectedSidebarSlugs) {
 
 assert.match(astroConfig, /label: ['"]Integrations['"]/, 'sidebar should include an Integrations section');
 assert.match(astroConfig, /label: ['"]Operations['"]/, 'sidebar should include an Operations section');
+
+const lightboxScript = readFileSync('public/platform-preview-lightbox.js', 'utf8');
+assert.match(lightboxScript, /AUTO_IMAGE_SELECTOR = '.sr-diagram-image, .sr-platform-screenshot'/, 'lightbox script should auto-bind diagrams and screenshots');
+assert.match(lightboxScript, /createLightbox/, 'lightbox script should create a shared dialog when a page does not provide one');
+assert.match(lightboxScript, /srLightboxAutoBound/, 'lightbox script should mark auto-bound image triggers');
+assert.match(lightboxScript, /closest\(MANUAL_TRIGGER_SELECTOR\)/, 'auto binding should not make images inside manual lightbox triggers separately focusable');
+
+assert.match(astroConfig, /src: '\/platform-preview-lightbox\.js'/, 'Starlight head should load the shared screenshot lightbox script on every page');
+
+const customCss = readFileSync('src/styles/custom.css', 'utf8');
+assert.match(customCss, /sr-diagram-image\.sr-lightbox-enabled/, 'site CSS should show diagrams as lightbox-enabled');
+assert.match(customCss, /sr-platform-screenshot\.sr-lightbox-enabled/, 'site CSS should show console screenshots as lightbox-enabled');
+
+for (const docsPath of [
+  'src/content/docs/concepts/architecture.mdx',
+  'src/content/docs/concepts/sidecar-control-plane.mdx',
+  'src/content/docs/concepts/bindings-runtime-context.mdx',
+  'src/content/docs/integrations/mcp.mdx',
+  'src/content/docs/ops/gitops-delivery.mdx',
+]) {
+  const doc = readFileSync(docsPath, 'utf8');
+  assert.match(doc, /class="sr-diagram-image"/, `${docsPath} should mark diagrams as lightbox-enabled images`);
+}
