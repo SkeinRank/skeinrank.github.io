@@ -1,10 +1,6 @@
 ---
 import { Image } from 'astro:assets';
 import controlPlaneOverview from '../assets/diagrams/control-plane-overview.jpeg';
-import domainModelDiagram from '../assets/diagrams/domain-model.jpeg';
-import runtimeFlowDiagram from '../assets/diagrams/runtime-request-flow.jpeg';
-import terminologyLifecycleDiagram from '../assets/diagrams/terminology-as-code-lifecycle.jpeg';
-import mcpAgentDiagram from '../assets/diagrams/mcp-agent-integration.jpeg';
 
 const repoUrl = 'https://github.com/SkeinRank/skeinrank';
 const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
@@ -143,11 +139,10 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
     <section class="sr-section sr-console-preview sr-overview-preview" aria-labelledby="sr-console-preview-title">
       <div class="sr-preview-heading">
         <p class="sr-section-label">System overview</p>
-        <h2 id="sr-console-preview-title">Show the control plane before showing console screens.</h2>
+        <h2 id="sr-console-preview-title">From domain language to runtime context.</h2>
         <p>
-          The first product story is not the old dashboard. SkeinRank sits beside search, RAG,
-          and agent workflows, then serves governed runtime context from profiles, bindings,
-          snapshots, and evidence-backed terminology changes.
+          Start with the runtime model: profiles define language, bindings select the search
+          context, and snapshots pin the version that search, RAG, and agents can safely use.
         </p>
       </div>
 
@@ -183,69 +178,8 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
             <strong>MCP · APIs · GitOps</strong>
             <p>Agents, search services, and CI workflows can consume the same terminology package and runtime model.</p>
           </article>
+          <a class="sr-inline-architecture-link" href="/concepts/architecture/">Open architecture docs</a>
         </div>
-      </div>
-    </section>
-
-    <section class="sr-section sr-diagram-section" aria-labelledby="sr-diagram-title">
-      <div class="sr-section-heading">
-        <p class="sr-section-label">Architecture diagrams</p>
-        <h2 id="sr-diagram-title">A visual system-design layer for the website and docs.</h2>
-        <p>
-          These diagrams explain the product from multiple angles: data model, query-time routing,
-          Git-native terminology delivery, and MCP integration for agent workflows.
-        </p>
-      </div>
-
-      <div class="sr-diagram-grid">
-        <figure>
-          <Image
-            class="sr-diagram-image"
-            src={domainModelDiagram}
-            alt="SkeinRank domain model diagram with profiles, canonical terms, aliases, bindings, snapshots, runtime context, suggestions, evidence, and enrichment jobs."
-            width={1672}
-            format="webp"
-            quality={84}
-            loading="lazy"
-          />
-          <figcaption>Domain model: profiles, aliases, bindings, snapshots, evidence, and enrichment jobs.</figcaption>
-        </figure>
-        <figure>
-          <Image
-            class="sr-diagram-image"
-            src={runtimeFlowDiagram}
-            alt="Runtime request flow diagram showing binding selection, canonicalization, disambiguation, route planning, and execution targets."
-            width={1672}
-            format="webp"
-            quality={84}
-            loading="lazy"
-          />
-          <figcaption>Runtime request flow: query context becomes canonicalized, routed runtime context.</figcaption>
-        </figure>
-        <figure>
-          <Image
-            class="sr-diagram-image"
-            src={terminologyLifecycleDiagram}
-            alt="Terminology-as-Code lifecycle diagram showing JSON YAML authoring, lint validation, evidence review, approval, snapshot build, runtime binding, GitOps deploy, and serving search RAG agents."
-            width={1672}
-            format="webp"
-            quality={84}
-            loading="lazy"
-          />
-          <figcaption>Terminology-as-Code: reviewed dictionaries become immutable runtime snapshots.</figcaption>
-        </figure>
-        <figure>
-          <Image
-            class="sr-diagram-image"
-            src={mcpAgentDiagram}
-            alt="MCP and agent integration diagram showing Claude Desktop, Cursor, LangGraph-style agents, skeinrank-mcp, runtime APIs, and search RAG tool orchestration outputs."
-            width={1672}
-            format="webp"
-            quality={84}
-            loading="lazy"
-          />
-          <figcaption>MCP integration: agents ask SkeinRank for scoped runtime context before using tools.</figcaption>
-        </figure>
       </div>
     </section>
 
@@ -2822,6 +2756,29 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
     color: var(--sr-muted);
     font-size: 0.88rem;
     line-height: 1.55;
+  }
+
+  .sr-inline-architecture-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    min-height: 2.75rem;
+    padding: 0.72rem 1rem;
+    color: #67e8f9;
+    font-size: 0.86rem;
+    font-weight: 850;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    border: 1px solid rgba(34, 211, 238, 0.26);
+    border-radius: 999px;
+    background: rgba(8, 145, 178, 0.09);
+  }
+
+  .sr-inline-architecture-link:hover {
+    color: #ffffff;
+    border-color: rgba(96, 165, 250, 0.52);
+    background: rgba(96, 165, 250, 0.14);
   }
 
   .sr-diagram-section {

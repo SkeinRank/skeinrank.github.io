@@ -22,8 +22,11 @@ assert.match(landing, /sr-diagram-showcase/, 'landing should render the new over
 assert.ok(!landing.includes('<div class="sr-hero-proof"'), 'landing should not render the stretched hero proof strip');
 assert.ok(!landing.includes('<div class="sr-mobile-flow"'), 'landing should not render the extra mobile flow cards below hero CTAs');
 assert.match(landing, /Docker beta/, 'landing hero should use the compact primary CTA label');
-assert.match(landing, /controlPlaneOverview/, 'landing should import the control-plane diagram');
-assert.match(landing, /mcpAgentDiagram/, 'landing should include the MCP/agent diagram');
+assert.match(landing, /controlPlaneOverview/, 'landing should import only the featured control-plane diagram');
+assert.match(landing, /From domain language to runtime context/, 'landing should use a user-facing overview heading');
+assert.match(landing, /Open architecture docs/, 'landing should link from the overview section to full architecture docs');
+assert.ok(!landing.includes('<section class="sr-section sr-diagram-section"'), 'landing should not render a dense four-diagram grid');
+assert.ok(!landing.includes('mcpAgentDiagram'), 'landing should keep detailed MCP diagrams in docs instead of the main page');
 assert.ok(
   !landing.includes("import dashboardPreview from '../assets/screenshots/dashboard-runtime-control-center-dark.png'"),
   'landing should no longer lead with the old dashboard screenshot import',
