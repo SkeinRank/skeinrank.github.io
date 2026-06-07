@@ -39,9 +39,13 @@ assert.match(landing, /sr-terminal-dots/, 'terminal dots should be grouped for p
 assert.ok(!landing.includes('<section id="try-sdk"'), 'landing should not duplicate the SDK quickstart below the hero');
 assert.ok(!landing.includes('<div class="sr-world-visual"'), 'landing hero should use SDK proof instead of the dense architecture diagram');
 assert.match(landing, /sr-trust-strip/, 'landing should include a concise project status strip below the hero');
-assert.match(landing, /https:\/\/pypi.org\/project\/skeinrank\/" target="_blank" rel="noreferrer"/, 'external PyPI status link should open in a new tab');
-assert.match(landing, /href=\{repoUrl\} target="_blank" rel="noreferrer"/, 'external GitHub status link should open in a new tab');
+assert.match(landing, /href="https:\/\/pypi.org\/project\/skeinrank\/"[\s\S]*target="_blank"[\s\S]*rel="noreferrer"/, 'external PyPI status link should open in a new tab');
+assert.match(landing, /href=\{repoUrl\}[\s\S]*target="_blank"[\s\S]*rel="noreferrer"/, 'external GitHub status link should open in a new tab');
 assert.match(landing, /skeinrank 0\.10\.0/, 'status strip should mention the current PyPI package version');
+assert.match(landing, /No Docker required/, 'status strip should keep the SDK proof lightweight');
+assert.match(landing, /a \+ a::before/, 'status strip should use lightweight inline separators instead of boxed cards');
+assert.ok(!landing.includes('<span>PyPI</span>'), 'status strip should not render heavy label/value cards');
+assert.ok(!landing.includes('grid-template-columns: repeat(4, minmax(0, 1fr))'), 'status strip should not use boxed card grid layout');
 assert.match(landing, /controlPlaneOverview/, 'landing should import only the featured control-plane diagram');
 assert.match(landing, /From domain language to runtime context/, 'landing should use a user-facing overview heading');
 assert.match(landing, /Open architecture docs/, 'landing should link from the overview section to full architecture docs');

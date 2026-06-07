@@ -88,22 +88,20 @@ skeinrank.extract("sev1 on kube after deploy")
     </section>
 
     <section class="sr-trust-strip" aria-label="SkeinRank project status">
-      <a href="https://pypi.org/project/skeinrank/" target="_blank" rel="noreferrer">
-        <span>PyPI</span>
-        <strong>skeinrank 0.10.0</strong>
-      </a>
-      <a href={repoUrl} target="_blank" rel="noreferrer">
-        <span>Open source</span>
-        <strong>Apache-2.0</strong>
-      </a>
-      <a href={sdkQuickstartUrl}>
-        <span>SDK path</span>
-        <strong>No Docker required</strong>
-      </a>
-      <a href="/integrations/mcp/">
-        <span>Agent-ready</span>
-        <strong>MCP guardrails</strong>
-      </a>
+      <a
+        href="https://pypi.org/project/skeinrank/"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="PyPI package skeinrank 0.10.0"
+      >skeinrank 0.10.0</a>
+      <a
+        href={repoUrl}
+        target="_blank"
+        rel="noreferrer"
+        aria-label="SkeinRank is open source under Apache 2.0"
+      >Apache-2.0</a>
+      <a href={sdkQuickstartUrl}>No Docker required</a>
+      <a href="/integrations/mcp/">MCP guardrails</a>
     </section>
 
     <script is:inline>
@@ -3555,52 +3553,48 @@ skeinrank.extract("sev1 on kube after deploy")
   }
 
   .sr-trust-strip {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0.75rem;
-    margin-top: clamp(-3.6rem, -4vw, -2.1rem);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.42rem 0;
+    margin-top: clamp(-3rem, -3.2vw, -1.75rem);
+    color: color-mix(in srgb, var(--sr-text-soft) 74%, transparent);
+    font-size: clamp(0.78rem, 1.05vw, 0.9rem);
+    font-weight: 760;
+    letter-spacing: -0.01em;
   }
 
   .sr-trust-strip a {
-    min-width: 0;
-    padding: 0.9rem 1rem;
-    border: 1px solid rgba(148, 163, 184, 0.14);
-    border-radius: 1rem;
-    background: rgba(15, 23, 42, 0.36);
-    color: var(--sr-text);
+    display: inline-flex;
+    align-items: center;
+    color: inherit;
     text-decoration: none;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
-    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    opacity: 0.74;
+    transition: color 160ms ease, opacity 160ms ease;
+  }
+
+  .sr-trust-strip a + a::before {
+    content: '·';
+    margin-inline: 0.7rem;
+    color: color-mix(in srgb, var(--sr-muted) 68%, transparent);
+    opacity: 0.62;
   }
 
   .sr-trust-strip a:hover,
   .sr-trust-strip a:focus-visible {
-    transform: translateY(-1px);
-    border-color: rgba(34, 211, 238, 0.22);
-    background: rgba(15, 23, 42, 0.48);
+    color: var(--sr-text);
+    opacity: 0.96;
     text-decoration: none;
   }
 
-  .sr-trust-strip span {
-    display: block;
-    color: var(--sr-cyan);
-    font-size: 0.68rem;
-    font-weight: 900;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+  :global(:root[data-theme='light']) .sr-trust-strip {
+    color: #64748b;
   }
 
-  .sr-trust-strip strong {
-    display: block;
-    margin-top: 0.28rem;
-    color: var(--sr-text);
-    font-size: 0.95rem;
-    line-height: 1.25;
-  }
-
-  :global(:root[data-theme='light']) .sr-trust-strip a {
-    background: rgba(255, 255, 255, 0.72);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.74);
+  :global(:root[data-theme='light']) .sr-trust-strip a:hover,
+  :global(:root[data-theme='light']) .sr-trust-strip a:focus-visible {
+    color: #0f172a;
   }
 
   @media (max-width: 1160px) {
@@ -3615,7 +3609,6 @@ skeinrank.extract("sev1 on kube after deploy")
 
     .sr-trust-strip {
       margin-top: -2.2rem;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
@@ -3650,7 +3643,7 @@ skeinrank.extract("sev1 on kube after deploy")
     }
 
     .sr-trust-strip {
-      grid-template-columns: 1fr;
+      justify-content: flex-start;
       margin-top: -2.4rem;
     }
   }
