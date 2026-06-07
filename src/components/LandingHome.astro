@@ -3385,20 +3385,35 @@ skeinrank.extract("sev1 on kube after deploy")
   }
 
   :global(:root[data-theme='light']) .sr-hero-code-panel {
+    border-color: rgba(15, 23, 42, 0.18);
     background:
-      radial-gradient(circle at 18% 0%, rgba(14, 165, 233, 0.08), transparent 34%),
-      radial-gradient(circle at 90% 12%, rgba(109, 40, 217, 0.08), transparent 32%),
-      linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(2, 6, 23, 0.95));
+      radial-gradient(circle at 18% 0%, rgba(34, 211, 238, 0.08), transparent 34%),
+      radial-gradient(circle at 90% 12%, rgba(139, 92, 246, 0.10), transparent 32%),
+      linear-gradient(180deg, #0f172a 0%, #050816 100%);
+    box-shadow:
+      0 28px 72px rgba(15, 23, 42, 0.24),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 
+  :global(:root[data-theme='light']) .sr-hero-code-panel .sr-terminal-bar {
+    border-bottom-color: rgba(148, 163, 184, 0.16);
+    background: rgba(15, 23, 42, 0.74);
+  }
 
   :global(:root[data-theme='light']) .sr-hero-code-panel .sr-code-window {
-    border-color: rgba(148, 163, 184, 0.11);
-    background: linear-gradient(180deg, rgba(7, 12, 28, 0.94), rgba(4, 8, 19, 0.9));
+    border-color: rgba(148, 163, 184, 0.16);
+    background: linear-gradient(180deg, #111827 0%, #080d1d 100%);
   }
 
-  :global(:root[data-theme='light']) .sr-hero-code-panel .sr-code-window pre {
-    color: #cbd5e1;
+  :global(:root[data-theme='light']) .sr-hero-code-panel .sr-code-window pre,
+  :global(:root[data-theme='light']) .sr-hero-code-panel .sr-code-window code {
+    color: #a9b7c6;
+  }
+
+  :global(:root[data-theme='light']) .sr-hero-code-panel .sr-copy-icon {
+    border-color: rgba(148, 163, 184, 0.18);
+    background: rgba(15, 23, 42, 0.42);
+    color: rgba(203, 213, 225, 0.72);
   }
 
   .sr-hero-code-panel .sr-terminal-bar {
@@ -3453,7 +3468,7 @@ skeinrank.extract("sev1 on kube after deploy")
     margin: 0;
     overflow-x: auto;
     padding: 1.08rem 3.2rem 1.08rem 1.12rem;
-    color: #cbd5e1;
+    color: #a9b7c6;
     font-size: clamp(0.86rem, 1.2vw, 1rem);
     line-height: 1.72;
   }
@@ -3520,23 +3535,23 @@ skeinrank.extract("sev1 on kube after deploy")
     stroke-linejoin: round;
   }
 
-  .sr-code-command { color: #e2e8f0; font-weight: 780; }
-  .sr-code-arg { color: #a5b4fc; font-weight: 720; }
-  .sr-code-package { color: #7dd3fc; font-weight: 760; }
-  .sr-code-keyword { color: #f472b6; font-weight: 760; }
-  .sr-code-module { color: #c7d2fe; font-weight: 700; }
-  .sr-code-method { color: #93c5fd; font-weight: 760; }
-  .sr-code-string { color: #fbbf24; }
+  .sr-code-command { color: #a9b7c6; font-weight: 780; }
+  .sr-code-arg { color: #cc7832; font-weight: 760; }
+  .sr-code-package { color: #ffc66d; font-weight: 760; }
+  .sr-code-keyword { color: #cc7832; font-weight: 760; }
+  .sr-code-module { color: #a9b7c6; font-weight: 720; }
+  .sr-code-method { color: #ffc66d; font-weight: 760; }
+  .sr-code-string { color: #6a8759; }
   .sr-code-comment {
-    color: #94a3b8;
+    color: #808080;
     font-style: normal;
   }
   .sr-code-result {
     display: inline-block;
     margin-top: 0.28rem;
-    color: #5eead4;
+    color: #6a8759;
     font-weight: 760;
-    text-shadow: 0 0 18px rgba(45, 212, 191, 0.23);
+    text-shadow: 0 0 14px rgba(106, 135, 89, 0.18);
   }
 
   .sr-trust-strip {
