@@ -65,11 +65,14 @@ assert.ok(!headerNav.includes("label: 'GitHub'"), 'GitHub should not be rendered
 assert.match(headerNav, /buildHeaderActions/, 'header should create a right-side action group');
 assert.match(headerNav, /sr-header-github-action/, 'GitHub should be a right-side icon action');
 assert.match(headerNav, /sr-header-try-sdk/, 'navbar should expose Try SDK as the primary action');
+assert.match(headerNav, /rightGroup\.appendChild\(actions\)/, 'navbar actions should mount inside the right-side header group');
 assert.match(headerNav, /target = '_blank'/, 'external header GitHub action should open in a new tab');
 assert.match(headerNav, /cta\.textContent = 'Try SDK'/, 'mobile drawer CTA should point to the SDK path');
 
 const customCss = readFileSync('src/styles/custom.css', 'utf8');
 assert.match(customCss, /sr-header-actions/, 'site CSS should style the right-side navbar action group');
+assert.match(customCss, /\.sr-product-header \.right-group/, 'site CSS should keep navbar actions aligned in the right group');
+assert.match(customCss, /white-space: nowrap;/, 'navbar actions should not wrap into a second row');
 assert.match(customCss, /sr-theme-cycle-label/, 'theme toggle should be icon-only');
 assert.match(customCss, /display: none;/, 'theme toggle label should be hidden');
 assert.match(customCss, /flex: 0 0 5\.25rem/, 'home search should be compact instead of a centered wide field');

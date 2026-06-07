@@ -414,6 +414,22 @@ body:has(.sr-landing) .sl-container {
   gap: 0.5rem;
   flex: 0 0 auto;
   margin-inline-start: 0.45rem;
+  white-space: nowrap;
+}
+
+.sr-product-header .right-group {
+  align-items: center;
+  gap: 0.45rem;
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.sr-product-header .right-group .sr-header-actions {
+  order: 4;
+}
+
+.sr-product-header .right-group starlight-theme-select {
+  order: 3;
 }
 
 .sr-header-icon-action,

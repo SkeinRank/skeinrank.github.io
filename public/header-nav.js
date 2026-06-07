@@ -416,7 +416,14 @@
     header.classList.add('sr-product-header');
 
     if (!header.querySelector('.sr-header-actions')) {
-      header.appendChild(buildHeaderActions());
+      const rightGroup = header.querySelector('.right-group');
+      const actions = buildHeaderActions();
+
+      if (rightGroup instanceof HTMLElement) {
+        rightGroup.appendChild(actions);
+      } else {
+        header.appendChild(actions);
+      }
     }
 
     themeCycle.mount();
