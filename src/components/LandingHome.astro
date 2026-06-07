@@ -3,7 +3,8 @@ import { Image } from 'astro:assets';
 import controlPlaneOverview from '../assets/diagrams/control-plane-overview.jpeg';
 
 const repoUrl = 'https://github.com/SkeinRank/skeinrank';
-const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
+const sdkQuickstartUrl = '/getting-started/python-sdk/';
+const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
 ---
 
 <section class="sr-landing" aria-labelledby="sr-home-title">
@@ -23,8 +24,8 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
         </p>
 
         <div class="sr-actions" aria-label="Primary actions">
-          <a class="sr-btn sr-btn-primary" href={dockerQuickstartUrl}>Docker beta</a>
-          <a class="sr-btn sr-btn-secondary" href="/concepts/architecture/">Architecture</a>
+          <a class="sr-btn sr-btn-primary" href="#try-sdk">Try SDK</a>
+          <a class="sr-btn sr-btn-secondary" href={platformPreviewUrl}>Platform preview</a>
           <a class="sr-btn sr-btn-ghost" href={repoUrl}>GitHub</a>
         </div>
       </div>
@@ -136,6 +137,97 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
       </div>
     </section>
 
+
+    <section id="try-sdk" class="sr-section sr-sdk-quickstart" aria-labelledby="sr-sdk-quickstart-title">
+      <div class="sr-sdk-copy">
+        <p class="sr-section-label">Zero-friction SDK</p>
+        <h2 id="sr-sdk-quickstart-title">Try SkeinRank in 30 seconds.</h2>
+        <p>
+          The core SDK now ships with a built-in platform operations dictionary. Try alias
+          canonicalization without Docker, Elasticsearch, OpenRouter, or a custom dictionary file.
+        </p>
+        <div class="sr-sdk-actions" aria-label="SDK quickstart links">
+          <a class="sr-inline-link" href={sdkQuickstartUrl}>Open Python SDK guide →</a>
+          <a class="sr-inline-link" href="https://pypi.org/project/skeinrank/">View on PyPI →</a>
+        </div>
+      </div>
+
+      <div class="sr-sdk-terminal" aria-label="SkeinRank Python SDK quickstart">
+        <div class="sr-terminal-bar">
+          <div class="sr-terminal-dots" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <strong>sdk quickstart</strong>
+        </div>
+
+        <div class="sr-code-stack" aria-label="Two-step SDK quickstart">
+          <div class="sr-code-window sr-code-window-install">
+            <button
+              class="sr-copy-icon"
+              type="button"
+              data-copy-target="sr-sdk-install-code"
+              aria-label="Copy install command"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M9 9a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2V9Z" />
+                <path d="M5 15H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1" />
+              </svg>
+            </button>
+            <pre id="sr-sdk-install-code"><code><span class="sr-code-prompt">$</span> <span class="sr-code-command">pip install skeinrank</span></code></pre>
+          </div>
+
+          <div class="sr-code-window sr-code-window-python">
+            <button
+              class="sr-copy-icon"
+              type="button"
+              data-copy-target="sr-sdk-snippet"
+              aria-label="Copy Python SDK snippet"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M9 9a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2V9Z" />
+                <path d="M5 15H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1" />
+              </svg>
+            </button>
+            <pre id="sr-sdk-snippet"><code><span class="sr-code-keyword">import</span> skeinrank
+
+<span class="sr-code-fn">print</span>(skeinrank.<span class="sr-code-method">canonicalize</span>(<span class="sr-code-string">"k8s pg timeout"</span>))
+<span class="sr-code-output">→ kubernetes postgresql timeout</span>
+
+<span class="sr-code-fn">print</span>(skeinrank.<span class="sr-code-method">extract</span>(<span class="sr-code-string">"sev1 on kube after deploy"</span>))
+<span class="sr-code-output">→ ["critical incident", "kubernetes", "deployment"]</span></code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script is:inline>
+      (() => {
+        const copyButtons = document.querySelectorAll('[data-copy-target]');
+        for (const button of copyButtons) {
+          button.addEventListener('click', async () => {
+            const targetId = button.getAttribute('data-copy-target');
+            const target = targetId ? document.getElementById(targetId) : null;
+            if (!target) return;
+            const text = target.textContent?.replace(/^\$\s*/m, '').trim() ?? '';
+            if (!text) return;
+            try {
+              await navigator.clipboard.writeText(text);
+              button.setAttribute('data-copied', 'true');
+              window.setTimeout(() => {
+                button.removeAttribute('data-copied');
+              }, 1500);
+            } catch {
+              button.setAttribute('data-copy-failed', 'true');
+              window.setTimeout(() => {
+                button.removeAttribute('data-copy-failed');
+              }, 1500);
+            }
+          });
+        }
+      })();
+    </script>
     <section class="sr-section sr-console-preview sr-overview-preview" aria-labelledby="sr-console-preview-title">
       <div class="sr-preview-heading">
         <p class="sr-section-label">System overview</p>
@@ -371,13 +463,13 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
 
     <section class="sr-cta" aria-labelledby="sr-cta-title">
       <div>
-        <p class="sr-section-label">Try the beta stack</p>
-        <h2 id="sr-cta-title">Run the console locally, then follow the workflow.</h2>
-        <p>Start with Docker Compose for the platform beta, or read the runtime model before connecting real search indexes.</p>
+        <p class="sr-section-label">Next step</p>
+        <h2 id="sr-cta-title">Start with the SDK, then open the platform preview.</h2>
+        <p>Use the lightweight SDK for the first aha moment, then run the full control-plane stack when you want UI, API, bindings, evidence, and enrichment workflows.</p>
       </div>
       <div class="sr-cta-actions">
-        <a class="sr-btn sr-btn-primary" href="/getting-started/docker-beta-quickstart/">Run Docker beta</a>
-        <a class="sr-btn sr-btn-secondary" href="/concepts/profiles-bindings-snapshots/">Read runtime model</a>
+        <a class="sr-btn sr-btn-primary" href={sdkQuickstartUrl}>Try Python SDK</a>
+        <a class="sr-btn sr-btn-secondary" href="/getting-started/docker-beta-quickstart/">Run Docker beta</a>
       </div>
     </section>
   </div>
@@ -785,6 +877,259 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
   .sr-status-section {
     display: grid;
     gap: 1.5rem;
+  }
+
+  .sr-sdk-quickstart {
+    display: grid;
+    grid-template-columns: minmax(0, 0.78fr) minmax(460px, 1fr);
+    align-items: center;
+    gap: clamp(2rem, 4.5vw, 3.75rem);
+    padding: clamp(1.85rem, 4.4vw, 3.25rem);
+    border: 1px solid color-mix(in srgb, var(--sr-border-strong) 66%, transparent);
+    border-radius: calc(var(--sr-radius-lg) + 0.2rem);
+    background:
+      radial-gradient(circle at 12% 14%, color-mix(in srgb, var(--sr-green) 10%, transparent), transparent 28%),
+      radial-gradient(circle at 92% 2%, color-mix(in srgb, var(--sr-cyan) 12%, transparent), transparent 34%),
+      linear-gradient(135deg, color-mix(in srgb, var(--sr-surface-strong) 95%, #020617), color-mix(in srgb, var(--sr-surface) 96%, #020617));
+    box-shadow: 0 28px 80px rgba(2, 6, 23, 0.3);
+  }
+
+  .sr-sdk-copy {
+    align-self: center;
+  }
+
+  .sr-sdk-copy h2 {
+    max-width: 11ch;
+    margin: 0;
+    color: var(--sr-text);
+    font-size: clamp(2.2rem, 4.8vw, 4.05rem);
+    line-height: 1.035;
+    letter-spacing: -0.028em;
+  }
+
+  .sr-sdk-copy p {
+    max-width: 52ch;
+    margin: 1rem 0 0;
+    color: var(--sr-text-soft);
+    font-size: clamp(1rem, 1.45vw, 1.1rem);
+    line-height: 1.62;
+  }
+
+  .sr-sdk-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.95rem;
+    margin-top: 1.3rem;
+  }
+
+  .sr-sdk-terminal {
+    overflow: hidden;
+    align-self: center;
+    display: grid;
+    gap: 0;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 1.45rem;
+    background:
+      radial-gradient(circle at 72% 0%, rgba(34, 211, 238, 0.07), transparent 30%),
+      linear-gradient(180deg, rgba(8, 15, 35, 0.97), rgba(3, 8, 24, 0.97));
+    box-shadow: 0 32px 84px rgba(2, 6, 23, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  }
+
+  :global(:root[data-theme='light']) .sr-sdk-terminal {
+    background: rgba(15, 23, 42, 0.94);
+  }
+
+  .sr-terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1rem 1.1rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(10, 16, 30, 0.78));
+    color: #cbd5e1;
+  }
+
+  .sr-terminal-dots {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.42rem;
+  }
+
+  .sr-terminal-dots span {
+    width: 0.68rem;
+    height: 0.68rem;
+    border-radius: 999px;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.18), 0 0 0 1px rgba(15, 23, 42, 0.18);
+  }
+
+  .sr-terminal-dots span:first-child {
+    background: #ff5f57;
+  }
+
+  .sr-terminal-dots span:nth-child(2) {
+    background: #febc2e;
+  }
+
+  .sr-terminal-dots span:nth-child(3) {
+    background: #28c840;
+  }
+
+  .sr-terminal-bar strong {
+    color: #9ca3af;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .sr-code-stack {
+    display: grid;
+    gap: 1rem;
+    padding: 1.1rem;
+  }
+
+  .sr-code-window {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.05rem;
+    background: rgba(4, 9, 22, 0.66);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  }
+
+  .sr-code-window::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border: 1px solid rgba(148, 163, 184, 0.11);
+    border-radius: inherit;
+  }
+
+  .sr-code-window:hover::before {
+    border-color: rgba(34, 211, 238, 0.18);
+  }
+
+  .sr-copy-icon {
+    position: absolute;
+    top: 0.72rem;
+    right: 0.72rem;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.1rem;
+    height: 2.1rem;
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    border-radius: 0.7rem;
+    background: rgba(15, 23, 42, 0.28);
+    color: rgba(203, 213, 225, 0.62);
+    opacity: 0.72;
+    backdrop-filter: blur(10px);
+    transition: opacity 180ms ease, transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease;
+  }
+
+  .sr-copy-icon:hover {
+    opacity: 1;
+    transform: translateY(-1px);
+    border-color: rgba(34, 211, 238, 0.26);
+    background: rgba(15, 23, 42, 0.66);
+    color: #e2e8f0;
+  }
+
+  .sr-copy-icon[data-copied='true'] {
+    opacity: 1;
+    border-color: rgba(45, 212, 191, 0.28);
+    color: #99f6e4;
+  }
+
+  .sr-copy-icon[data-copy-failed='true'] {
+    opacity: 1;
+    border-color: rgba(248, 113, 113, 0.32);
+    color: #fecaca;
+  }
+
+  .sr-copy-icon svg {
+    width: 1rem;
+    height: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .sr-code-stack pre {
+    margin: 0;
+    padding: 1.15rem 3.35rem 1.15rem 1.2rem;
+    overflow-x: auto;
+    color: #e2e8f0;
+    font-size: clamp(0.82rem, 1.25vw, 0.96rem);
+    line-height: 1.72;
+  }
+
+  .sr-code-window-install pre {
+    padding-block: 1rem;
+  }
+
+  .sr-code-stack code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+  }
+
+  .sr-code-prompt {
+    color: #64748b;
+  }
+
+  .sr-code-command {
+    color: #f8fafc;
+    font-weight: 700;
+  }
+
+  .sr-code-keyword {
+    color: #c084fc;
+  }
+
+  .sr-code-fn {
+    color: #67e8f9;
+  }
+
+  .sr-code-method {
+    color: #93c5fd;
+  }
+
+  .sr-code-string {
+    color: #fde68a;
+  }
+
+  .sr-code-comment {
+    color: #94a3b8;
+  }
+
+  .sr-code-output {
+    display: inline-block;
+    margin-top: 0.12rem;
+    color: #5eead4;
+    font-weight: 700;
+  }
+
+  @media (max-width: 1100px) {
+    .sr-sdk-quickstart {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .sr-sdk-copy h2 {
+      max-width: 9ch;
+      font-size: clamp(2rem, 9vw, 3rem);
+    }
+
+    .sr-code-stack {
+      padding: 0.85rem;
+    }
+
+    .sr-code-stack pre {
+      padding-right: 3rem;
+    }
   }
 
   .sr-problem-solution,
@@ -1321,7 +1666,7 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
       justify-self: start;
     }
   }
-  /* Site Patch 8A: cinematic terminology control core hero. */
+  /* Cinematic terminology-control hero. */
   .sr-hero-core {
     grid-template-columns: minmax(21rem, 0.84fr) minmax(34rem, 1.16fr);
     min-height: min(72vh, 48rem);
@@ -1643,7 +1988,7 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
   }
 
 
-  /* Site Patch 8B: full-width world-class hero composition. */
+  /* Full-width landing composition. */
   .sr-landing {
     position: relative;
     margin-top: 0;
@@ -2221,7 +2566,7 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
   }
 
 
-  /* Patch 8C: scroll performance guardrails.
+  /* Scroll performance guardrails.
      Keep the hero visually rich, but avoid per-frame paint costs on 13-inch laptops. */
   .sr-core-metrics div,
   .sr-world-card {
@@ -2270,7 +2615,7 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
   }
 
 
-  /* Patch 8I: mobile flow arrows + desktop token containment hotfix. */
+  /* Mobile flow arrows and desktop token containment. */
   .sr-token-cloud span,
   .sr-control-grid span,
   .sr-output-stack div,
@@ -2343,7 +2688,7 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
   }
 
 
-  /* Patch 8J: mobile landing header + compact full-bleed mobile hero polish. */
+  /* Mobile landing header and compact full-bleed hero polish. */
   .sr-pulse {
     flex: 0 0 0.55rem;
     inline-size: 0.55rem;
@@ -2405,7 +2750,7 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
   }
 
 
-  /* Patch 8K: mobile nav identity + flush hero + centered mobile flow polish. */
+  /* Mobile nav identity, flush hero, and centered mobile flow polish. */
   @media (max-width: 860px) {
     .sr-shell {
       padding-top: 0;
@@ -2476,7 +2821,7 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
   }
 
 
-  /* Patch 8M: keep the full-bleed mobile hero flush with the navbar,
+  /* Keep the full-bleed mobile hero flush with the navbar,
      but push the hero content below the sticky header so the kicker is not covered. */
   @media (max-width: 860px) {
     .sr-world-hero {
@@ -2491,11 +2836,9 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
   }
 
 
-  /* Patch 8N: restore Starlight's fixed-header offset on the home page.
-     Patch 8L removed main-frame padding on mobile, which made the hero start
-     behind the fixed navbar. Keep the hero canvas flush to the navbar line,
-     but let the layout reserve the real nav height instead of faking it with
-     oversized inner padding. */
+  /* Restore Starlight's fixed-header offset on the home page.
+     Keep the hero canvas flush to the navbar line, but let the layout reserve
+     the real nav height instead of faking it with oversized inner padding. */
   @media (max-width: 860px) {
     :global(html.sr-home-page body:has(.sr-landing) .main-frame) {
       padding-top: var(--sl-nav-height) !important;
@@ -2516,7 +2859,7 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
   }
 
 
-  /* Patch 8O: mobile content gutters hotfix.
+  /* Mobile content gutters.
      The hero canvas stays full-bleed on phones, but sections below it need
      readable gutters so headings and cards do not touch the device edges. */
   @media (max-width: 860px) {
@@ -2665,7 +3008,7 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
 
 
 
-  /* Site Patch 22A: product diagrams replace the stale dashboard-first second screen. */
+  /* Product diagrams replace the stale dashboard-first second screen. */
   .sr-overview-preview {
     gap: 1.55rem;
   }
@@ -2819,7 +3162,7 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
   }
 
 
-  /* Patch Site 22B: hero modernization and mobile polish. */
+  /* Hero modernization and mobile polish. */
   .sr-world-hero {
     overflow: clip;
   }
@@ -3024,7 +3367,7 @@ const dockerQuickstartUrl = '/getting-started/docker-beta-quickstart/';
   }
 
 
-  /* Patch Site 22B.1: remove stretched proof/mobile cards and compact hero CTAs. */
+  /* Remove stretched proof/mobile cards and compact hero CTAs. */
   .sr-hero-proof,
   .sr-mobile-flow {
     display: none !important;

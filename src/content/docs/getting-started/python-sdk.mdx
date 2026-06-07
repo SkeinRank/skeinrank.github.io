@@ -1,53 +1,94 @@
 ---
 title: Python SDK
-description: Use SkeinRank from notebooks, scripts, and local evaluation workflows.
+description: Try SkeinRank from Python with the built-in demo dictionary or your own terminology map.
 ---
 
-The SDK path is designed for notebooks, scripts, small evaluations, and future bot-driven dictionary checks.
+The Python SDK is the fastest way to see SkeinRank canonicalize messy company language.
+It runs locally and does not require Docker, Elasticsearch, OpenRouter, the Governance API, or a custom dictionary file for the first demo.
 
-## Load a dictionary
+## Install
+
+```bash
+pip install skeinrank
+```
+
+From a source checkout:
+
+```bash
+cd packages/skeinrank-core
+poetry install
+```
+
+## Try the built-in demo dictionary
 
 ```python
-from skeinrank import load_dictionary
+import skeinrank
+
+print(skeinrank.canonicalize("k8s pg timeout"))
+# kubernetes postgresql timeout
+
+print(skeinrank.extract("sev1 on kube after deploy"))
+# ["critical incident", "kubernetes", "deployment"]
+```
+
+The built-in `platform_ops_demo` dictionary covers a compact set of platform operations, incident, CI/CD, search, RAG, and SkeinRank terms. It is designed for the first aha moment, not as a production vocabulary.
+
+## Use a small dictionary in code
+
+```python
+from skeinrank import SkeinRank
+
+sr = SkeinRank({
+    "kubernetes": ["k8s", "kube"],
+    "postgresql": ["pg", "psql", "postgres"],
+})
+
+print(sr.canonicalize("kube timeout on pg"))
+# kubernetes timeout on postgresql
+
+print(sr.extract("kube timeout on pg"))
+# ["kubernetes", "postgresql"]
+```
+
+## Export the demo dictionary
+
+Use the CLI when you want to inspect or adapt the built-in dictionary:
+
+```bash
+skeinrank demo-dictionary --compact
+skeinrank demo-dictionary --output platform_ops_demo.dictionary.json
+```
+
+## Load a dictionary file
+
+```python
+from skeinrank import SkeinRank
+
+sr = SkeinRank.from_file("company_dictionary.json")
+print(sr.canonicalize("k8s rollout uses pg database"))
+```
+
+The dictionary-first functions remain available when you want the lower-level API:
+
+```python
+from skeinrank import load_dictionary, extract_terms, canonicalize_text
 
 dictionary = load_dictionary("company_dictionary.json")
-```
 
-## Extract canonical values
-
-```python
-from skeinrank import extract_terms
-
-result = extract_terms(
-    "This runbook describes a k8s rollout backed by pg.",
-    dictionary=dictionary,
-)
-
+result = extract_terms("k8s rollout uses pg database", dictionary=dictionary)
 print(result.canonical_values)
-```
 
-## Canonicalize text
-
-```python
-from skeinrank import canonicalize_text
-
-canonicalized = canonicalize_text(
-    "k8s rollout uses pg database",
-    dictionary=dictionary,
-)
-
+canonicalized = canonicalize_text("k8s rollout uses pg database", dictionary=dictionary)
 print(canonicalized.text)
 ```
 
 ## Extract from documents
 
 ```python
-from skeinrank import extract_terms_from_document
+from skeinrank import load_dictionary, extract_terms_from_document
 
-result = extract_terms_from_document(
-    "incident-runbook.md",
-    dictionary=dictionary,
-)
+dictionary = load_dictionary("company_dictionary.json")
+result = extract_terms_from_document("incident-runbook.md", dictionary=dictionary)
 
 print(result.document.file_name)
 print(result.extraction.canonical_values)
@@ -55,8 +96,14 @@ print(result.extraction.canonical_values)
 
 ## Public objects
 
-The stable local SDK surface is expected to include:
+The stable local SDK surface includes:
 
+- `SkeinRank(...)`
+- `SkeinRank.from_file(...)`
+- `canonicalize(...)`
+- `extract(...)`
+- `demo_dictionary(...)`
+- `demo_dictionary_payload(...)`
 - `Dictionary`, `DictionaryTerm`, `DictionaryAlias`, `DictionaryStopListEntry`
 - `load_dictionary(...)`
 - `validate_dictionary(...)`
@@ -68,5 +115,5 @@ The stable local SDK surface is expected to include:
 
 <div class="sr-callout">
   <h3>Design direction</h3>
-  <p>The SDK should stay deterministic, local, and easy to test. The platform can manage terminology, but runtime extraction should not require a live database query for every request.</p>
+  <p>The SDK stays deterministic, local, and easy to test. The platform can govern terminology changes, but first-run canonicalization should not require a live database, model call, or search backend.</p>
 </div>

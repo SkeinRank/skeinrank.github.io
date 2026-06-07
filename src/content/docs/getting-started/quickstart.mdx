@@ -1,14 +1,61 @@
 ---
 title: Quickstart
-description: Try SkeinRank with a small dictionary and one noisy technical sentence.
+description: Try SkeinRank with the built-in SDK dictionary or a small custom dictionary.
 ---
 
-This quickstart demonstrates the smallest useful SkeinRank path: dictionary → text → canonical values.
-It does not require the governance API, UI, PostgreSQL, Elasticsearch, or background workers.
+This quickstart demonstrates the smallest useful SkeinRank path: noisy text → canonical terms.
+It does not require the governance API, UI, PostgreSQL, Elasticsearch, OpenRouter, or background workers.
 
 For the full platform beta with the governance console, bindings, enrichment jobs, snapshots, and Search Playground, use the [Docker beta quickstart](/getting-started/docker-beta-quickstart/).
 
-## 1. Create a dictionary
+## 1. Install
+
+```bash
+pip install skeinrank
+```
+
+From a source checkout:
+
+```bash
+cd packages/skeinrank-core
+poetry install
+```
+
+## 2. Canonicalize with the built-in demo dictionary
+
+```python
+import skeinrank
+
+print(skeinrank.canonicalize("k8s pg timeout"))
+# kubernetes postgresql timeout
+
+print(skeinrank.extract("sev1 on kube after deploy"))
+# ["critical incident", "kubernetes", "deployment"]
+```
+
+## 3. Try the CLI
+
+```bash
+skeinrank canonicalize "k8s pg timeout" --text
+skeinrank extract "sev1 on kube after deploy" --text --compact
+skeinrank demo-dictionary --compact
+```
+
+## 4. Add your own dictionary
+
+```python
+from skeinrank import SkeinRank
+
+sr = SkeinRank({
+    "kubernetes": ["k8s", "kube", "kuber"],
+    "postgresql": ["pg", "postgres", "psql"],
+})
+
+print(sr.canonicalize("kuber timeout on pg"))
+# kubernetes timeout on postgresql
+```
+
+## 5. Move to a dictionary file
 
 Save this as `company_dictionary.json`:
 
@@ -33,58 +80,17 @@ Save this as `company_dictionary.json`:
 }
 ```
 
-## 2. Validate the dictionary
+Validate and use it:
 
 ```bash
 skeinrank validate-dictionary company_dictionary.json
-```
-
-## 3. Extract terms from text
-
-```bash
-skeinrank extract "k8s rollout uses pg database" \
-  --text \
-  --dictionary company_dictionary.json
-```
-
-Expected canonical values:
-
-```json
-["kubernetes", "postgresql"]
-```
-
-## 4. Canonicalize the text
-
-```bash
-skeinrank canonicalize "k8s rollout uses pg database" \
-  --text \
-  --dictionary company_dictionary.json
+skeinrank canonicalize "k8s rollout uses pg database" --text --dictionary company_dictionary.json
 ```
 
 Expected output:
 
 ```text
 kubernetes rollout uses postgresql database
-```
-
-## 5. Use Python instead
-
-```python
-from skeinrank import load_dictionary, extract_terms, canonicalize_text
-
-dictionary = load_dictionary("company_dictionary.json")
-
-result = extract_terms(
-    "k8s rollout uses pg database",
-    dictionary=dictionary,
-)
-print(result.canonical_values)
-
-canonicalized = canonicalize_text(
-    "k8s rollout uses pg database",
-    dictionary=dictionary,
-)
-print(canonicalized.text)
 ```
 
 <div class="sr-callout">

@@ -39,10 +39,16 @@ Read the full guide for auth, observability, reset commands, and troubleshooting
 
 ## Install the core package
 
-When the package is available on PyPI:
+Install the lightweight core SDK from PyPI:
 
 ```bash
 python -m pip install skeinrank
+```
+
+Try the built-in demo dictionary immediately:
+
+```bash
+python -c "import skeinrank; print(skeinrank.canonicalize('k8s pg timeout'))"
 ```
 
 For TestPyPI smoke testing:
