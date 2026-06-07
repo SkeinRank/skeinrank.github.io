@@ -9,165 +9,42 @@ const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
 
 <section class="sr-landing" aria-labelledby="sr-home-title">
   <div class="sr-shell">
-    <section class="sr-hero-block sr-hero-core sr-world-hero" aria-label="SkeinRank product hero">
-      <div class="sr-hero-copy sr-hero-copy-core sr-world-copy">
-        <div class="sr-kicker">
+    <section class="sr-hero-block sr-hero-core sr-proof-hero" aria-label="SkeinRank product hero">
+      <div class="sr-hero-copy sr-hero-copy-core sr-proof-copy">
+        <div class="sr-kicker sr-proof-kicker">
           <span class="sr-pulse" aria-hidden="true"></span>
-          Open-source domain language control plane for search, RAG, and agents
+          Domain language control plane for search, RAG &amp; agents
         </div>
 
         <h1 id="sr-home-title">Turn messy aliases into governed search context.</h1>
 
         <p class="sr-subtitle">
-          SkeinRank sits beside existing search, RAG, and agent systems. It turns aliases, acronyms,
-          and internal jargon into explicit runtime context through profiles, bindings, snapshots, and evidence.
+          Canonicalize company slang, acronyms, and ambiguous terms before they reach
+          search, RAG pipelines, and AI agents.
         </p>
 
         <div class="sr-actions" aria-label="Primary actions">
-          <a class="sr-btn sr-btn-primary" href="#try-sdk">Try SDK</a>
+          <a class="sr-btn sr-btn-primary" href={sdkQuickstartUrl}>Try SDK</a>
           <a class="sr-btn sr-btn-secondary" href={platformPreviewUrl}>Platform preview</a>
-          <a class="sr-btn sr-btn-ghost" href={repoUrl}>GitHub</a>
         </div>
       </div>
 
-      <div class="sr-world-visual" aria-label="Terminology pipeline from aliases to runtime search context">
-        <div class="sr-world-orbit sr-world-orbit-a" aria-hidden="true"></div>
-        <div class="sr-world-orbit sr-world-orbit-b" aria-hidden="true"></div>
-
-        <svg class="sr-world-flow" viewBox="0 0 980 560" aria-hidden="true">
-          <defs>
-            <linearGradient id="sr-world-line-a" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.05" />
-              <stop offset="50%" stop-color="#22d3ee" stop-opacity="0.9" />
-              <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.16" />
-            </linearGradient>
-            <linearGradient id="sr-world-line-b" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.18" />
-              <stop offset="52%" stop-color="#22c55e" stop-opacity="0.92" />
-              <stop offset="100%" stop-color="#22c55e" stop-opacity="0.05" />
-            </linearGradient>
-          </defs>
-
-          <g class="sr-world-lines sr-world-lines-in">
-            <path d="M170 172 C276 152 328 202 420 244" />
-            <path d="M166 282 C282 284 334 272 420 282" />
-            <path d="M170 396 C274 410 330 354 420 322" />
-          </g>
-          <g class="sr-world-lines sr-world-lines-out">
-            <path d="M560 244 C650 196 716 174 826 174" />
-            <path d="M560 282 C660 286 724 286 826 286" />
-            <path d="M560 322 C650 370 716 394 826 394" />
-          </g>
-          <g class="sr-world-traces sr-world-traces-in">
-            <path d="M170 172 C276 152 328 202 420 244" />
-            <path d="M166 282 C282 284 334 272 420 282" />
-            <path d="M170 396 C274 410 330 354 420 322" />
-          </g>
-          <g class="sr-world-traces sr-world-traces-out">
-            <path d="M560 244 C650 196 716 174 826 174" />
-            <path d="M560 282 C660 286 724 286 826 286" />
-            <path d="M560 322 C650 370 716 394 826 394" />
-          </g>
-
-          <g class="sr-world-packets sr-world-packets-in">
-            <circle cx="420" cy="244" r="4" />
-            <circle cx="420" cy="282" r="3.5" />
-            <circle cx="420" cy="322" r="4" />
-          </g>
-          <g class="sr-world-packets sr-world-packets-out">
-            <circle cx="560" cy="244" r="4" />
-            <circle cx="560" cy="282" r="3.5" />
-            <circle cx="560" cy="322" r="4" />
-          </g>
-        </svg>
-
-        <div class="sr-world-card sr-world-card-input">
-          <div class="sr-world-card-head">
-            <span>Input aliases</span>
-            <strong>Noisy company language</strong>
-          </div>
-          <div class="sr-token-cloud" aria-hidden="true">
-            <span>k8s</span>
-            <span>kube</span>
-            <span>pg</span>
-            <span>postgres</span>
-            <span>sev1</span>
-            <span>docs_uni</span>
-          </div>
-        </div>
-
-        <div class="sr-world-card sr-world-card-core">
-          <div class="sr-world-card-head">
-            <span>SkeinRank</span>
-            <strong>Terminology control plane</strong>
-          </div>
-          <div class="sr-control-grid" aria-hidden="true">
-            <span>profiles</span>
-            <span>bindings</span>
-            <span>guardrails</span>
-            <span>evidence</span>
-          </div>
-          <div class="sr-runtime-strip">
-            <span>snapshot</span>
-            <strong>infra_incidents / S42</strong>
-          </div>
-        </div>
-
-        <div class="sr-world-card sr-world-card-output">
-          <div class="sr-world-card-head">
-            <span>Runtime output</span>
-            <strong>Search-ready context</strong>
-          </div>
-          <div class="sr-output-stack" aria-hidden="true">
-            <div>
-              <span>canonical query</span>
-              <strong>kubernetes · postgresql · timeout</strong>
-            </div>
-            <div>
-              <span>runtime context</span>
-              <strong>binding_id + pinned snapshot</strong>
-            </div>
-            <div>
-              <span>side-car API</span>
-              <strong>Elasticsearch / RAG / agents</strong>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-
-    <section id="try-sdk" class="sr-section sr-sdk-quickstart" aria-labelledby="sr-sdk-quickstart-title">
-      <div class="sr-sdk-copy">
-        <p class="sr-section-label">Zero-friction SDK</p>
-        <h2 id="sr-sdk-quickstart-title">Try SkeinRank in 30 seconds.</h2>
-        <p>
-          The core SDK now ships with a built-in platform operations dictionary. Try alias
-          canonicalization without Docker, Elasticsearch, OpenRouter, or a custom dictionary file.
-        </p>
-        <div class="sr-sdk-actions" aria-label="SDK quickstart links">
-          <a class="sr-inline-link" href={sdkQuickstartUrl}>Open Python SDK guide →</a>
-          <a class="sr-inline-link" href="https://pypi.org/project/skeinrank/">View on PyPI →</a>
-        </div>
-      </div>
-
-      <div class="sr-sdk-terminal" aria-label="SkeinRank Python SDK quickstart">
+      <div class="sr-hero-code-panel" aria-label="SkeinRank SDK proof">
         <div class="sr-terminal-bar">
           <div class="sr-terminal-dots" aria-hidden="true">
             <span></span>
             <span></span>
             <span></span>
           </div>
-          <strong>sdk quickstart</strong>
+          <strong>skeinrank.py</strong>
         </div>
 
-        <div class="sr-code-stack" aria-label="Two-step SDK quickstart">
+        <div class="sr-code-stack sr-hero-code-stack" aria-label="SkeinRank SDK quickstart">
           <div class="sr-code-window sr-code-window-install">
             <button
               class="sr-copy-icon"
               type="button"
-              data-copy-target="sr-sdk-install-code"
+              data-copy-target="sr-hero-install-copy"
               aria-label="Copy install command"
             >
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -175,14 +52,15 @@ const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
                 <path d="M5 15H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1" />
               </svg>
             </button>
-            <pre id="sr-sdk-install-code"><code><span class="sr-code-prompt">$</span> <span class="sr-code-command">pip install skeinrank</span></code></pre>
+            <pre><code><span class="sr-code-command">pip</span> <span class="sr-code-arg">install</span> <span class="sr-code-package">skeinrank</span></code></pre>
+            <pre id="sr-hero-install-copy" class="sr-copy-source">pip install skeinrank</pre>
           </div>
 
           <div class="sr-code-window sr-code-window-python">
             <button
               class="sr-copy-icon"
               type="button"
-              data-copy-target="sr-sdk-snippet"
+              data-copy-target="sr-hero-python-copy"
               aria-label="Copy Python SDK snippet"
             >
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -190,16 +68,42 @@ const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
                 <path d="M5 15H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1" />
               </svg>
             </button>
-            <pre id="sr-sdk-snippet"><code><span class="sr-code-keyword">import</span> skeinrank
+            <pre><code><span class="sr-code-keyword">import</span> <span class="sr-code-module">skeinrank</span>
 
-<span class="sr-code-fn">print</span>(skeinrank.<span class="sr-code-method">canonicalize</span>(<span class="sr-code-string">"k8s pg timeout"</span>))
-<span class="sr-code-output">→ kubernetes postgresql timeout</span>
+<span class="sr-code-module">skeinrank</span>.<span class="sr-code-method">canonicalize</span>(<span class="sr-code-string">"k8s pg timeout"</span>)
+<span class="sr-code-comment sr-code-result"># kubernetes postgresql timeout</span>
 
-<span class="sr-code-fn">print</span>(skeinrank.<span class="sr-code-method">extract</span>(<span class="sr-code-string">"sev1 on kube after deploy"</span>))
-<span class="sr-code-output">→ ["critical incident", "kubernetes", "deployment"]</span></code></pre>
+<span class="sr-code-module">skeinrank</span>.<span class="sr-code-method">extract</span>(<span class="sr-code-string">"sev1 on kube after deploy"</span>)
+<span class="sr-code-comment sr-code-result"># ["critical incident", "kubernetes", "deployment"]</span></code></pre>
+            <pre id="sr-hero-python-copy" class="sr-copy-source">import skeinrank
+
+skeinrank.canonicalize("k8s pg timeout")
+# kubernetes postgresql timeout
+
+skeinrank.extract("sev1 on kube after deploy")
+# ["critical incident", "kubernetes", "deployment"]</pre>
           </div>
         </div>
       </div>
+    </section>
+
+    <section class="sr-trust-strip" aria-label="SkeinRank project status">
+      <a href="https://pypi.org/project/skeinrank/">
+        <span>PyPI</span>
+        <strong>skeinrank 0.10.0</strong>
+      </a>
+      <a href={repoUrl}>
+        <span>Open source</span>
+        <strong>Apache-2.0</strong>
+      </a>
+      <a href={sdkQuickstartUrl}>
+        <span>SDK path</span>
+        <strong>No Docker required</strong>
+      </a>
+      <a href="/integrations/mcp/">
+        <span>Agent-ready</span>
+        <strong>MCP guardrails</strong>
+      </a>
     </section>
 
     <script is:inline>
@@ -210,7 +114,7 @@ const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
             const targetId = button.getAttribute('data-copy-target');
             const target = targetId ? document.getElementById(targetId) : null;
             if (!target) return;
-            const text = target.textContent?.replace(/^\$\s*/m, '').trim() ?? '';
+            const text = target.textContent?.trim() ?? '';
             if (!text) return;
             try {
               await navigator.clipboard.writeText(text);
@@ -3414,6 +3318,325 @@ const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
     .sr-world-copy .sr-btn-ghost {
       grid-column: 1 / -1;
       justify-self: start;
+    }
+  }
+
+
+
+  /* SDK-proof hero experiment: confident first screen, code as proof, architecture below. */
+  .sr-proof-hero {
+    grid-template-columns: minmax(24rem, 0.88fr) minmax(34rem, 1.12fr);
+    align-items: center;
+    min-height: clamp(520px, calc(100svh - 6rem), 720px);
+    padding: clamp(2rem, 4.4vw, 4.2rem);
+    border-color: transparent;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .sr-proof-hero::before,
+  .sr-proof-hero::after {
+    display: none;
+  }
+
+  .sr-proof-copy {
+    align-self: center;
+  }
+
+  .sr-proof-kicker {
+    max-width: max-content;
+    color: #67e8f9;
+    white-space: nowrap;
+    background: rgba(8, 145, 178, 0.12);
+  }
+
+  .sr-proof-copy h1 {
+    max-width: 13.2ch;
+    font-size: clamp(3.2rem, 5.65vw, 5.55rem);
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+  }
+
+  .sr-proof-copy .sr-subtitle {
+    max-width: 52ch;
+    margin-top: 1.1rem;
+    font-size: clamp(1.05rem, 1.55vw, 1.18rem);
+    line-height: 1.62;
+  }
+
+  .sr-proof-copy .sr-actions {
+    margin-top: 1.45rem;
+  }
+
+  .sr-hero-code-panel {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--sr-border-strong) 76%, transparent);
+    border-radius: 1.65rem;
+    background:
+      radial-gradient(circle at 18% 0%, rgba(34, 211, 238, 0.08), transparent 34%),
+      radial-gradient(circle at 90% 12%, rgba(139, 92, 246, 0.10), transparent 32%),
+      linear-gradient(180deg, rgba(7, 12, 29, 0.97), rgba(2, 6, 23, 0.96));
+    box-shadow:
+      0 34px 90px rgba(2, 6, 23, 0.42),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  :global(:root[data-theme='light']) .sr-hero-code-panel {
+    background:
+      radial-gradient(circle at 18% 0%, rgba(14, 165, 233, 0.08), transparent 34%),
+      radial-gradient(circle at 90% 12%, rgba(109, 40, 217, 0.08), transparent 32%),
+      linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(2, 6, 23, 0.95));
+  }
+
+
+  :global(:root[data-theme='light']) .sr-hero-code-panel .sr-code-window {
+    border-color: rgba(148, 163, 184, 0.11);
+    background: linear-gradient(180deg, rgba(7, 12, 28, 0.94), rgba(4, 8, 19, 0.9));
+  }
+
+  :global(:root[data-theme='light']) .sr-hero-code-panel .sr-code-window pre {
+    color: #cbd5e1;
+  }
+
+  .sr-hero-code-panel .sr-terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.82rem;
+    padding: 1rem 1.12rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+    background: rgba(15, 23, 42, 0.58);
+  }
+
+  .sr-terminal-dots {
+    display: inline-flex;
+    gap: 0.42rem;
+  }
+
+  .sr-terminal-dots span {
+    width: 0.68rem;
+    height: 0.68rem;
+    border-radius: 999px;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.18), 0 0 0 1px rgba(15, 23, 42, 0.18);
+  }
+
+  .sr-terminal-dots span:first-child { background: #ff5f57; }
+  .sr-terminal-dots span:nth-child(2) { background: #febc2e; }
+  .sr-terminal-dots span:nth-child(3) { background: #28c840; }
+
+  .sr-terminal-bar strong {
+    color: #94a3b8;
+    font-size: 0.76rem;
+    font-weight: 850;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .sr-hero-code-stack {
+    display: grid;
+    gap: 0.95rem;
+    padding: 1.1rem;
+  }
+
+  .sr-hero-code-panel .sr-code-window {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(148, 163, 184, 0.10);
+    border-radius: 1.05rem;
+    background: linear-gradient(180deg, rgba(7, 12, 28, 0.92), rgba(4, 8, 19, 0.88));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  }
+
+  .sr-hero-code-panel .sr-code-window pre {
+    margin: 0;
+    overflow-x: auto;
+    padding: 1.08rem 3.2rem 1.08rem 1.12rem;
+    color: #cbd5e1;
+    font-size: clamp(0.86rem, 1.2vw, 1rem);
+    line-height: 1.72;
+  }
+
+  .sr-hero-code-panel .sr-code-window-install pre {
+    font-size: clamp(0.92rem, 1.35vw, 1.08rem);
+    line-height: 1.48;
+  }
+
+  .sr-code-window code,
+  .sr-copy-source {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+  }
+
+  .sr-copy-source {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: pre;
+  }
+
+  .sr-copy-icon {
+    position: absolute;
+    top: 0.72rem;
+    right: 0.72rem;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    border-radius: 0.72rem;
+    background: rgba(15, 23, 42, 0.32);
+    color: rgba(226, 232, 240, 0.62);
+    opacity: 0.72;
+    transition: opacity 160ms ease, transform 160ms ease, border-color 160ms ease, color 160ms ease, background 160ms ease;
+  }
+
+  .sr-copy-icon:hover,
+  .sr-copy-icon:focus-visible {
+    opacity: 1;
+    transform: translateY(-1px);
+    border-color: rgba(34, 211, 238, 0.24);
+    background: rgba(15, 23, 42, 0.74);
+    color: #f8fafc;
+  }
+
+  .sr-copy-icon[data-copied='true'] {
+    border-color: rgba(45, 212, 191, 0.3);
+    color: #99f6e4;
+  }
+
+  .sr-copy-icon svg {
+    width: 1rem;
+    height: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .sr-code-command { color: #e2e8f0; font-weight: 780; }
+  .sr-code-arg { color: #a5b4fc; font-weight: 720; }
+  .sr-code-package { color: #7dd3fc; font-weight: 760; }
+  .sr-code-keyword { color: #f472b6; font-weight: 760; }
+  .sr-code-module { color: #c7d2fe; font-weight: 700; }
+  .sr-code-method { color: #93c5fd; font-weight: 760; }
+  .sr-code-string { color: #fbbf24; }
+  .sr-code-comment {
+    color: #94a3b8;
+    font-style: normal;
+  }
+  .sr-code-result {
+    display: inline-block;
+    margin-top: 0.28rem;
+    color: #5eead4;
+    font-weight: 760;
+    text-shadow: 0 0 18px rgba(45, 212, 191, 0.23);
+  }
+
+  .sr-trust-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: clamp(-3.6rem, -4vw, -2.1rem);
+  }
+
+  .sr-trust-strip a {
+    min-width: 0;
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    border-radius: 1rem;
+    background: rgba(15, 23, 42, 0.36);
+    color: var(--sr-text);
+    text-decoration: none;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+
+  .sr-trust-strip a:hover,
+  .sr-trust-strip a:focus-visible {
+    transform: translateY(-1px);
+    border-color: rgba(34, 211, 238, 0.22);
+    background: rgba(15, 23, 42, 0.48);
+    text-decoration: none;
+  }
+
+  .sr-trust-strip span {
+    display: block;
+    color: var(--sr-cyan);
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .sr-trust-strip strong {
+    display: block;
+    margin-top: 0.28rem;
+    color: var(--sr-text);
+    font-size: 0.95rem;
+    line-height: 1.25;
+  }
+
+  :global(:root[data-theme='light']) .sr-trust-strip a {
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.74);
+  }
+
+  @media (max-width: 1160px) {
+    .sr-proof-hero {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .sr-proof-copy h1 {
+      max-width: 14ch;
+    }
+
+    .sr-trust-strip {
+      margin-top: -2.2rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 760px) {
+    .sr-proof-hero {
+      padding: 1.25rem 0.05rem 0;
+    }
+
+    .sr-proof-copy h1 {
+      max-width: 12ch;
+      font-size: clamp(2.8rem, 12vw, 4rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .sr-proof-kicker {
+      white-space: normal;
+    }
+
+    .sr-proof-copy .sr-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .sr-hero-code-stack {
+      padding: 0.78rem;
+    }
+
+    .sr-hero-code-panel .sr-code-window pre {
+      padding: 0.95rem 2.8rem 0.95rem 0.95rem;
+      font-size: 0.78rem;
+    }
+
+    .sr-trust-strip {
+      grid-template-columns: 1fr;
+      margin-top: -2.4rem;
     }
   }
 
