@@ -408,16 +408,92 @@ body:has(.sr-landing) .sl-container {
   border-color: rgba(109, 40, 217, 0.18);
 }
 
-.sr-product-nav-github {
-  border-color: color-mix(in srgb, var(--sl-color-accent) 28%, transparent);
-  color: var(--sl-color-accent-high);
-  background: color-mix(in srgb, var(--sl-color-accent) 8%, transparent);
+.sr-header-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 0 0 auto;
+  margin-inline-start: 0.45rem;
 }
 
-:root[data-theme='light'] .sr-product-nav-github {
-  color: #5b21b6;
-  background: rgba(109, 40, 217, 0.065);
-  border-color: rgba(109, 40, 217, 0.18);
+.sr-header-icon-action,
+.sr-header-try-sdk {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.15rem;
+  border-radius: 999px;
+  text-decoration: none;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.sr-header-icon-action {
+  width: 2.15rem;
+  border: 1px solid transparent;
+  color: var(--sr-header-link);
+  background: transparent;
+}
+
+.sr-header-icon-action svg {
+  width: 1.08rem;
+  height: 1.08rem;
+  fill: currentColor;
+}
+
+.sr-header-icon-action:hover,
+.sr-header-icon-action:focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--sr-header-link-border);
+  background: var(--sr-header-link-bg);
+  color: var(--sr-header-link-hover);
+  text-decoration: none;
+}
+
+.sr-header-try-sdk {
+  padding: 0.48rem 0.92rem;
+  border: 1px solid color-mix(in srgb, var(--sl-color-accent) 38%, transparent);
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  color: #ffffff;
+  font-size: 0.84rem;
+  font-weight: 840;
+  letter-spacing: -0.01em;
+  box-shadow: 0 10px 26px rgba(6, 182, 212, 0.16);
+}
+
+.sr-header-try-sdk:hover,
+.sr-header-try-sdk:focus-visible {
+  transform: translateY(-1px);
+  color: #ffffff;
+  text-decoration: none;
+  box-shadow: 0 14px 32px rgba(6, 182, 212, 0.22);
+}
+
+:root[data-theme='light'] .sr-header-try-sdk {
+  border-color: rgba(109, 40, 217, 0.22);
+  background: linear-gradient(135deg, #6d28d9, #0891b2);
+  color: #ffffff;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.10);
+}
+
+.sr-theme-cycle-label {
+  display: none;
+}
+
+.sr-theme-cycle-button {
+  width: 2.15rem;
+  min-width: 2.15rem;
+  padding-inline: 0;
+}
+
+.sr-theme-cycle-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Keep search useful for docs, but stop it from dominating the landing header. */
@@ -435,11 +511,27 @@ body:has(.sr-landing) .sl-container {
   .sr-product-header :is(.site-search, [role='search'], starlight-search) {
     flex: 0 1 24rem;
     max-width: 24rem;
+    margin-inline-start: auto;
   }
 
   html.sr-home-page .sr-product-header :is(.site-search, [role='search'], starlight-search) {
-    flex-basis: 20rem;
-    max-width: 20rem;
+    flex: 0 0 5.25rem;
+    width: 5.25rem;
+    max-width: 5.25rem;
+    overflow: hidden;
+  }
+
+  html.sr-home-page .sr-product-header :is(.site-search, [role='search'], starlight-search) :is(input, .search-label, .placeholder, kbd) {
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+
+  html.sr-home-page .sr-product-header :is(.site-search, [role='search'], starlight-search) :is(button, [role='button']) {
+    justify-content: center;
+    width: 5.25rem;
+    min-width: 5.25rem;
+    padding-inline: 0.55rem;
   }
 }
 
@@ -448,6 +540,21 @@ body:has(.sr-landing) .sl-container {
     display: none;
   }
 }
+
+@media (max-width: 71.999rem) {
+  .sr-header-actions {
+    margin-inline-start: auto;
+  }
+
+  .sr-header-github-action {
+    display: none;
+  }
+
+  .sr-header-try-sdk {
+    display: none;
+  }
+}
+
 
 @media (min-width: 90rem) {
   .sr-product-nav {

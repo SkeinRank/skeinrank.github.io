@@ -19,12 +19,6 @@
       section: 'platform-preview',
       description: 'Console workflow, bindings, evidence, and snapshots',
     },
-    {
-      label: 'GitHub',
-      href: repoUrl,
-      external: true,
-      description: 'Source code, roadmap, and project issues',
-    },
   ];
 
   const normalizePath = (value) => {
@@ -98,6 +92,44 @@
     svg.appendChild(shape);
 
     return svg;
+  };
+
+
+  const makeGitHubIcon = () => {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('focusable', 'false');
+    svg.setAttribute('viewBox', '0 0 24 24');
+
+    const shape = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    shape.setAttribute(
+      'd',
+      'M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.86 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-1.04-.01-1.88-2.78.62-3.37-1.21-3.37-1.21-.45-1.18-1.1-1.5-1.1-1.5-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.33 9.33 0 0 1 12 7c.85 0 1.7.12 2.5.34 1.9-1.33 2.74-1.05 2.74-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.8-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.8 0 .27.18.6.69.49A10.16 10.16 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z'
+    );
+    svg.appendChild(shape);
+    return svg;
+  };
+
+  const buildHeaderActions = () => {
+    const actions = document.createElement('div');
+    actions.className = 'sr-header-actions';
+
+    const github = document.createElement('a');
+    github.className = 'sr-header-icon-action sr-header-github-action';
+    github.href = repoUrl;
+    github.target = '_blank';
+    github.rel = 'noreferrer';
+    github.setAttribute('aria-label', 'Open SkeinRank on GitHub');
+    github.title = 'GitHub';
+    github.appendChild(makeGitHubIcon());
+
+    const sdk = document.createElement('a');
+    sdk.className = 'sr-header-try-sdk';
+    sdk.href = '/getting-started/python-sdk/';
+    sdk.textContent = 'Try SDK';
+
+    actions.append(github, sdk);
+    return actions;
   };
 
   const buildDrawerBrand = (siteTitle) => {
@@ -191,11 +223,11 @@
 
     const cta = document.createElement('a');
     cta.className = 'sr-home-mobile-drawer-cta';
-    cta.href = '/getting-started/docker-beta-quickstart/';
-    cta.textContent = 'Run Docker beta';
+    cta.href = '/getting-started/python-sdk/';
+    cta.textContent = 'Try SDK';
 
     const note = document.createElement('p');
-    note.textContent = 'Open-source side-car for terminology-aware search and RAG workflows.';
+    note.textContent = 'Open-source domain language control plane for search, RAG, and AI-agent workflows.';
 
     footer.append(cta, note);
     drawer.append(drawerHeader, linkList, footer);
@@ -382,6 +414,11 @@
     }
 
     header.classList.add('sr-product-header');
+
+    if (!header.querySelector('.sr-header-actions')) {
+      header.appendChild(buildHeaderActions());
+    }
+
     themeCycle.mount();
 
     const searchGroup = header.querySelector('site-search')?.parentElement;

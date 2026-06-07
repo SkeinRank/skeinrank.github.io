@@ -39,6 +39,8 @@ assert.match(landing, /sr-terminal-dots/, 'terminal dots should be grouped for p
 assert.ok(!landing.includes('<section id="try-sdk"'), 'landing should not duplicate the SDK quickstart below the hero');
 assert.ok(!landing.includes('<div class="sr-world-visual"'), 'landing hero should use SDK proof instead of the dense architecture diagram');
 assert.match(landing, /sr-trust-strip/, 'landing should include a concise project status strip below the hero');
+assert.match(landing, /https:\/\/pypi.org\/project\/skeinrank\/" target="_blank" rel="noreferrer"/, 'external PyPI status link should open in a new tab');
+assert.match(landing, /href=\{repoUrl\} target="_blank" rel="noreferrer"/, 'external GitHub status link should open in a new tab');
 assert.match(landing, /skeinrank 0\.10\.0/, 'status strip should mention the current PyPI package version');
 assert.match(landing, /controlPlaneOverview/, 'landing should import only the featured control-plane diagram');
 assert.match(landing, /From domain language to runtime context/, 'landing should use a user-facing overview heading');
@@ -57,6 +59,21 @@ assert.match(architecture, /mcpAgentDiagram/, 'architecture docs should include 
 
 const index = readFileSync('src/content/docs/index.mdx', 'utf8');
 assert.match(index, /Domain Language Control Plane/, 'home page metadata should use the updated product positioning');
+
+const headerNav = readFileSync('public/header-nav.js', 'utf8');
+assert.ok(!headerNav.includes("label: 'GitHub'"), 'GitHub should not be rendered as a primary nav pill');
+assert.match(headerNav, /buildHeaderActions/, 'header should create a right-side action group');
+assert.match(headerNav, /sr-header-github-action/, 'GitHub should be a right-side icon action');
+assert.match(headerNav, /sr-header-try-sdk/, 'navbar should expose Try SDK as the primary action');
+assert.match(headerNav, /target = '_blank'/, 'external header GitHub action should open in a new tab');
+assert.match(headerNav, /cta\.textContent = 'Try SDK'/, 'mobile drawer CTA should point to the SDK path');
+
+const customCss = readFileSync('src/styles/custom.css', 'utf8');
+assert.match(customCss, /sr-header-actions/, 'site CSS should style the right-side navbar action group');
+assert.match(customCss, /sr-theme-cycle-label/, 'theme toggle should be icon-only');
+assert.match(customCss, /display: none;/, 'theme toggle label should be hidden');
+assert.match(customCss, /flex: 0 0 5\.25rem/, 'home search should be compact instead of a centered wide field');
+assert.match(customCss, /sr-header-try-sdk/, 'site CSS should style the Try SDK navbar CTA');
 
 const astroConfig = readFileSync('astro.config.mjs', 'utf8');
 const expectedSidebarSlugs = [
@@ -88,7 +105,6 @@ assert.match(lightboxScript, /closest\(MANUAL_TRIGGER_SELECTOR\)/, 'auto binding
 
 assert.match(astroConfig, /src: '\/platform-preview-lightbox\.js'/, 'Starlight head should load the shared screenshot lightbox script on every page');
 
-const customCss = readFileSync('src/styles/custom.css', 'utf8');
 assert.match(customCss, /sr-diagram-image\.sr-lightbox-enabled/, 'site CSS should show diagrams as lightbox-enabled');
 assert.match(customCss, /sr-platform-screenshot\.sr-lightbox-enabled/, 'site CSS should show console screenshots as lightbox-enabled');
 
