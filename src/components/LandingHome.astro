@@ -11,16 +11,12 @@ const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
   <div class="sr-shell">
     <section class="sr-hero-block sr-hero-core sr-proof-hero" aria-label="SkeinRank product hero">
       <div class="sr-hero-copy sr-hero-copy-core sr-proof-copy">
-        <div class="sr-kicker sr-proof-kicker">
-          <span class="sr-pulse" aria-hidden="true"></span>
-          Domain language control plane for search, RAG &amp; agents
-        </div>
-
         <h1 id="sr-home-title">Turn messy aliases into governed search context.</h1>
 
         <p class="sr-subtitle">
-          Canonicalize company slang, acronyms, and ambiguous terms before they reach
-          search, RAG pipelines, and AI agents.
+          Your team's language drifts — features get renamed, slang piles up, and acronyms collide.
+          Your embedding model never learned your internal names, so retrieval quietly rots.
+          SkeinRank canonicalizes that language <strong>before</strong> it reaches search, RAG, and agents.
         </p>
 
         <div class="sr-actions" aria-label="Primary actions">
@@ -130,13 +126,121 @@ skeinrank.extract("sev1 on kube after deploy")
         }
       })();
     </script>
+    <section class="sr-section sr-drift-problem" aria-labelledby="sr-drift-title">
+      <div class="sr-section-heading sr-narrow">
+        <p class="sr-section-label">The problem nobody owns</p>
+        <h2 id="sr-drift-title">When new language lands in docs, search needs a way to keep up.</h2>
+        <p>
+          Renaming things is normal. New documents introduce new service names, teams keep using
+          familiar shorthand, and your search stack rarely knows they point at the same thing.
+          SkeinRank turns that drift into something explicit: it can detect a new canonical term,
+          attach evidence, and propose the alias or terminology update that keeps search aligned.
+        </p>
+      </div>
+
+      <div class="sr-drift-compare" aria-label="How SkeinRank helps resolve terminology drift">
+        <article class="sr-drift-card sr-drift-before">
+          <div class="sr-drift-card-head">
+            <span class="sr-drift-card-label">Without SkeinRank</span>
+            <strong>Language moves. Search falls behind.</strong>
+          </div>
+          <div class="sr-drift-steps">
+            <div class="sr-drift-step">
+              <span class="sr-drift-when">January</span>
+              <code>"payment timeout"</code>
+              <strong class="sr-drift-ok">→ finds the runbook ✓</strong>
+            </div>
+            <div class="sr-drift-step">
+              <span class="sr-drift-when">March</span>
+              <code>new docs mention "payments-core"</code>
+              <strong class="sr-drift-warn">→ no owned mapping</strong>
+            </div>
+            <div class="sr-drift-step">
+              <span class="sr-drift-when">June</span>
+              <code>"the payment thing"</code>
+              <strong class="sr-drift-bad">→ likely miss</strong>
+            </div>
+          </div>
+          <p class="sr-drift-card-foot">The meaning is still there, but the vocabulary drift is invisible to the search layer.</p>
+        </article>
+
+        <article class="sr-drift-card sr-drift-after">
+          <div class="sr-drift-card-head">
+            <span class="sr-drift-card-label">With SkeinRank</span>
+            <strong>Drift becomes a proposed fix.</strong>
+          </div>
+          <div class="sr-drift-steps">
+            <div class="sr-drift-step">
+              <span class="sr-drift-when">New doc arrives</span>
+              <code>payments-core</code>
+              <strong class="sr-drift-warn">→ drift detected</strong>
+            </div>
+            <div class="sr-drift-step sr-drift-proposal">
+              <span class="sr-drift-when">SkeinRank suggests</span>
+              <table class="sr-drift-table" aria-label="Suggested terminology mapping">
+                <tbody>
+                  <tr>
+                    <th scope="row">canonical</th>
+                    <td><code>payments-core</code></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">alias</th>
+                    <td><code>the payment thing</code></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">tags</th>
+                    <td><code>payments · backend</code></td>
+                  </tr>
+                </tbody>
+              </table>
+              <strong class="sr-drift-ok">→ evidence-backed proposal</strong>
+            </div>
+            <div class="sr-drift-step">
+              <span class="sr-drift-when">After review</span>
+              <code>"the payment thing" → payments-core</code>
+              <strong class="sr-drift-ok">→ search keeps up ✓</strong>
+            </div>
+          </div>
+          <p class="sr-drift-card-foot">New terminology can be detected automatically and suggested for review before trust in search starts to slip.</p>
+        </article>
+      </div>
+
+      <p class="sr-drift-punch">
+        Your vocabulary is the one input to retrieval that changes constantly —
+        and no system owns it, versions it, or tells you when it drifts.
+      </p>
+    </section>
+
+    <section class="sr-problem-solution" aria-labelledby="sr-problem-title">
+      <div>
+        <p class="sr-section-label">The problem</p>
+        <h2 id="sr-problem-title">Enterprise search loses context when terminology is unmanaged.</h2>
+      </div>
+      <div class="sr-split-panels">
+        <article class="sr-panel sr-before">
+          <span class="sr-panel-label">Without SkeinRank</span>
+          <p>
+            Search and RAG pipelines keep using yesterday's vocabulary. New documents introduce terms like <code>payments-core</code>,
+            while people still search with older shorthand such as <code>payment timeout</code> or <code>the payment thing</code>.
+          </p>
+        </article>
+        <article class="sr-panel sr-after">
+          <span class="sr-panel-label">With SkeinRank</span>
+          <p>
+            New terms can be detected from incoming content, turned into evidence-backed proposals, reviewed by a human,
+            and published as a pinned snapshot before runtime search falls behind.
+          </p>
+        </article>
+      </div>
+    </section>
+
     <section class="sr-section sr-console-preview sr-overview-preview" aria-labelledby="sr-console-preview-title">
       <div class="sr-preview-heading">
-        <p class="sr-section-label">System overview</p>
+        <p class="sr-section-label">How it works</p>
         <h2 id="sr-console-preview-title">From domain language to runtime context.</h2>
         <p>
-          Start with the runtime model: profiles define language, bindings select the search
-          context, and snapshots pin the version that search, RAG, and agents can safely use.
+          SkeinRank sits beside your existing search stack. Profiles define language, bindings select
+          the search context, and snapshots pin the version that search, RAG, and agents can safely use.
         </p>
       </div>
 
@@ -172,31 +276,11 @@ skeinrank.extract("sev1 on kube after deploy")
             <strong>MCP · APIs · GitOps</strong>
             <p>Agents, search services, and CI workflows can consume the same terminology package and runtime model.</p>
           </article>
-          <a class="sr-inline-architecture-link" href="/concepts/architecture/">Open architecture docs</a>
+          <div class="sr-diagram-links">
+            <a class="sr-inline-architecture-link" href="/concepts/architecture/">Open architecture docs</a>
+            <a class="sr-inline-architecture-link" href="/concepts/sidecar-model/">Read side-car model</a>
+          </div>
         </div>
-      </div>
-    </section>
-
-    <section class="sr-problem-solution" aria-labelledby="sr-problem-title">
-      <div>
-        <p class="sr-section-label">The problem</p>
-        <h2 id="sr-problem-title">Enterprise search loses context when terminology is unmanaged.</h2>
-      </div>
-      <div class="sr-split-panels">
-        <article class="sr-panel sr-before">
-          <span class="sr-panel-label">Without SkeinRank</span>
-          <p>
-            Search and RAG pipelines depend on raw text. <code>k8s</code>, <code>kube</code>, <code>postgres</code>,
-            <code>pg</code>, team names, and internal aliases compete without a governed runtime model.
-          </p>
-        </article>
-        <article class="sr-panel sr-after">
-          <span class="sr-panel-label">With SkeinRank</span>
-          <p>
-            Terminology changes are reviewed, bound to specific search contexts, rolled out through enrichment,
-            and served from immutable snapshots that explain what runtime search is using.
-          </p>
-        </article>
       </div>
     </section>
 
@@ -242,7 +326,11 @@ skeinrank.extract("sev1 on kube after deploy")
     <section class="sr-section" aria-labelledby="sr-layers-title">
       <div class="sr-section-heading sr-narrow">
         <p class="sr-section-label">Product shape</p>
-        <h2 id="sr-layers-title">A side-car for terminology-aware search, not a replacement for your search stack.</h2>
+        <h2 id="sr-layers-title">A control plane for terminology-aware search, not a replacement for your search stack.</h2>
+        <p>
+          When you need more than one-off canonicalization, the governed lifecycle is already there:
+          evidence, proposals, bindings, snapshots, rollout, and rollback.
+        </p>
       </div>
 
       <div class="sr-feature-grid">
@@ -285,48 +373,9 @@ skeinrank.extract("sev1 on kube after deploy")
       </div>
     </section>
 
-    <section class="sr-section sr-dashboard-section" aria-labelledby="sr-dashboard-title">
-      <div class="sr-dashboard-copy">
-        <p class="sr-section-label">Side-car model</p>
-        <h2 id="sr-dashboard-title">SkeinRank sits beside Elasticsearch, RAG, and internal search UIs.</h2>
-        <p>
-          It does not need to replace the existing search engine. It manages domain terminology, produces
-          canonicalized signals, and exposes runtime APIs that your application can call by binding or search scope.
-        </p>
-        <a class="sr-inline-link" href="/concepts/sidecar-model/">Read the side-car model →</a>
-        <a class="sr-inline-link" href="/getting-started/docker-beta-quickstart/">Run the Docker beta stack →</a>
-      </div>
-
-      <div class="sr-dashboard-card" aria-label="SkeinRank side-car flow">
-        <div class="sr-dashboard-head">
-          <span>Existing stack</span>
-          <strong>Search UI / backend / RAG service</strong>
-        </div>
-        <div class="sr-dashboard-row">
-          <span>calls</span>
-          <strong>SkeinRank runtime API</strong>
-          <em>binding_id</em>
-        </div>
-        <div class="sr-dashboard-row">
-          <span>uses</span>
-          <strong>runtime snapshot</strong>
-          <em>pinned</em>
-        </div>
-        <div class="sr-dashboard-row">
-          <span>searches</span>
-          <strong>Elasticsearch / document index</strong>
-          <em>existing data</em>
-        </div>
-        <div class="sr-dashboard-footer">
-          <span>Profiles define terminology</span>
-          <span>Bindings define runtime context</span>
-        </div>
-      </div>
-    </section>
-
     <section class="sr-section sr-status-section" aria-labelledby="sr-status-title">
       <div class="sr-section-heading sr-narrow">
-        <p class="sr-section-label">Current status</p>
+        <p class="sr-section-label">Honest status</p>
         <h2 id="sr-status-title">Public positioning: usable core, beta governance platform.</h2>
         <p>
           The site presents SkeinRank honestly: the core SDK/CLI path is the smallest stable entry point,
@@ -1076,6 +1125,219 @@ skeinrank.extract("sev1 on kube after deploy")
     gap: 1rem;
   }
 
+
+  .sr-drift-problem {
+    gap: 1.35rem;
+  }
+
+  .sr-drift-problem > .sr-section-heading {
+    max-width: 62rem;
+  }
+
+  .sr-drift-problem code {
+    color: var(--sr-cyan);
+  }
+
+  .sr-drift-compare {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .sr-drift-card {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 1rem;
+    min-height: 100%;
+    padding: 1.1rem;
+    border: 1px solid var(--sr-border);
+    border-radius: 1.35rem;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--sr-surface-strong) 92%, transparent), color-mix(in srgb, var(--sr-card) 88%, transparent));
+    box-shadow: 0 20px 48px rgba(2, 6, 23, 0.18);
+    overflow: hidden;
+  }
+
+  .sr-drift-card::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--sr-cyan) 22%, transparent), transparent);
+    opacity: 0.9;
+  }
+
+  .sr-drift-before {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--sr-surface-strong) 90%, transparent), color-mix(in srgb, var(--sr-card) 84%, transparent));
+  }
+
+  .sr-drift-after {
+    border-color: color-mix(in srgb, var(--sr-cyan) 18%, var(--sr-border));
+    background: linear-gradient(180deg, color-mix(in srgb, var(--sr-cyan) 4%, var(--sr-surface-strong)), color-mix(in srgb, var(--sr-card) 88%, transparent));
+  }
+
+  .sr-drift-card-head {
+    display: grid;
+    gap: 0.32rem;
+    align-content: start;
+    min-height: 5rem;
+    padding: 0.08rem 0.1rem 0.15rem;
+  }
+
+  .sr-drift-card-label {
+    display: inline-flex;
+    width: fit-content;
+    padding: 0.28rem 0.56rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--sr-cyan) 22%, transparent);
+    background: color-mix(in srgb, var(--sr-cyan) 7%, transparent);
+    color: var(--sr-cyan);
+    font-size: 0.72rem;
+    font-weight: 850;
+    letter-spacing: 0.04em;
+  }
+
+  .sr-drift-card-head strong {
+    display: block;
+    min-height: 2.8rem;
+    color: var(--sr-text);
+    font-size: 1.02rem;
+    line-height: 1.35;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  .sr-drift-steps {
+    display: grid;
+    gap: 0.72rem;
+    align-content: start;
+  }
+
+  .sr-drift-step {
+    display: grid;
+    gap: 0.42rem;
+    align-content: start;
+    min-height: 8rem;
+    padding: 0.88rem 0.92rem;
+    border: 1px solid color-mix(in srgb, var(--sr-border) 88%, transparent);
+    border-radius: 1rem;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--sr-surface-strong) 82%, transparent), color-mix(in srgb, var(--sr-card-soft) 54%, transparent));
+  }
+
+  .sr-drift-when {
+    color: var(--sr-cyan);
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .sr-drift-step code {
+    display: block;
+    padding: 0.5rem 0.65rem;
+    border: 1px solid color-mix(in srgb, var(--sr-border) 90%, transparent);
+    border-radius: 0.72rem;
+    background: color-mix(in srgb, var(--sr-bg) 24%, transparent);
+    color: var(--sr-text);
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+
+  .sr-drift-step strong {
+    font-size: 0.9rem;
+    font-weight: 820;
+  }
+
+  .sr-drift-proposal {
+    align-content: start;
+    min-height: 11.25rem;
+  }
+
+  .sr-drift-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--sr-border) 92%, transparent);
+    border-radius: 0.86rem;
+    background: color-mix(in srgb, var(--sr-bg) 12%, transparent);
+  }
+
+  .sr-drift-table tbody tr + tr th,
+  .sr-drift-table tbody tr + tr td {
+    border-top: 1px solid color-mix(in srgb, var(--sr-border) 72%, transparent);
+  }
+
+  .sr-drift-table th,
+  .sr-drift-table td {
+    padding: 0.62rem 0.72rem;
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  .sr-drift-table th {
+    width: 7rem;
+    color: var(--sr-muted);
+    font-size: 0.71rem;
+    font-weight: 850;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: color-mix(in srgb, var(--sr-surface-strong) 45%, transparent);
+  }
+
+  .sr-drift-table td {
+    color: var(--sr-text);
+    background: color-mix(in srgb, var(--sr-surface-strong) 20%, transparent);
+  }
+
+  .sr-drift-table td code {
+    display: inline-flex;
+    align-items: center;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--sr-text);
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+
+  .sr-drift-card-foot {
+    margin: 0;
+    padding: 0 0.1rem;
+    color: var(--sr-text-soft);
+    font-size: 0.98rem;
+    line-height: 1.65;
+  }
+
+  .sr-drift-ok { color: var(--sr-green); }
+  .sr-drift-warn { color: var(--sr-amber); }
+  .sr-drift-bad { color: #f87171; }
+
+  .sr-drift-punch {
+    max-width: 56rem;
+    margin: 0;
+    color: var(--sr-text);
+    font-size: clamp(1.08rem, 1.9vw, 1.3rem);
+    font-weight: 700;
+    line-height: 1.48;
+    letter-spacing: -0.02em;
+  }
+
+  @media (max-width: 1100px) {
+    .sr-drift-compare {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .sr-diagram-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    align-items: center;
+  }
+
   .sr-panel {
     min-height: 13rem;
     padding: 1.25rem;
@@ -1551,6 +1813,7 @@ skeinrank.extract("sev1 on kube after deploy")
     .sr-metrics,
     .sr-demo-grid,
     .sr-split-panels,
+    .sr-drift-compare,
     .sr-pipeline-v2,
     .sr-feature-grid,
     .sr-dashboard-footer {

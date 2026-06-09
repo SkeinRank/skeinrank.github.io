@@ -39,6 +39,29 @@ assert.match(landing, /sr-terminal-dots/, 'terminal dots should be grouped for p
 assert.ok(!landing.includes('<section id="try-sdk"'), 'landing should not duplicate the SDK quickstart below the hero');
 assert.ok(!landing.includes('<div class="sr-world-visual"'), 'landing hero should use SDK proof instead of the dense architecture diagram');
 assert.match(landing, /sr-trust-strip/, 'landing should include a concise project status strip below the hero');
+assert.match(landing, /Your team's language drifts/, 'hero subtitle should align with the terminology drift narrative');
+assert.ok(!landing.includes('Domain language control plane for search, RAG &amp; agents'), 'hero should not lead with a heavy control-plane eyebrow');
+assert.ok(!landing.includes('<span class="sr-pulse"'), 'hero should not use a status-like pulse indicator before the headline');
+assert.match(landing, /The problem nobody owns/, 'landing should introduce the owned-drift problem immediately after the hero');
+assert.match(landing, /Renaming things is normal\. New documents introduce new service names/, 'drift section should frame terminology change as normal instead of a team mistake');
+assert.match(landing, /payments-core/, 'drift section should use a concrete canonical term example');
+assert.match(landing, /the payment thing/, 'drift section should show a human shorthand alias example');
+assert.match(landing, /evidence-backed proposal/, 'drift section should show that SkeinRank proposes a fix with evidence');
+assert.match(landing, /canonical/, 'drift comparison should label the suggested canonical term');
+assert.match(landing, /alias/, 'drift comparison should label the suggested alias');
+assert.match(landing, /tags/, 'drift comparison should label suggested tags or metadata');
+assert.match(landing, /search keeps up/, 'drift comparison should show the improved outcome after review');
+assert.match(landing, /likely miss/, 'drift comparison should show the likely failure mode without SkeinRank');
+assert.ok(!landing.includes('Nobody changed the model — your team did'), 'drift copy should not blame the reader for healthy terminology changes');
+assert.match(landing, /sr-drift-compare/, 'landing should include a side-by-side terminology drift comparison');
+assert.ok(
+  landing.indexOf('The problem nobody owns') < landing.indexOf('From domain language to runtime context'),
+  'drift problem should appear before architecture details',
+);
+assert.match(landing, /How it works/, 'architecture section should be framed after the problem as a how-it-works section');
+assert.match(landing, /Read side-car model/, 'overview section should link to the side-car model without duplicating a separate section');
+assert.ok(!landing.includes('aria-labelledby="sr-dashboard-title"'), 'landing should not duplicate the side-car model as a separate dashboard section');
+assert.match(landing, /Honest status/, 'status section should be framed as an honest status check near the end');
 assert.match(landing, /href="https:\/\/pypi.org\/project\/skeinrank\/"[\s\S]*target="_blank"[\s\S]*rel="noreferrer"/, 'external PyPI status link should open in a new tab');
 assert.match(landing, /href=\{repoUrl\}[\s\S]*target="_blank"[\s\S]*rel="noreferrer"/, 'external GitHub status link should open in a new tab');
 assert.match(landing, /skeinrank 0\.10\.0/, 'status strip should mention the current PyPI package version');
