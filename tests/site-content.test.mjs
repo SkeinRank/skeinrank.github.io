@@ -54,6 +54,13 @@ assert.match(landing, /search keeps up/, 'drift comparison should show the impro
 assert.match(landing, /likely miss/, 'drift comparison should show the likely failure mode without SkeinRank');
 assert.ok(!landing.includes('Nobody changed the model — your team did'), 'drift copy should not blame the reader for healthy terminology changes');
 assert.match(landing, /sr-drift-compare/, 'landing should include a side-by-side terminology drift comparison');
+assert.ok(!landing.includes('IntersectionObserver'), 'landing motion should avoid scroll observers that can stutter on long pages');
+assert.ok(!landing.includes("data-motion='ready'"), 'landing should not hide content behind JavaScript-driven motion state');
+assert.ok(!landing.includes('filter: blur(6px)'), 'landing motion should avoid reveal blur filters that can cause jank');
+assert.ok(!landing.includes('sr-product-panel-float'), 'hero code panel should not run a permanent floating animation');
+assert.match(landing, /sr-soft-rise/, 'landing should keep a lightweight one-shot product motion');
+assert.match(landing, /prefers-reduced-motion: no-preference/, 'landing motion should only run when the user has not reduced motion');
+assert.match(landing, /prefers-reduced-motion: reduce/, 'landing motion should respect reduced-motion preferences');
 assert.ok(
   landing.indexOf('The problem nobody owns') < landing.indexOf('From domain language to runtime context'),
   'drift problem should appear before architecture details',

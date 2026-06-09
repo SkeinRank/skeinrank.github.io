@@ -126,6 +126,7 @@ skeinrank.extract("sev1 on kube after deploy")
         }
       })();
     </script>
+
     <section class="sr-section sr-drift-problem" aria-labelledby="sr-drift-title">
       <div class="sr-section-heading sr-narrow">
         <p class="sr-section-label">The problem nobody owns</p>
@@ -177,22 +178,20 @@ skeinrank.extract("sev1 on kube after deploy")
             </div>
             <div class="sr-drift-step sr-drift-proposal">
               <span class="sr-drift-when">SkeinRank suggests</span>
-              <table class="sr-drift-table" aria-label="Suggested terminology mapping">
-                <tbody>
-                  <tr>
-                    <th scope="row">canonical</th>
-                    <td><code>payments-core</code></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">alias</th>
-                    <td><code>the payment thing</code></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">tags</th>
-                    <td><code>payments · backend</code></td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="sr-drift-map" aria-label="Suggested terminology mapping">
+                <div class="sr-drift-map-row">
+                  <span>canonical</span>
+                  <code>payments-core</code>
+                </div>
+                <div class="sr-drift-map-row">
+                  <span>alias</span>
+                  <code>the payment thing</code>
+                </div>
+                <div class="sr-drift-map-row">
+                  <span>tags</span>
+                  <code>payments · backend</code>
+                </div>
+              </div>
               <strong class="sr-drift-ok">→ evidence-backed proposal</strong>
             </div>
             <div class="sr-drift-step">
@@ -1149,13 +1148,15 @@ skeinrank.extract("sev1 on kube after deploy")
     position: relative;
     display: grid;
     grid-template-rows: auto 1fr auto;
-    gap: 1rem;
+    gap: 1.05rem;
     min-height: 100%;
-    padding: 1.1rem;
+    padding: 1.2rem;
     border: 1px solid var(--sr-border);
-    border-radius: 1.35rem;
-    background: linear-gradient(180deg, color-mix(in srgb, var(--sr-surface-strong) 92%, transparent), color-mix(in srgb, var(--sr-card) 88%, transparent));
-    box-shadow: 0 20px 48px rgba(2, 6, 23, 0.18);
+    border-radius: 1.4rem;
+    background:
+      radial-gradient(circle at top right, color-mix(in srgb, var(--sr-cyan) 8%, transparent), transparent 36%),
+      linear-gradient(180deg, color-mix(in srgb, var(--sr-surface-strong) 93%, transparent), color-mix(in srgb, var(--sr-card) 88%, transparent));
+    box-shadow: 0 22px 54px rgba(2, 6, 23, 0.18);
     overflow: hidden;
   }
 
@@ -1164,33 +1165,35 @@ skeinrank.extract("sev1 on kube after deploy")
     position: absolute;
     inset: 0 0 auto;
     height: 1px;
-    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--sr-cyan) 22%, transparent), transparent);
-    opacity: 0.9;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--sr-cyan) 26%, transparent), transparent);
   }
 
   .sr-drift-before {
-    background: linear-gradient(180deg, color-mix(in srgb, var(--sr-surface-strong) 90%, transparent), color-mix(in srgb, var(--sr-card) 84%, transparent));
+    background:
+      radial-gradient(circle at top right, color-mix(in srgb, var(--sr-cyan) 5%, transparent), transparent 34%),
+      linear-gradient(180deg, color-mix(in srgb, var(--sr-surface-strong) 93%, transparent), color-mix(in srgb, var(--sr-card) 88%, transparent));
   }
 
   .sr-drift-after {
     border-color: color-mix(in srgb, var(--sr-cyan) 18%, var(--sr-border));
-    background: linear-gradient(180deg, color-mix(in srgb, var(--sr-cyan) 4%, var(--sr-surface-strong)), color-mix(in srgb, var(--sr-card) 88%, transparent));
+    background:
+      radial-gradient(circle at top right, color-mix(in srgb, var(--sr-cyan) 10%, transparent), transparent 38%),
+      linear-gradient(180deg, color-mix(in srgb, var(--sr-cyan) 4%, var(--sr-surface-strong)), color-mix(in srgb, var(--sr-card) 88%, transparent));
   }
 
   .sr-drift-card-head {
     display: grid;
-    gap: 0.32rem;
+    gap: 0.4rem;
     align-content: start;
-    min-height: 5rem;
-    padding: 0.08rem 0.1rem 0.15rem;
+    min-height: 5.4rem;
   }
 
   .sr-drift-card-label {
     display: inline-flex;
     width: fit-content;
-    padding: 0.28rem 0.56rem;
+    padding: 0.28rem 0.62rem;
     border-radius: 999px;
-    border: 1px solid color-mix(in srgb, var(--sr-cyan) 22%, transparent);
+    border: 1px solid color-mix(in srgb, var(--sr-cyan) 24%, transparent);
     background: color-mix(in srgb, var(--sr-cyan) 7%, transparent);
     color: var(--sr-cyan);
     font-size: 0.72rem;
@@ -1209,20 +1212,46 @@ skeinrank.extract("sev1 on kube after deploy")
   }
 
   .sr-drift-steps {
+    position: relative;
     display: grid;
-    gap: 0.72rem;
+    grid-template-rows: minmax(8.2rem, auto) minmax(10rem, auto) minmax(8.2rem, auto);
+    gap: 0.85rem;
     align-content: start;
+    padding-left: 1.35rem;
+  }
+
+  .sr-drift-steps::before {
+    content: '';
+    position: absolute;
+    left: 0.4rem;
+    top: 1rem;
+    bottom: 1rem;
+    width: 1px;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--sr-cyan) 22%, transparent), color-mix(in srgb, var(--sr-cyan) 8%, transparent));
   }
 
   .sr-drift-step {
+    position: relative;
     display: grid;
-    gap: 0.42rem;
+    gap: 0.46rem;
     align-content: start;
-    min-height: 8rem;
-    padding: 0.88rem 0.92rem;
+    padding: 0.95rem 1rem;
     border: 1px solid color-mix(in srgb, var(--sr-border) 88%, transparent);
-    border-radius: 1rem;
-    background: linear-gradient(180deg, color-mix(in srgb, var(--sr-surface-strong) 82%, transparent), color-mix(in srgb, var(--sr-card-soft) 54%, transparent));
+    border-radius: 1.05rem;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--sr-surface-strong) 84%, transparent), color-mix(in srgb, var(--sr-card-soft) 56%, transparent));
+  }
+
+  .sr-drift-step::before {
+    content: '';
+    position: absolute;
+    left: -1.3rem;
+    top: 1rem;
+    width: 0.72rem;
+    height: 0.72rem;
+    border-radius: 999px;
+    border: 2px solid color-mix(in srgb, var(--sr-cyan) 72%, transparent);
+    background: var(--sr-bg);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--sr-cyan) 8%, transparent);
   }
 
   .sr-drift-when {
@@ -1235,7 +1264,7 @@ skeinrank.extract("sev1 on kube after deploy")
 
   .sr-drift-step code {
     display: block;
-    padding: 0.5rem 0.65rem;
+    padding: 0.5rem 0.68rem;
     border: 1px solid color-mix(in srgb, var(--sr-border) 90%, transparent);
     border-radius: 0.72rem;
     background: color-mix(in srgb, var(--sr-bg) 24%, transparent);
@@ -1250,50 +1279,46 @@ skeinrank.extract("sev1 on kube after deploy")
   }
 
   .sr-drift-proposal {
-    align-content: start;
-    min-height: 11.25rem;
+    gap: 0.7rem;
   }
 
-  .sr-drift-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    overflow: hidden;
-    border: 1px solid color-mix(in srgb, var(--sr-border) 92%, transparent);
-    border-radius: 0.86rem;
+  .sr-drift-proposal::before {
+    width: 0.86rem;
+    height: 0.86rem;
+    left: -1.38rem;
+    border-width: 2px;
+  }
+
+  .sr-drift-map {
+    display: grid;
+    gap: 0.35rem;
+    padding: 0.25rem;
+    border: 1px solid color-mix(in srgb, var(--sr-border) 90%, transparent);
+    border-radius: 0.95rem;
     background: color-mix(in srgb, var(--sr-bg) 12%, transparent);
   }
 
-  .sr-drift-table tbody tr + tr th,
-  .sr-drift-table tbody tr + tr td {
-    border-top: 1px solid color-mix(in srgb, var(--sr-border) 72%, transparent);
+  .sr-drift-map-row {
+    display: grid;
+    grid-template-columns: 6rem minmax(0, 1fr);
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.5rem 0.55rem;
+    border-radius: 0.72rem;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--sr-surface-strong) 52%, transparent), color-mix(in srgb, var(--sr-surface-strong) 24%, transparent));
   }
 
-  .sr-drift-table th,
-  .sr-drift-table td {
-    padding: 0.62rem 0.72rem;
-    text-align: left;
-    vertical-align: middle;
-  }
-
-  .sr-drift-table th {
-    width: 7rem;
+  .sr-drift-map-row span {
     color: var(--sr-muted);
     font-size: 0.71rem;
     font-weight: 850;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    background: color-mix(in srgb, var(--sr-surface-strong) 45%, transparent);
   }
 
-  .sr-drift-table td {
-    color: var(--sr-text);
-    background: color-mix(in srgb, var(--sr-surface-strong) 20%, transparent);
-  }
-
-  .sr-drift-table td code {
+  .sr-drift-map-row code {
     display: inline-flex;
-    align-items: center;
+    width: fit-content;
     min-height: 0;
     padding: 0;
     border: 0;
@@ -1305,7 +1330,6 @@ skeinrank.extract("sev1 on kube after deploy")
 
   .sr-drift-card-foot {
     margin: 0;
-    padding: 0 0.1rem;
     color: var(--sr-text-soft);
     font-size: 0.98rem;
     line-height: 1.65;
@@ -3908,6 +3932,77 @@ skeinrank.extract("sev1 on kube after deploy")
     .sr-trust-strip {
       justify-content: flex-start;
       margin-top: -2.4rem;
+    }
+  }
+
+
+
+  /* Product motion layer: lightweight, one-shot, and compositor-friendly. */
+  @media (prefers-reduced-motion: no-preference) {
+    .sr-hero-copy,
+    .sr-hero-code-panel,
+    .sr-trust-strip,
+    .sr-drift-card,
+    .sr-problem-solution,
+    .sr-diagram-showcase,
+    .sr-pipeline-card,
+    .sr-feature-card,
+    .sr-status-section,
+    .sr-cta {
+      animation: sr-soft-rise 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .sr-hero-code-panel { animation-delay: 90ms; }
+    .sr-trust-strip { animation-delay: 140ms; }
+    .sr-drift-card:nth-child(1) { animation-delay: 90ms; }
+    .sr-drift-card:nth-child(2) { animation-delay: 150ms; }
+    .sr-feature-card:nth-child(2n) { animation-delay: 70ms; }
+    .sr-feature-card:nth-child(3n) { animation-delay: 110ms; }
+
+    .sr-code-result {
+      text-shadow: 0 0 16px rgba(34, 197, 94, 0.18), 0 0 28px rgba(34, 211, 238, 0.08);
+    }
+
+    .sr-drift-step,
+    .sr-drift-map-row,
+    .sr-feature-card,
+    .sr-diagram-proof-grid article,
+    .sr-status-row:not(.sr-status-row-head) {
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+    }
+
+    .sr-drift-step:hover,
+    .sr-drift-map-row:hover,
+    .sr-feature-card:hover,
+    .sr-diagram-proof-grid article:hover,
+    .sr-status-row:not(.sr-status-row-head):hover {
+      transform: translateY(-1px);
+      border-color: color-mix(in srgb, var(--sr-cyan) 24%, var(--sr-border));
+      background: color-mix(in srgb, var(--sr-cyan) 4%, var(--sr-card));
+      box-shadow: 0 14px 34px rgba(2, 6, 23, 0.14);
+    }
+
+    .sr-btn-primary {
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .sr-btn-primary:hover {
+      box-shadow: 0 20px 42px color-mix(in srgb, var(--sr-accent) 22%, transparent);
+    }
+  }
+
+  @keyframes sr-soft-rise {
+    from { opacity: 0; transform: translate3d(0, 10px, 0); }
+    to { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sr-landing *,
+    .sr-landing *::before,
+    .sr-landing *::after {
+      animation: none !important;
+      transition: none !important;
+      scroll-behavior: auto !important;
     }
   }
 
