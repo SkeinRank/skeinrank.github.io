@@ -42,18 +42,23 @@ assert.match(landing, /sr-trust-strip/, 'landing should include a concise projec
 assert.match(landing, /Your team's language drifts/, 'hero subtitle should align with the terminology drift narrative');
 assert.ok(!landing.includes('Domain language control plane for search, RAG &amp; agents'), 'hero should not lead with a heavy control-plane eyebrow');
 assert.ok(!landing.includes('<span class="sr-pulse"'), 'hero should not use a status-like pulse indicator before the headline');
-assert.match(landing, /The problem nobody owns/, 'landing should introduce the owned-drift problem immediately after the hero');
-assert.match(landing, /Renaming things is normal\. New documents introduce new service names/, 'drift section should frame terminology change as normal instead of a team mistake');
-assert.match(landing, /payments-core/, 'drift section should use a concrete canonical term example');
-assert.match(landing, /the payment thing/, 'drift section should show a human shorthand alias example');
-assert.match(landing, /evidence-backed proposal/, 'drift section should show that SkeinRank proposes a fix with evidence');
-assert.match(landing, /canonical/, 'drift comparison should label the suggested canonical term');
-assert.match(landing, /alias/, 'drift comparison should label the suggested alias');
-assert.match(landing, /tags/, 'drift comparison should label suggested tags or metadata');
-assert.match(landing, /search keeps up/, 'drift comparison should show the improved outcome after review');
-assert.match(landing, /likely miss/, 'drift comparison should show the likely failure mode without SkeinRank');
-assert.ok(!landing.includes('Nobody changed the model — your team did'), 'drift copy should not blame the reader for healthy terminology changes');
-assert.match(landing, /sr-drift-compare/, 'landing should include a side-by-side terminology drift comparison');
+assert.match(landing, /Why this layer exists/, 'landing should explain the product layer immediately after the hero');
+assert.match(landing, /Embeddings find similarity\. They do not govern your company vocabulary\./, 'landing should avoid weak synonym-style examples and state the product boundary clearly');
+assert.match(landing, /SkeinRank is not trying to replace semantic search/, 'language section should position SkeinRank beside semantic search');
+assert.match(landing, /canonical terms, aliases, evidence, owners, runtime bindings, and pinned snapshots/, 'language section should describe the governed terminology model');
+assert.match(landing, /Make terminology explicit/, 'language section should explain explicit terminology state');
+assert.match(landing, /Control where it applies/, 'language section should explain runtime binding scope');
+assert.match(landing, /Review change before rollout/, 'language section should explain evidence-backed review before publishing');
+assert.match(landing, /Use embeddings to retrieve meaning\. Use SkeinRank to govern the vocabulary that shapes retrieval\./, 'language section should end with the retrieval versus governance distinction');
+assert.ok(!landing.includes('The problem nobody owns'), 'landing should not keep the old drift heading');
+assert.ok(!landing.includes('When new language lands in docs, search needs a way to keep up.'), 'landing should not keep the old drift headline');
+assert.ok(!landing.includes('Enterprise search loses context when terminology is unmanaged.'), 'landing should not keep the duplicated problem headline');
+assert.ok(!landing.includes('payments-core'), 'landing should remove the confusing payments-core example');
+assert.ok(!landing.includes('payment timeout'), 'landing should remove the confusing payment timeout example');
+assert.ok(!landing.includes('the payment thing'), 'landing should remove the confusing payment alias example');
+assert.ok(!landing.includes('sr-drift-compare'), 'landing should remove the diagram that implied an unclear mapping');
+assert.ok(!landing.includes('sr-problem-solution'), 'landing should remove the duplicated problem section');
+assert.ok(!landing.includes('Nobody changed the model — your team did'), 'landing copy should not blame the reader for healthy terminology changes');
 assert.ok(!landing.includes('IntersectionObserver'), 'landing motion should avoid scroll observers that can stutter on long pages');
 assert.ok(!landing.includes("data-motion='ready'"), 'landing should not hide content behind JavaScript-driven motion state');
 assert.ok(!landing.includes('filter: blur(6px)'), 'landing motion should avoid reveal blur filters that can cause jank');
@@ -62,8 +67,8 @@ assert.match(landing, /sr-soft-rise/, 'landing should keep a lightweight one-sho
 assert.match(landing, /prefers-reduced-motion: no-preference/, 'landing motion should only run when the user has not reduced motion');
 assert.match(landing, /prefers-reduced-motion: reduce/, 'landing motion should respect reduced-motion preferences');
 assert.ok(
-  landing.indexOf('The problem nobody owns') < landing.indexOf('From domain language to runtime context'),
-  'drift problem should appear before architecture details',
+  landing.indexOf('Why this layer exists') < landing.indexOf('From domain language to runtime context'),
+  'language layer explanation should appear before architecture details',
 );
 assert.match(landing, /How it works/, 'architecture section should be framed after the problem as a how-it-works section');
 assert.match(landing, /Read side-car model/, 'overview section should link to the side-car model without duplicating a separate section');

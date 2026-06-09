@@ -127,110 +127,48 @@ skeinrank.extract("sev1 on kube after deploy")
       })();
     </script>
 
-    <section class="sr-section sr-drift-problem" aria-labelledby="sr-drift-title">
-      <div class="sr-section-heading sr-narrow">
-        <p class="sr-section-label">The problem nobody owns</p>
-        <h2 id="sr-drift-title">When new language lands in docs, search needs a way to keep up.</h2>
+    <section class="sr-section sr-language-brief" aria-labelledby="sr-language-brief-title">
+      <div class="sr-section-heading sr-language-brief-heading">
+        <p class="sr-section-label">Why this layer exists</p>
+        <h2 id="sr-language-brief-title">Embeddings find similarity. They do not govern your company vocabulary.</h2>
         <p>
-          Renaming things is normal. New documents introduce new service names, teams keep using
-          familiar shorthand, and your search stack rarely knows they point at the same thing.
-          SkeinRank turns that drift into something explicit: it can detect a new canonical term,
-          attach evidence, and propose the alias or terminology update that keeps search aligned.
+          SkeinRank is not trying to replace semantic search. It gives teams a controlled language layer
+          around it: canonical terms, aliases, evidence, owners, runtime bindings, and pinned snapshots.
+          That is the part normal search stacks usually leave scattered across synonym files, prompts,
+          CSVs, and tribal knowledge.
         </p>
       </div>
 
-      <div class="sr-drift-compare" aria-label="How SkeinRank helps resolve terminology drift">
-        <article class="sr-drift-card sr-drift-before">
-          <div class="sr-drift-card-head">
-            <span class="sr-drift-card-label">Without SkeinRank</span>
-            <strong>Language moves. Search falls behind.</strong>
-          </div>
-          <div class="sr-drift-steps">
-            <div class="sr-drift-step">
-              <span class="sr-drift-when">January</span>
-              <code>"payment timeout"</code>
-              <strong class="sr-drift-ok">→ finds the runbook ✓</strong>
-            </div>
-            <div class="sr-drift-step">
-              <span class="sr-drift-when">March</span>
-              <code>new docs mention "payments-core"</code>
-              <strong class="sr-drift-warn">→ no owned mapping</strong>
-            </div>
-            <div class="sr-drift-step">
-              <span class="sr-drift-when">June</span>
-              <code>"the payment thing"</code>
-              <strong class="sr-drift-bad">→ likely miss</strong>
-            </div>
-          </div>
-          <p class="sr-drift-card-foot">The meaning is still there, but the vocabulary drift is invisible to the search layer.</p>
+      <div class="sr-language-brief-grid" aria-label="What SkeinRank makes explicit">
+        <article>
+          <span>01</span>
+          <h3>Make terminology explicit</h3>
+          <p>
+            Turn internal names, acronyms, and aliases into reviewed product state instead of hidden
+            query rewrites or one-off prompt instructions.
+          </p>
         </article>
-
-        <article class="sr-drift-card sr-drift-after">
-          <div class="sr-drift-card-head">
-            <span class="sr-drift-card-label">With SkeinRank</span>
-            <strong>Drift becomes a proposed fix.</strong>
-          </div>
-          <div class="sr-drift-steps">
-            <div class="sr-drift-step">
-              <span class="sr-drift-when">New doc arrives</span>
-              <code>payments-core</code>
-              <strong class="sr-drift-warn">→ drift detected</strong>
-            </div>
-            <div class="sr-drift-step sr-drift-proposal">
-              <span class="sr-drift-when">SkeinRank suggests</span>
-              <div class="sr-drift-map" aria-label="Suggested terminology mapping">
-                <div class="sr-drift-map-row">
-                  <span>canonical</span>
-                  <code>payments-core</code>
-                </div>
-                <div class="sr-drift-map-row">
-                  <span>alias</span>
-                  <code>the payment thing</code>
-                </div>
-                <div class="sr-drift-map-row">
-                  <span>tags</span>
-                  <code>payments · backend</code>
-                </div>
-              </div>
-              <strong class="sr-drift-ok">→ evidence-backed proposal</strong>
-            </div>
-            <div class="sr-drift-step">
-              <span class="sr-drift-when">After review</span>
-              <code>"the payment thing" → payments-core</code>
-              <strong class="sr-drift-ok">→ search keeps up ✓</strong>
-            </div>
-          </div>
-          <p class="sr-drift-card-foot">New terminology can be detected automatically and suggested for review before trust in search starts to slip.</p>
+        <article>
+          <span>02</span>
+          <h3>Control where it applies</h3>
+          <p>
+            Bind approved language to the right search context, index, fields, filters, and snapshot
+            so runtime systems know which interpretation is safe to use.
+          </p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Review change before rollout</h3>
+          <p>
+            Surface new terminology and conflicts as evidence-backed proposals, then publish an immutable
+            snapshot only after the change is accepted.
+          </p>
         </article>
       </div>
 
-      <p class="sr-drift-punch">
-        Your vocabulary is the one input to retrieval that changes constantly —
-        and no system owns it, versions it, or tells you when it drifts.
+      <p class="sr-language-brief-punch">
+        Use embeddings to retrieve meaning. Use SkeinRank to govern the vocabulary that shapes retrieval.
       </p>
-    </section>
-
-    <section class="sr-problem-solution" aria-labelledby="sr-problem-title">
-      <div>
-        <p class="sr-section-label">The problem</p>
-        <h2 id="sr-problem-title">Enterprise search loses context when terminology is unmanaged.</h2>
-      </div>
-      <div class="sr-split-panels">
-        <article class="sr-panel sr-before">
-          <span class="sr-panel-label">Without SkeinRank</span>
-          <p>
-            Search and RAG pipelines keep using yesterday's vocabulary. New documents introduce terms like <code>payments-core</code>,
-            while people still search with older shorthand such as <code>payment timeout</code> or <code>the payment thing</code>.
-          </p>
-        </article>
-        <article class="sr-panel sr-after">
-          <span class="sr-panel-label">With SkeinRank</span>
-          <p>
-            New terms can be detected from incoming content, turned into evidence-backed proposals, reviewed by a human,
-            and published as a pinned snapshot before runtime search falls behind.
-          </p>
-        </article>
-      </div>
     </section>
 
     <section class="sr-section sr-console-preview sr-overview-preview" aria-labelledby="sr-console-preview-title">
@@ -473,7 +411,6 @@ skeinrank.extract("sev1 on kube after deploy")
     display: grid;
     gap: clamp(3rem, 6vw, 5rem);
   }
-  .sr-problem-solution,
   .sr-section,
   .sr-cta {
     content-visibility: auto;
@@ -633,7 +570,6 @@ skeinrank.extract("sev1 on kube after deploy")
 
   .sr-terminal-card,
   .sr-dashboard-card,
-  .sr-panel,
   .sr-feature-card,
   .sr-status-table,
   .sr-cta {
@@ -822,7 +758,6 @@ skeinrank.extract("sev1 on kube after deploy")
   }
 
   .sr-section,
-  .sr-problem-solution,
   .sr-dashboard-section,
   .sr-status-section {
     display: grid;
@@ -1082,7 +1017,6 @@ skeinrank.extract("sev1 on kube after deploy")
     }
   }
 
-  .sr-problem-solution,
   .sr-dashboard-section,
   .sr-cta {
     grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
@@ -1098,7 +1032,6 @@ skeinrank.extract("sev1 on kube after deploy")
   }
 
   .sr-section h2,
-  .sr-problem-solution h2,
   .sr-dashboard-section h2,
   .sr-cta h2 {
     margin: 0;
@@ -1118,49 +1051,36 @@ skeinrank.extract("sev1 on kube after deploy")
     line-height: 1.75;
   }
 
-  .sr-split-panels {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-  }
-
-
-  .sr-drift-problem {
+  .sr-language-brief {
     gap: 1.35rem;
   }
 
-  .sr-drift-problem > .sr-section-heading {
-    max-width: 62rem;
+  .sr-language-brief-heading {
+    max-width: 66rem;
   }
 
-  .sr-drift-problem code {
-    color: var(--sr-cyan);
-  }
-
-  .sr-drift-compare {
+  .sr-language-brief-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
-    align-items: stretch;
   }
 
-  .sr-drift-card {
+  .sr-language-brief-grid article {
     position: relative;
     display: grid;
-    grid-template-rows: auto 1fr auto;
-    gap: 1.05rem;
-    min-height: 100%;
-    padding: 1.2rem;
-    border: 1px solid var(--sr-border);
-    border-radius: 1.4rem;
-    background:
-      radial-gradient(circle at top right, color-mix(in srgb, var(--sr-cyan) 8%, transparent), transparent 36%),
-      linear-gradient(180deg, color-mix(in srgb, var(--sr-surface-strong) 93%, transparent), color-mix(in srgb, var(--sr-card) 88%, transparent));
-    box-shadow: 0 22px 54px rgba(2, 6, 23, 0.18);
+    gap: 0.72rem;
+    min-height: 15rem;
+    padding: 1.25rem;
     overflow: hidden;
+    border: 1px solid var(--sr-border);
+    border-radius: 1.25rem;
+    background:
+      radial-gradient(circle at top right, color-mix(in srgb, var(--sr-cyan) 8%, transparent), transparent 34%),
+      linear-gradient(180deg, color-mix(in srgb, var(--sr-surface-strong) 92%, transparent), color-mix(in srgb, var(--sr-card) 86%, transparent));
+    box-shadow: 0 20px 48px rgba(2, 6, 23, 0.16);
   }
 
-  .sr-drift-card::before {
+  .sr-language-brief-grid article::before {
     content: '';
     position: absolute;
     inset: 0 0 auto;
@@ -1168,227 +1088,38 @@ skeinrank.extract("sev1 on kube after deploy")
     background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--sr-cyan) 26%, transparent), transparent);
   }
 
-  .sr-drift-before {
-    background:
-      radial-gradient(circle at top right, color-mix(in srgb, var(--sr-cyan) 5%, transparent), transparent 34%),
-      linear-gradient(180deg, color-mix(in srgb, var(--sr-surface-strong) 93%, transparent), color-mix(in srgb, var(--sr-card) 88%, transparent));
-  }
-
-  .sr-drift-after {
-    border-color: color-mix(in srgb, var(--sr-cyan) 18%, var(--sr-border));
-    background:
-      radial-gradient(circle at top right, color-mix(in srgb, var(--sr-cyan) 10%, transparent), transparent 38%),
-      linear-gradient(180deg, color-mix(in srgb, var(--sr-cyan) 4%, var(--sr-surface-strong)), color-mix(in srgb, var(--sr-card) 88%, transparent));
-  }
-
-  .sr-drift-card-head {
-    display: grid;
-    gap: 0.4rem;
-    align-content: start;
-    min-height: 5.4rem;
-  }
-
-  .sr-drift-card-label {
+  .sr-language-brief-grid span {
     display: inline-flex;
     width: fit-content;
-    padding: 0.28rem 0.62rem;
-    border-radius: 999px;
-    border: 1px solid color-mix(in srgb, var(--sr-cyan) 24%, transparent);
-    background: color-mix(in srgb, var(--sr-cyan) 7%, transparent);
     color: var(--sr-cyan);
-    font-size: 0.72rem;
-    font-weight: 850;
-    letter-spacing: 0.04em;
-  }
-
-  .sr-drift-card-head strong {
-    display: block;
-    min-height: 2.8rem;
-    color: var(--sr-text);
-    font-size: 1.02rem;
-    line-height: 1.35;
-    letter-spacing: -0.015em;
-    text-wrap: balance;
-  }
-
-  .sr-drift-steps {
-    position: relative;
-    display: grid;
-    grid-template-rows: minmax(8.2rem, auto) minmax(10rem, auto) minmax(8.2rem, auto);
-    gap: 0.85rem;
-    align-content: start;
-    padding-left: 1.35rem;
-  }
-
-  .sr-drift-steps::before {
-    content: '';
-    position: absolute;
-    left: 0.4rem;
-    top: 1rem;
-    bottom: 1rem;
-    width: 1px;
-    background: linear-gradient(180deg, color-mix(in srgb, var(--sr-cyan) 22%, transparent), color-mix(in srgb, var(--sr-cyan) 8%, transparent));
-  }
-
-  .sr-drift-step {
-    position: relative;
-    display: grid;
-    gap: 0.46rem;
-    align-content: start;
-    padding: 0.95rem 1rem;
-    border: 1px solid color-mix(in srgb, var(--sr-border) 88%, transparent);
-    border-radius: 1.05rem;
-    background: linear-gradient(180deg, color-mix(in srgb, var(--sr-surface-strong) 84%, transparent), color-mix(in srgb, var(--sr-card-soft) 56%, transparent));
-  }
-
-  .sr-drift-step::before {
-    content: '';
-    position: absolute;
-    left: -1.3rem;
-    top: 1rem;
-    width: 0.72rem;
-    height: 0.72rem;
-    border-radius: 999px;
-    border: 2px solid color-mix(in srgb, var(--sr-cyan) 72%, transparent);
-    background: var(--sr-bg);
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--sr-cyan) 8%, transparent);
-  }
-
-  .sr-drift-when {
-    color: var(--sr-cyan);
-    font-size: 0.72rem;
-    font-weight: 900;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .sr-drift-step code {
-    display: block;
-    padding: 0.5rem 0.68rem;
-    border: 1px solid color-mix(in srgb, var(--sr-border) 90%, transparent);
-    border-radius: 0.72rem;
-    background: color-mix(in srgb, var(--sr-bg) 24%, transparent);
-    color: var(--sr-text);
-    font-size: 0.92rem;
-    line-height: 1.45;
-  }
-
-  .sr-drift-step strong {
-    font-size: 0.9rem;
-    font-weight: 820;
-  }
-
-  .sr-drift-proposal {
-    gap: 0.7rem;
-  }
-
-  .sr-drift-proposal::before {
-    width: 0.86rem;
-    height: 0.86rem;
-    left: -1.38rem;
-    border-width: 2px;
-  }
-
-  .sr-drift-map {
-    display: grid;
-    gap: 0.35rem;
-    padding: 0.25rem;
-    border: 1px solid color-mix(in srgb, var(--sr-border) 90%, transparent);
-    border-radius: 0.95rem;
-    background: color-mix(in srgb, var(--sr-bg) 12%, transparent);
-  }
-
-  .sr-drift-map-row {
-    display: grid;
-    grid-template-columns: 6rem minmax(0, 1fr);
-    align-items: center;
-    gap: 0.7rem;
-    padding: 0.5rem 0.55rem;
-    border-radius: 0.72rem;
-    background: linear-gradient(180deg, color-mix(in srgb, var(--sr-surface-strong) 52%, transparent), color-mix(in srgb, var(--sr-surface-strong) 24%, transparent));
-  }
-
-  .sr-drift-map-row span {
-    color: var(--sr-muted);
-    font-size: 0.71rem;
-    font-weight: 850;
-    text-transform: uppercase;
+    font-size: 0.74rem;
+    font-weight: 950;
     letter-spacing: 0.08em;
   }
 
-  .sr-drift-map-row code {
-    display: inline-flex;
-    width: fit-content;
-    min-height: 0;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: var(--sr-text);
-    font-size: 0.92rem;
-    line-height: 1.45;
-  }
-
-  .sr-drift-card-foot {
-    margin: 0;
-    color: var(--sr-text-soft);
-    font-size: 0.98rem;
-    line-height: 1.65;
-  }
-
-  .sr-drift-ok { color: var(--sr-green); }
-  .sr-drift-warn { color: var(--sr-amber); }
-  .sr-drift-bad { color: #f87171; }
-
-  .sr-drift-punch {
-    max-width: 56rem;
+  .sr-language-brief-grid h3 {
+    max-width: 15ch;
     margin: 0;
     color: var(--sr-text);
-    font-size: clamp(1.08rem, 1.9vw, 1.3rem);
-    font-weight: 700;
-    line-height: 1.48;
-    letter-spacing: -0.02em;
+    font-size: 1.1rem;
+    line-height: 1.25;
+    letter-spacing: -0.025em;
   }
 
-  @media (max-width: 1100px) {
-    .sr-drift-compare {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .sr-diagram-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem 1rem;
-    align-items: center;
-  }
-
-  .sr-panel {
-    min-height: 13rem;
-    padding: 1.25rem;
-  }
-
-  .sr-panel-label {
-    display: inline-flex;
-    margin-bottom: 0.9rem;
-    padding: 0.32rem 0.55rem;
-    border-radius: 999px;
-    color: var(--sr-muted);
-    background: var(--sr-card-soft);
-    font-size: 0.72rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  .sr-panel p,
-  .sr-feature-card p {
+  .sr-language-brief-grid p {
     margin: 0;
     color: var(--sr-text-soft);
     line-height: 1.7;
   }
 
-  .sr-panel code {
-    color: var(--sr-cyan);
+  .sr-language-brief-punch {
+    max-width: 58rem;
+    margin: 0;
+    color: var(--sr-text);
+    font-size: clamp(1.1rem, 1.9vw, 1.32rem);
+    font-weight: 760;
+    line-height: 1.5;
+    letter-spacing: -0.02em;
   }
 
   .sr-pipeline-v2 {
@@ -1780,7 +1511,6 @@ skeinrank.extract("sev1 on kube after deploy")
 
   @media (max-width: 1180px) {
     .sr-hero-block,
-    .sr-problem-solution,
     .sr-dashboard-section,
     .sr-cta {
       grid-template-columns: 1fr;
@@ -1836,8 +1566,7 @@ skeinrank.extract("sev1 on kube after deploy")
 
     .sr-metrics,
     .sr-demo-grid,
-    .sr-split-panels,
-    .sr-drift-compare,
+    .sr-language-brief-grid,
     .sr-pipeline-v2,
     .sr-feature-grid,
     .sr-dashboard-footer {
@@ -3052,20 +2781,20 @@ skeinrank.extract("sev1 on kube after deploy")
      The hero canvas stays full-bleed on phones, but sections below it need
      readable gutters so headings and cards do not touch the device edges. */
   @media (max-width: 860px) {
-    .sr-shell > :where(.sr-problem-solution, .sr-section, .sr-dashboard-section, .sr-status-section, .sr-cta) {
+    .sr-shell > :where(.sr-section, .sr-dashboard-section, .sr-status-section, .sr-cta) {
       box-sizing: border-box;
       width: auto;
       margin-inline: clamp(1rem, 4.8vw, 1.35rem);
     }
 
-    .sr-split-panels,
+    .sr-language-brief-grid,
     .sr-pipeline-v2,
     .sr-feature-grid {
       width: 100%;
       min-width: 0;
     }
 
-    .sr-panel,
+    .sr-language-brief-grid article,
     .sr-pipeline-v2 article,
     .sr-feature-card,
     .sr-status-table,
@@ -3074,7 +2803,8 @@ skeinrank.extract("sev1 on kube after deploy")
       min-width: 0;
     }
 
-    .sr-panel {
+    .sr-language-brief-grid article {
+      min-height: auto;
       padding: clamp(1rem, 4.2vw, 1.18rem);
     }
 
@@ -3167,7 +2897,7 @@ skeinrank.extract("sev1 on kube after deploy")
   }
 
   @media (max-width: 420px) {
-    .sr-shell > :where(.sr-problem-solution, .sr-section, .sr-dashboard-section, .sr-status-section, .sr-cta) {
+    .sr-shell > :where(.sr-section, .sr-dashboard-section, .sr-status-section, .sr-cta) {
       margin-inline: clamp(0.95rem, 4.4vw, 1.1rem);
     }
   }
@@ -3942,8 +3672,7 @@ skeinrank.extract("sev1 on kube after deploy")
     .sr-hero-copy,
     .sr-hero-code-panel,
     .sr-trust-strip,
-    .sr-drift-card,
-    .sr-problem-solution,
+    .sr-language-brief-grid article,
     .sr-diagram-showcase,
     .sr-pipeline-card,
     .sr-feature-card,
@@ -3954,8 +3683,9 @@ skeinrank.extract("sev1 on kube after deploy")
 
     .sr-hero-code-panel { animation-delay: 90ms; }
     .sr-trust-strip { animation-delay: 140ms; }
-    .sr-drift-card:nth-child(1) { animation-delay: 90ms; }
-    .sr-drift-card:nth-child(2) { animation-delay: 150ms; }
+    .sr-language-brief-grid article:nth-child(1) { animation-delay: 90ms; }
+    .sr-language-brief-grid article:nth-child(2) { animation-delay: 130ms; }
+    .sr-language-brief-grid article:nth-child(3) { animation-delay: 170ms; }
     .sr-feature-card:nth-child(2n) { animation-delay: 70ms; }
     .sr-feature-card:nth-child(3n) { animation-delay: 110ms; }
 
@@ -3963,16 +3693,14 @@ skeinrank.extract("sev1 on kube after deploy")
       text-shadow: 0 0 16px rgba(34, 197, 94, 0.18), 0 0 28px rgba(34, 211, 238, 0.08);
     }
 
-    .sr-drift-step,
-    .sr-drift-map-row,
+    .sr-language-brief-grid article,
     .sr-feature-card,
     .sr-diagram-proof-grid article,
     .sr-status-row:not(.sr-status-row-head) {
       transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
     }
 
-    .sr-drift-step:hover,
-    .sr-drift-map-row:hover,
+    .sr-language-brief-grid article:hover,
     .sr-feature-card:hover,
     .sr-diagram-proof-grid article:hover,
     .sr-status-row:not(.sr-status-row-head):hover {
