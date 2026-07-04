@@ -4,7 +4,6 @@ import controlPlaneOverview from '../assets/diagrams/control-plane-overview.jpeg
 
 const repoUrl = 'https://github.com/SkeinRank/skeinrank';
 const lexiconRepoUrl = 'https://github.com/SkeinRank/agent-lexicon';
-const sdkQuickstartUrl = '/getting-started/python-sdk/';
 const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
 ---
 
@@ -109,7 +108,7 @@ const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
 
     <section class="sr-section sr-ladder" aria-labelledby="sr-ladder-title">
       <div class="sr-section-heading">
-        <p class="sr-section-label">Two tools, one problem</p>
+        
         <h2 id="sr-ladder-title">Start in the terminal. Scale to a runtime control plane.</h2>
         <p>
           The same terminology governance shows up at two moments: while agents write code, and while
@@ -188,7 +187,7 @@ const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
 
     <section class="sr-section sr-language-brief" aria-labelledby="sr-language-brief-title">
       <div class="sr-section-heading sr-language-brief-heading">
-        <p class="sr-section-label">Why this layer exists</p>
+        
         <h2 id="sr-language-brief-title">Embeddings find similarity. They do not govern your company vocabulary.</h2>
         <p>
           SkeinRank is not trying to replace semantic search. It gives teams a controlled language layer
@@ -232,7 +231,7 @@ const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
 
     <section class="sr-section sr-console-preview sr-overview-preview" aria-labelledby="sr-console-preview-title">
       <div class="sr-preview-heading">
-        <p class="sr-section-label">How it works</p>
+        
         <h2 id="sr-console-preview-title">From domain language to runtime context.</h2>
         <p>
           SkeinRank sits beside your existing search stack. Profiles define language, bindings select
@@ -282,7 +281,7 @@ const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
 
     <section class="sr-section" aria-labelledby="sr-how-title">
       <div class="sr-section-heading">
-        <p class="sr-section-label">Console workflow</p>
+        
         <h2 id="sr-how-title">From terminology governance to verified search behavior.</h2>
         <p>
           The governance console is designed as an operator workflow: run the Docker beta stack, define terminology, apply it to an index,
@@ -321,7 +320,7 @@ const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
 
     <section class="sr-section" aria-labelledby="sr-layers-title">
       <div class="sr-section-heading sr-narrow">
-        <p class="sr-section-label">Product shape</p>
+        
         <h2 id="sr-layers-title">A control plane for terminology-aware search, not a replacement for your search stack.</h2>
         <p>
           When you need more than one-off canonicalization, the governed lifecycle is already there:
@@ -371,7 +370,7 @@ const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
 
     <section class="sr-section sr-status-section" aria-labelledby="sr-status-title">
       <div class="sr-section-heading sr-narrow">
-        <p class="sr-section-label">Honest status</p>
+        
         <h2 id="sr-status-title">Public positioning: usable core, beta governance platform.</h2>
         <p>
           The site presents SkeinRank honestly: the core SDK/CLI path is the smallest stable entry point,
@@ -410,7 +409,7 @@ const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
 
     <section class="sr-cta" aria-labelledby="sr-cta-title">
       <div>
-        <p class="sr-section-label">Next step</p>
+        
         <h2 id="sr-cta-title">Install the CLI in 10 seconds, then open the platform preview.</h2>
         <p>Start with <code>pipx install agent-lexicon</code> for the first aha moment in your terminal, then run the full skeinrank control-plane stack when you want UI, API, bindings, evidence, and enrichment workflows.</p>
       </div>
@@ -694,7 +693,15 @@ const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
   .sr-ladder-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.6rem;
+    gap: 0.55rem;
+    align-items: center;
+  }
+
+  .sr-ladder-actions .sr-btn {
+    min-height: 2.35rem;
+    padding: 0.5rem 0.95rem;
+    font-size: 0.9rem;
+    font-weight: 650;
   }
 
   .sr-ladder-arrow {
@@ -1356,10 +1363,25 @@ const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
+    align-items: stretch;
+  }
+
+  .sr-feature-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    overflow: visible;
+  }
+
+  .sr-feature-card .sr-status {
+    margin-top: auto;
+    margin-bottom: 0.08rem;
+    align-self: flex-start;
+    line-height: 1;
   }
 
   .sr-feature-primary {
-    grid-row: span 2;
+    grid-row: auto;
     padding: 1.35rem;
     background:
       radial-gradient(circle at 20% 10%, color-mix(in srgb, var(--sr-cyan) 20%, transparent), transparent 38%),
