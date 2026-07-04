@@ -3,3 +3,4 @@ dist/
 .astro/
 .DS_Store
 npm-debug.log*
+skeinrank-site_TREE_*.txt

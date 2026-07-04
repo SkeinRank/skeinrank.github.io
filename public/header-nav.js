@@ -125,8 +125,10 @@
 
     const sdk = document.createElement('a');
     sdk.className = 'sr-header-try-sdk';
-    sdk.href = '/getting-started/python-sdk/';
-    sdk.textContent = 'Try SDK';
+    sdk.href = 'https://github.com/SkeinRank/agent-lexicon';
+    sdk.target = '_blank';
+    sdk.rel = 'noreferrer';
+    sdk.textContent = 'Try CLI';
 
     actions.append(github, sdk);
     return actions;
@@ -223,8 +225,10 @@
 
     const cta = document.createElement('a');
     cta.className = 'sr-home-mobile-drawer-cta';
-    cta.href = '/getting-started/python-sdk/';
-    cta.textContent = 'Try SDK';
+    cta.href = 'https://github.com/SkeinRank/agent-lexicon';
+    cta.target = '_blank';
+    cta.rel = 'noreferrer';
+    cta.textContent = 'Try CLI';
 
     const note = document.createElement('p');
     note.textContent = 'Open-source domain language control plane for search, RAG, and AI-agent workflows.';

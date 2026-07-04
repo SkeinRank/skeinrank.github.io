@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import controlPlaneOverview from '../assets/diagrams/control-plane-overview.jpeg';
 
 const repoUrl = 'https://github.com/SkeinRank/skeinrank';
+const lexiconRepoUrl = 'https://github.com/SkeinRank/agent-lexicon';
 const sdkQuickstartUrl = '/getting-started/python-sdk/';
 const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
 ---
@@ -11,31 +12,33 @@ const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
   <div class="sr-shell">
     <section class="sr-hero-block sr-hero-core sr-proof-hero" aria-label="SkeinRank product hero">
       <div class="sr-hero-copy sr-hero-copy-core sr-proof-copy">
-        <h1 id="sr-home-title">Turn messy aliases into governed search context.</h1>
+        <h1 id="sr-home-title">One canonical vocabulary — from your terminal to runtime.</h1>
 
         <p class="sr-subtitle">
-          Your team's language drifts — features get renamed, slang piles up, and acronyms collide.
-          Your embedding model never learned your internal names, so retrieval quietly rots.
-          SkeinRank canonicalizes that language <strong>before</strong> it reaches search, RAG, and agents.
+          When many AI agents work a long session, each invents its own names for the same thing —
+          <code>accessToken</code>, <code>authToken</code>, <code>bearer_token</code>. By merge time the
+          codebase speaks five dialects of itself. SkeinRank gives one deterministic, auditable
+          terminology layer: <strong>agent-lexicon</strong> catches drift in your terminal,
+          <strong>skeinrank</strong> governs it at runtime.
         </p>
 
         <div class="sr-actions" aria-label="Primary actions">
-          <a class="sr-btn sr-btn-primary" href={sdkQuickstartUrl}>Try SDK</a>
-          <a class="sr-btn sr-btn-secondary" href={platformPreviewUrl}>Platform preview</a>
+          <a class="sr-btn sr-btn-primary" href={lexiconRepoUrl} target="_blank" rel="noreferrer">Get agent-lexicon</a>
+          <a class="sr-btn sr-btn-secondary" href={platformPreviewUrl}>Runtime platform preview</a>
         </div>
       </div>
 
-      <div class="sr-hero-code-panel" aria-label="SkeinRank SDK proof">
+      <div class="sr-hero-code-panel" aria-label="agent-lexicon CLI proof">
         <div class="sr-terminal-bar">
           <div class="sr-terminal-dots" aria-hidden="true">
             <span></span>
             <span></span>
             <span></span>
           </div>
-          <strong>skeinrank.py</strong>
+          <strong>agent-lexicon</strong>
         </div>
 
-        <div class="sr-code-stack sr-hero-code-stack" aria-label="SkeinRank SDK quickstart">
+        <div class="sr-code-stack sr-hero-code-stack" aria-label="agent-lexicon CLI quickstart">
           <div class="sr-code-window sr-code-window-install">
             <button
               class="sr-copy-icon"
@@ -48,8 +51,8 @@ const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
                 <path d="M5 15H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1" />
               </svg>
             </button>
-            <pre><code><span class="sr-code-command">pip</span> <span class="sr-code-arg">install</span> <span class="sr-code-package">skeinrank</span></code></pre>
-            <pre id="sr-hero-install-copy" class="sr-copy-source">pip install skeinrank</pre>
+            <pre><code><span class="sr-code-command">pipx</span> <span class="sr-code-arg">install</span> <span class="sr-code-package">agent-lexicon</span></code></pre>
+            <pre id="sr-hero-install-copy" class="sr-copy-source">pipx install agent-lexicon</pre>
           </div>
 
           <div class="sr-code-window sr-code-window-python">
@@ -57,27 +60,26 @@ const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
               class="sr-copy-icon"
               type="button"
               data-copy-target="sr-hero-python-copy"
-              aria-label="Copy Python SDK snippet"
+              aria-label="Copy CLI example"
             >
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M9 9a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2V9Z" />
                 <path d="M5 15H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1" />
               </svg>
             </button>
-            <pre><code><span class="sr-code-keyword">import</span> <span class="sr-code-module">skeinrank</span>
+            <pre><code><span class="sr-code-comment"># block a wrong tool call before it runs</span>
+<span class="sr-code-command">alex</span> <span class="sr-code-arg">guard</span> lexicon.yaml <span class="sr-code-string">"raise the credit limit"</span> <span class="sr-code-arg">\</span>
+  <span class="sr-code-arg">--tool</span> api.update_rate_limit
 
-<span class="sr-code-module">skeinrank</span>.<span class="sr-code-method">canonicalize</span>(<span class="sr-code-string">"k8s pg timeout"</span>)
-<span class="sr-code-comment sr-code-result"># kubernetes postgresql timeout</span>
-
-<span class="sr-code-module">skeinrank</span>.<span class="sr-code-method">extract</span>(<span class="sr-code-string">"sev1 on kube after deploy"</span>)
-<span class="sr-code-comment sr-code-result"># ["critical incident", "kubernetes", "deployment"]</span></code></pre>
-            <pre id="sr-hero-python-copy" class="sr-copy-source">import skeinrank
-
-skeinrank.canonicalize("k8s pg timeout")
-# kubernetes postgresql timeout
-
-skeinrank.extract("sev1 on kube after deploy")
-# ["critical incident", "kubernetes", "deployment"]</pre>
+<span class="sr-code-comment sr-code-result">Status: blocked</span>
+<span class="sr-code-comment sr-code-result">Reason: tool not allowed for resolved terminology</span>
+<span class="sr-code-comment sr-code-result">Matched: billing.credit_limit</span>
+<span class="sr-code-comment sr-code-result"># no model called. same answer, byte for byte.</span></code></pre>
+            <pre id="sr-hero-python-copy" class="sr-copy-source">alex guard lexicon.yaml "raise the credit limit" \
+  --tool api.update_rate_limit
+# Status: blocked
+# Reason: tool not allowed for resolved terminology
+# Matched: billing.credit_limit</pre>
           </div>
         </div>
       </div>
@@ -85,19 +87,76 @@ skeinrank.extract("sev1 on kube after deploy")
 
     <section class="sr-trust-strip" aria-label="SkeinRank project status">
       <a
+        href="https://pypi.org/project/agent-lexicon/"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="PyPI package agent-lexicon 0.7.0"
+      >agent-lexicon 0.7.0</a>
+      <a
         href="https://pypi.org/project/skeinrank/"
         target="_blank"
         rel="noreferrer"
-        aria-label="PyPI package skeinrank 0.10.0"
-      >skeinrank 0.10.0</a>
+        aria-label="PyPI package skeinrank 0.12.0"
+      >skeinrank 0.12.0</a>
       <a
         href={repoUrl}
         target="_blank"
         rel="noreferrer"
         aria-label="SkeinRank is open source under Apache 2.0"
       >Apache-2.0</a>
-      <a href={sdkQuickstartUrl}>No Docker required</a>
-      <a href="/integrations/mcp/">MCP guardrails</a>
+      <a href={lexiconRepoUrl} target="_blank" rel="noreferrer">Zero dependencies</a>
+    </section>
+
+    <section class="sr-section sr-ladder" aria-labelledby="sr-ladder-title">
+      <div class="sr-section-heading">
+        <p class="sr-section-label">Two tools, one problem</p>
+        <h2 id="sr-ladder-title">Start in the terminal. Scale to a runtime control plane.</h2>
+        <p>
+          The same terminology governance shows up at two moments: while agents write code, and while
+          search, RAG, and agents run in production. You don't choose between the two projects — you
+          grow from one into the other.
+        </p>
+      </div>
+
+      <div class="sr-ladder-grid" aria-label="agent-lexicon and skeinrank compared">
+        <article class="sr-ladder-card sr-ladder-devtime">
+          <div class="sr-ladder-head">
+            <span class="sr-ladder-stage">Dev-time</span>
+            <h3>agent-lexicon</h3>
+          </div>
+          <p class="sr-ladder-tagline">A deterministic terminology layer for AI agents — in your terminal.</p>
+          <ul class="sr-ladder-list">
+            <li>Install with <code>pipx</code>, get the <code>alex</code> CLI in every project</li>
+            <li>Resolve, guard, and detect terminology drift at merge time</li>
+            <li>Dependency-free, runs locally, same input → same output</li>
+            <li>MCP server so agents read one canonical vocabulary</li>
+          </ul>
+          <div class="sr-ladder-actions">
+            <a class="sr-btn sr-btn-primary" href={lexiconRepoUrl} target="_blank" rel="noreferrer">GitHub</a>
+            <a class="sr-btn sr-btn-ghost" href="https://pypi.org/project/agent-lexicon/" target="_blank" rel="noreferrer">PyPI</a>
+          </div>
+        </article>
+
+        <div class="sr-ladder-arrow" aria-hidden="true">→</div>
+
+        <article class="sr-ladder-card sr-ladder-runtime">
+          <div class="sr-ladder-head">
+            <span class="sr-ladder-stage">Runtime</span>
+            <h3>skeinrank</h3>
+          </div>
+          <p class="sr-ladder-tagline">A control plane that governs the same vocabulary in production search.</p>
+          <ul class="sr-ladder-list">
+            <li>Bind approved terminology to search contexts and indexes</li>
+            <li>Evidence-backed proposals, immutable snapshots, rollback</li>
+            <li>Governance console, REST API, Elasticsearch enrichment</li>
+            <li>Audit which version each binding is pinned to, and why</li>
+          </ul>
+          <div class="sr-ladder-actions">
+            <a class="sr-btn sr-btn-secondary" href={platformPreviewUrl}>Platform preview</a>
+            <a class="sr-btn sr-btn-ghost" href={repoUrl} target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+        </article>
+      </div>
     </section>
 
     <script is:inline>
@@ -352,11 +411,11 @@ skeinrank.extract("sev1 on kube after deploy")
     <section class="sr-cta" aria-labelledby="sr-cta-title">
       <div>
         <p class="sr-section-label">Next step</p>
-        <h2 id="sr-cta-title">Start with the SDK, then open the platform preview.</h2>
-        <p>Use the lightweight SDK for the first aha moment, then run the full control-plane stack when you want UI, API, bindings, evidence, and enrichment workflows.</p>
+        <h2 id="sr-cta-title">Install the CLI in 10 seconds, then open the platform preview.</h2>
+        <p>Start with <code>pipx install agent-lexicon</code> for the first aha moment in your terminal, then run the full skeinrank control-plane stack when you want UI, API, bindings, evidence, and enrichment workflows.</p>
       </div>
       <div class="sr-cta-actions">
-        <a class="sr-btn sr-btn-primary" href={sdkQuickstartUrl}>Try Python SDK</a>
+        <a class="sr-btn sr-btn-primary" href={lexiconRepoUrl} target="_blank" rel="noreferrer">Get agent-lexicon</a>
         <a class="sr-btn sr-btn-secondary" href="/getting-started/docker-beta-quickstart/">Run Docker beta</a>
       </div>
     </section>
@@ -532,6 +591,129 @@ skeinrank.extract("sev1 on kube after deploy")
     border-color: color-mix(in srgb, var(--sr-cyan) 24%, transparent);
     color: var(--sr-cyan);
     background: color-mix(in srgb, var(--sr-cyan) 7%, transparent);
+  }
+
+  .sr-ladder-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: stretch;
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+
+  .sr-ladder-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.6rem;
+    border: 1px solid var(--sr-border);
+    border-radius: 1.25rem;
+    background: color-mix(in srgb, var(--sr-card) 82%, transparent);
+  }
+
+  .sr-ladder-devtime {
+    border-color: color-mix(in srgb, var(--sr-cyan) 34%, transparent);
+    background: color-mix(in srgb, var(--sr-cyan) 8%, var(--sr-card));
+  }
+
+  .sr-ladder-runtime {
+    border-color: color-mix(in srgb, var(--sr-accent) 30%, transparent);
+  }
+
+  .sr-ladder-head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .sr-ladder-stage {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sr-muted);
+  }
+
+  .sr-ladder-devtime .sr-ladder-stage {
+    color: var(--sr-cyan);
+  }
+
+  .sr-ladder-head h3 {
+    margin: 0;
+    font-size: 1.45rem;
+    font-family: var(--sr-mono, ui-monospace, monospace);
+  }
+
+  .sr-ladder-tagline {
+    margin: 0;
+    color: var(--sr-text);
+    font-weight: 500;
+  }
+
+  .sr-ladder-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    flex: 1;
+  }
+
+  .sr-ladder-list li {
+    position: relative;
+    padding-left: 1.35rem;
+    color: var(--sr-muted);
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+
+  .sr-ladder-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--sr-cyan);
+  }
+
+  .sr-ladder-runtime .sr-ladder-list li::before {
+    background: var(--sr-accent);
+  }
+
+  .sr-ladder-list code,
+  .sr-ladder-tagline code {
+    font-size: 0.85em;
+    padding: 0.05em 0.35em;
+    border-radius: 0.35rem;
+    background: color-mix(in srgb, var(--sr-surface-strong) 70%, transparent);
+  }
+
+  .sr-ladder-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .sr-ladder-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: var(--sr-muted);
+    align-self: center;
+  }
+
+  @media (max-width: 860px) {
+    .sr-ladder-grid {
+      grid-template-columns: 1fr;
+    }
+    .sr-ladder-arrow {
+      transform: rotate(90deg);
+      padding: 0.25rem 0;
+    }
   }
 
   .sr-metrics {
@@ -1517,7 +1699,7 @@ skeinrank.extract("sev1 on kube after deploy")
     }
 
     .sr-hero-copy h1 {
-      max-width: 13ch;
+      max-width: 16ch;
     }
 
     .sr-hero-visual {
@@ -1618,8 +1800,8 @@ skeinrank.extract("sev1 on kube after deploy")
   }
 
   .sr-hero-copy-core h1 {
-    max-width: 12ch;
-    font-size: clamp(3rem, 6.4vw, 6rem);
+    max-width: 19ch;
+    font-size: clamp(2.3rem, 4.4vw, 4.1rem);
   }
 
   .sr-core-metrics div {

@@ -21,14 +21,14 @@ const landing = readFileSync('src/components/LandingHome.astro', 'utf8');
 assert.match(landing, /sr-diagram-showcase/, 'landing should render the new overview diagram section');
 assert.ok(!landing.includes('<div class="sr-hero-proof"'), 'landing should not render the stretched hero proof strip');
 assert.ok(!landing.includes('<div class="sr-mobile-flow"'), 'landing should not render the extra mobile flow cards below hero CTAs');
-assert.match(landing, /Try SDK/, 'landing hero should expose the SDK-first primary CTA');
+assert.match(landing, /Get agent-lexicon/, 'landing hero should expose the agent-lexicon CLI-first primary CTA');
 assert.match(landing, /data-copy-target="sr-hero-install-copy"/, 'landing should include a copy action for the hero install command');
 assert.match(landing, /data-copy-target="sr-hero-python-copy"/, 'landing should include a copy action for the hero Python SDK snippet');
-assert.match(landing, /skeinrank\.py/, 'landing should label the hero terminal card as a SkeinRank SDK proof');
+assert.match(landing, /<strong>agent-lexicon<\/strong>/, 'landing should label the hero terminal card as an agent-lexicon CLI proof');
 assert.match(landing, /sr-code-string/, 'SDK quickstart code should include lightweight syntax highlighting');
 assert.match(landing, /sr-code-comment sr-code-result/, 'SDK quickstart output should be shown as highlighted Python comments');
-assert.match(landing, /# kubernetes postgresql timeout/, 'hero code should use comment-style output for canonicalize result');
-assert.match(landing, /# \[&quot;critical incident&quot;, &quot;kubernetes&quot;, &quot;deployment&quot;\]|# \["critical incident", "kubernetes", "deployment"\]/, 'hero code should use comment-style output for extract result');
+assert.match(landing, /Status: blocked/, 'hero code should show the deterministic guard block result');
+assert.match(landing, /Matched: billing\.credit_limit/, 'hero code should show the matched canonical term');
 assert.ok(!landing.includes('→ kubernetes postgresql timeout'), 'hero code should not use arrow output syntax');
 assert.match(landing, /sr-code-command/, 'install command should use the same syntax-highlighted code window style');
 assert.match(landing, /:root\[data-theme='light'\]\) \.sr-hero-code-panel \.sr-code-window/, 'light theme should keep hero code windows dark and readable');
@@ -39,7 +39,7 @@ assert.match(landing, /sr-terminal-dots/, 'terminal dots should be grouped for p
 assert.ok(!landing.includes('<section id="try-sdk"'), 'landing should not duplicate the SDK quickstart below the hero');
 assert.ok(!landing.includes('<div class="sr-world-visual"'), 'landing hero should use SDK proof instead of the dense architecture diagram');
 assert.match(landing, /sr-trust-strip/, 'landing should include a concise project status strip below the hero');
-assert.match(landing, /Your team's language drifts/, 'hero subtitle should align with the terminology drift narrative');
+assert.match(landing, /each invents its own names/, 'hero subtitle should align with the multi-agent terminology drift narrative');
 assert.ok(!landing.includes('Domain language control plane for search, RAG &amp; agents'), 'hero should not lead with a heavy control-plane eyebrow');
 assert.ok(!landing.includes('<span class="sr-pulse"'), 'hero should not use a status-like pulse indicator before the headline');
 assert.match(landing, /Why this layer exists/, 'landing should explain the product layer immediately after the hero');
@@ -76,8 +76,9 @@ assert.ok(!landing.includes('aria-labelledby="sr-dashboard-title"'), 'landing sh
 assert.match(landing, /Honest status/, 'status section should be framed as an honest status check near the end');
 assert.match(landing, /href="https:\/\/pypi.org\/project\/skeinrank\/"[\s\S]*target="_blank"[\s\S]*rel="noreferrer"/, 'external PyPI status link should open in a new tab');
 assert.match(landing, /href=\{repoUrl\}[\s\S]*target="_blank"[\s\S]*rel="noreferrer"/, 'external GitHub status link should open in a new tab');
-assert.match(landing, /skeinrank 0\.10\.0/, 'status strip should mention the current PyPI package version');
-assert.match(landing, /No Docker required/, 'status strip should keep the SDK proof lightweight');
+assert.match(landing, /agent-lexicon 0\.7\.0/, 'status strip should mention the current agent-lexicon PyPI version');
+assert.match(landing, /skeinrank 0\.12\.0/, 'status strip should mention the current skeinrank PyPI version');
+assert.match(landing, /Zero dependencies/, 'status strip should highlight the dependency-free CLI');
 assert.match(landing, /a \+ a::before/, 'status strip should use lightweight inline separators instead of boxed cards');
 assert.ok(!landing.includes('<span>PyPI</span>'), 'status strip should not render heavy label/value cards');
 assert.ok(!landing.includes('grid-template-columns: repeat(4, minmax(0, 1fr))'), 'status strip should not use boxed card grid layout');
@@ -106,7 +107,7 @@ assert.match(headerNav, /sr-header-github-action/, 'GitHub should be a right-sid
 assert.match(headerNav, /sr-header-try-sdk/, 'navbar should expose Try SDK as the primary action');
 assert.match(headerNav, /rightGroup\.appendChild\(actions\)/, 'navbar actions should mount inside the right-side header group');
 assert.match(headerNav, /target = '_blank'/, 'external header GitHub action should open in a new tab');
-assert.match(headerNav, /cta\.textContent = 'Try SDK'/, 'mobile drawer CTA should point to the SDK path');
+assert.match(headerNav, /cta\.textContent = 'Try CLI'/, 'mobile drawer CTA should point to the agent-lexicon CLI');
 
 const customCss = readFileSync('src/styles/custom.css', 'utf8');
 assert.match(customCss, /sr-header-actions/, 'site CSS should style the right-side navbar action group');
