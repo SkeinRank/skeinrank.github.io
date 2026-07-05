@@ -23,12 +23,12 @@ assert.ok(!landing.includes('<div class="sr-hero-proof"'), 'landing should not r
 assert.ok(!landing.includes('<div class="sr-mobile-flow"'), 'landing should not render the extra mobile flow cards below hero CTAs');
 assert.match(landing, /Get agent-lexicon/, 'landing hero should expose the agent-lexicon CLI-first primary CTA');
 assert.match(landing, /data-copy-target="sr-hero-install-copy"/, 'landing should include a copy action for the hero install command');
-assert.match(landing, /data-copy-target="sr-hero-python-copy"/, 'landing should include a copy action for the hero Python SDK snippet');
+assert.match(landing, /data-copy-target="sr-hero-python-copy"/, 'landing should include a copy action for the hero CLI first-run snippet');
 assert.match(landing, /<strong>agent-lexicon<\/strong>/, 'landing should label the hero terminal card as an agent-lexicon CLI proof');
-assert.match(landing, /sr-code-string/, 'SDK quickstart code should include lightweight syntax highlighting');
-assert.match(landing, /sr-code-comment sr-code-result/, 'SDK quickstart output should be shown as highlighted Python comments');
-assert.match(landing, /Status: blocked/, 'hero code should show the deterministic guard block result');
-assert.match(landing, /Matched: billing\.credit_limit/, 'hero code should show the matched canonical term');
+assert.match(landing, /agent-lexicon<\/span> <span class="sr-code-arg">init/, 'hero CLI snippet should start with an initialization step');
+assert.match(landing, /sr-code-comment sr-code-result/, 'CLI quickstart output should be shown as highlighted terminal results');
+assert.match(landing, /agent-lexicon scan README\.md docs src/, 'hero code should show a runnable scan command after init');
+assert.match(landing, /Snapshot published/, 'hero code should end with a publishable first-run result');
 assert.ok(!landing.includes('→ kubernetes postgresql timeout'), 'hero code should not use arrow output syntax');
 assert.match(landing, /sr-code-command/, 'install command should use the same syntax-highlighted code window style');
 assert.match(landing, /:root\[data-theme='light'\]\) \.sr-hero-code-panel \.sr-code-window/, 'light theme should keep hero code windows dark and readable');
