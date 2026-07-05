@@ -66,20 +66,21 @@ const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
                 <path d="M5 15H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1" />
               </svg>
             </button>
-            <pre><code><span class="sr-code-comment"># first run inside your project</span>
-<span class="sr-code-command">agent-lexicon</span> <span class="sr-code-arg">init</span>
-<span class="sr-code-command">agent-lexicon</span> <span class="sr-code-arg">scan</span> README.md docs src
-<span class="sr-code-command">agent-lexicon</span> <span class="sr-code-arg">review</span>
-<span class="sr-code-command">agent-lexicon</span> <span class="sr-code-arg">publish</span>
+            <pre><code><span class="sr-code-comment"># first run inside your project</span></code>
+<code><span class="sr-code-comment"># `alex` is the short CLI alias for `agent-lexicon`</span></code>
+<span class="sr-code-command">alex</span> <span class="sr-code-arg">init</span>
+<span class="sr-code-command">alex</span> <span class="sr-code-arg">scan</span> README.md docs src
+<span class="sr-code-command">alex</span> <span class="sr-code-arg">review</span>
+<span class="sr-code-command">alex</span> <span class="sr-code-arg">publish</span>
 
 <span class="sr-code-comment sr-code-result">Workspace ready: lexicon/</span>
 <span class="sr-code-comment sr-code-result">Candidates discovered</span>
 <span class="sr-code-comment sr-code-result">Review inbox created</span>
-<span class="sr-code-comment sr-code-result">Snapshot published</span></code></pre>
-            <pre id="sr-hero-python-copy" class="sr-copy-source">agent-lexicon init
-agent-lexicon scan README.md docs src
-agent-lexicon review
-agent-lexicon publish
+<span class="sr-code-comment sr-code-result">Snapshot published</span></code>
+            <pre id="sr-hero-python-copy" class="sr-copy-source">alex init
+alex scan README.md docs src
+alex review
+alex publish
 # Workspace ready: lexicon/
 # Candidates discovered
 # Review inbox created
@@ -192,7 +193,7 @@ agent-lexicon publish
 
     <section class="sr-section sr-language-brief" aria-labelledby="sr-language-brief-title">
       <div class="sr-section-heading sr-language-brief-heading">
-        <p class="sr-section-label">Why this layer exists</p>
+        
         <h2 id="sr-language-brief-title">Embeddings find similarity. They do not govern your company vocabulary.</h2>
         <p>
           SkeinRank is not trying to replace semantic search. It gives teams a controlled language layer
@@ -236,7 +237,7 @@ agent-lexicon publish
 
     <section class="sr-section sr-console-preview sr-overview-preview" aria-labelledby="sr-console-preview-title">
       <div class="sr-preview-heading">
-        <p class="sr-section-label">How it works</p>
+        
         <h2 id="sr-console-preview-title">From domain language to runtime context.</h2>
         <p>
           SkeinRank sits beside your existing search stack. Profiles define language, bindings select
@@ -375,7 +376,7 @@ agent-lexicon publish
 
     <section class="sr-section sr-status-section" aria-labelledby="sr-status-title">
       <div class="sr-section-heading sr-narrow">
-        <p class="sr-section-label">Honest status</p>
+
         <h2 id="sr-status-title">Public positioning: usable core, beta governance platform.</h2>
         <p>
           The site presents SkeinRank honestly: the core SDK/CLI path is the smallest stable entry point,
