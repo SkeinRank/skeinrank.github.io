@@ -117,6 +117,7 @@ assert.match(customCss, /sr-theme-cycle-label/, 'theme toggle should be icon-onl
 assert.match(customCss, /display: none;/, 'theme toggle label should be hidden');
 assert.match(customCss, /flex: 0 0 5\.25rem/, 'home search should be compact instead of a centered wide field');
 assert.match(customCss, /sr-header-try-sdk/, 'site CSS should style the compact get-started navbar CTA');
+assert.match(customCss, /sr-hero-code-panel \.sr-code-window pre[\s\S]*background: transparent !important;/, 'light theme should keep the hero terminal code surface dark');
 
 const astroConfig = readFileSync('astro.config.mjs', 'utf8');
 const expectedSidebarSlugs = [

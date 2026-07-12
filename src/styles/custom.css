@@ -311,6 +311,14 @@ body:has(.sr-landing) .sl-container {
   color: #0f172a !important;
 }
 
+/* The landing hero terminal is product artwork, not a prose code block.
+   Keep its dark code surface identical in light and dark themes. */
+:root[data-theme='light'] .sl-markdown-content .sr-hero-code-panel .sr-code-window pre {
+  border: 0 !important;
+  background: transparent !important;
+  color: #a9b7c6 !important;
+}
+
 :root[data-theme='light'] .expressive-code .frame,
 :root[data-theme='light'] .expressive-code .frame.has-title:not(.is-terminal) {
   --ec-frm-edBg: #f8fafc;
