@@ -311,14 +311,6 @@ body:has(.sr-landing) .sl-container {
   color: #0f172a !important;
 }
 
-/* The landing hero terminal is product artwork, not a prose code block.
-   Keep its dark code surface identical in light and dark themes. */
-:root[data-theme='light'] .sl-markdown-content .sr-hero-code-panel .sr-code-window pre {
-  border: 0 !important;
-  background: transparent !important;
-  color: #a9b7c6 !important;
-}
-
 :root[data-theme='light'] .expressive-code .frame,
 :root[data-theme='light'] .expressive-code .frame.has-title:not(.is-terminal) {
   --ec-frm-edBg: #f8fafc;
@@ -1073,6 +1065,70 @@ body.sr-mobile-menu-open {
     color: #94a3b8;
     font-size: 0.82rem;
     line-height: 1.45;
+  }
+}
+
+
+@media (max-width: 71.999rem) {
+  :root[data-theme='light'] html.sr-home-page .sr-home-mobile-menu-panel {
+    background:
+      radial-gradient(circle at 20% -10%, rgba(14, 165, 233, 0.10), transparent 16rem),
+      radial-gradient(circle at 92% 2%, rgba(109, 40, 217, 0.12), transparent 18rem),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.985), rgba(248, 250, 252, 0.98));
+  }
+
+  :root[data-theme='light'] html.sr-home-page .sr-home-mobile-drawer {
+    color: #0f172a;
+  }
+
+  :root[data-theme='light'] html.sr-home-page .sr-home-mobile-drawer-header,
+  :root[data-theme='light'] html.sr-home-page .sr-home-mobile-drawer-link,
+  :root[data-theme='light'] html.sr-home-page .sr-home-mobile-drawer-footer {
+    border-color: rgba(148, 163, 184, 0.22);
+  }
+
+  :root[data-theme='light'] html.sr-home-page .sr-home-mobile-drawer-brand,
+  :root[data-theme='light'] html.sr-home-page .sr-home-mobile-menu-panel .sr-home-mobile-drawer-link {
+    color: #0f172a;
+  }
+
+  :root[data-theme='light'] html.sr-home-page .sr-home-mobile-drawer-brand:hover,
+  :root[data-theme='light'] html.sr-home-page .sr-home-mobile-drawer-brand:focus-visible,
+  :root[data-theme='light'] html.sr-home-page .sr-home-mobile-menu-panel .sr-home-mobile-drawer-link:hover,
+  :root[data-theme='light'] html.sr-home-page .sr-home-mobile-menu-panel .sr-home-mobile-drawer-link:focus-visible {
+    color: #020617;
+  }
+
+  :root[data-theme='light'] html.sr-home-page .sr-home-mobile-drawer-close {
+    border-color: rgba(148, 163, 184, 0.28);
+    color: #475569;
+    background: rgba(255, 255, 255, 0.86);
+  }
+
+  :root[data-theme='light'] html.sr-home-page .sr-home-mobile-drawer-close:hover,
+  :root[data-theme='light'] html.sr-home-page .sr-home-mobile-drawer-close:focus-visible {
+    color: #0f172a;
+    border-color: rgba(14, 165, 233, 0.32);
+    background: rgba(224, 242, 254, 0.92);
+  }
+
+  :root[data-theme='light'] html.sr-home-page .sr-home-mobile-menu-panel .sr-home-mobile-drawer-link em,
+  :root[data-theme='light'] html.sr-home-page .sr-home-mobile-menu-panel .sr-home-mobile-drawer-link svg,
+  :root[data-theme='light'] html.sr-home-page .sr-home-mobile-drawer-footer p {
+    color: #64748b;
+  }
+
+  :root[data-theme='light'] html.sr-home-page .sr-home-mobile-menu-panel .sr-home-mobile-drawer-link:hover svg,
+  :root[data-theme='light'] html.sr-home-page .sr-home-mobile-menu-panel .sr-home-mobile-drawer-link:focus-visible svg {
+    color: #0891b2;
+  }
+
+  :root[data-theme='light'] html.sr-home-page .sr-home-mobile-menu-panel .sr-home-mobile-drawer-link[aria-current='page'] span {
+    color: #0f766e;
+  }
+
+  :root[data-theme='light'] html.sr-home-page .sr-home-mobile-menu-panel .sr-home-mobile-drawer-link-external span {
+    color: #6d28d9;
   }
 }
 

@@ -66,6 +66,7 @@ assert.ok(!landing.includes('sr-product-panel-float'), 'hero code panel should n
 assert.match(landing, /sr-soft-rise/, 'landing should keep a lightweight one-shot product motion');
 assert.match(landing, /prefers-reduced-motion: no-preference/, 'landing motion should only run when the user has not reduced motion');
 assert.match(landing, /prefers-reduced-motion: reduce/, 'landing motion should respect reduced-motion preferences');
+assert.match(landing, /padding: 1\.25rem clamp\(1rem, 4\.8vw, 1\.35rem\) 0;/, 'mobile hero should keep readable horizontal gutters');
 assert.ok(
   landing.indexOf('Embeddings find similarity. They do not govern your company vocabulary.') < landing.indexOf('From domain language to runtime context'),
   'language layer explanation should appear before architecture details',
@@ -117,7 +118,8 @@ assert.match(customCss, /sr-theme-cycle-label/, 'theme toggle should be icon-onl
 assert.match(customCss, /display: none;/, 'theme toggle label should be hidden');
 assert.match(customCss, /flex: 0 0 5\.25rem/, 'home search should be compact instead of a centered wide field');
 assert.match(customCss, /sr-header-try-sdk/, 'site CSS should style the compact get-started navbar CTA');
-assert.match(customCss, /sr-hero-code-panel \.sr-code-window pre[\s\S]*background: transparent !important;/, 'light theme should keep the hero terminal code surface dark');
+assert.match(customCss, /:root\[data-theme='light'\] html\.sr-home-page \.sr-home-mobile-menu-panel/, 'light theme mobile drawer should have explicit surface styling');
+assert.match(customCss, /:root\[data-theme='light'\] html\.sr-home-page \.sr-home-mobile-drawer-brand/, 'light theme mobile drawer should force readable link colors');
 
 const astroConfig = readFileSync('astro.config.mjs', 'utf8');
 const expectedSidebarSlugs = [
