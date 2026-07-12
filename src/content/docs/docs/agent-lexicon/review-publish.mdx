@@ -1,0 +1,57 @@
+---
+title: Review and publish
+sidebar:
+  label: Review and publish
+  order: 4
+description: Turn discovered terminology candidates into explicit, auditable vocabulary decisions.
+---
+
+Agent Lexicon separates **discovery** from **governance**. A scan can produce candidates and evidence, but only reviewed decisions become published vocabulary.
+
+## Local workspace
+
+`alex init` creates a SQLite-backed workspace under `.agent-lexicon/`. The workspace stores:
+
+- scan results and line-numbered evidence;
+- candidate status;
+- reviewer decisions;
+- provenance records;
+- publication metadata.
+
+The canonical lexicon remains a normal git-tracked file under `lexicon/`.
+
+## Review candidates
+
+```bash
+alex review
+```
+
+Use the review UI to distinguish:
+
+- a real project concept that should become canonical;
+- an alias of an existing term;
+- a deprecated surface that agents should avoid;
+- example-local or generated language that should be rejected;
+- an unresolved candidate that needs more evidence.
+
+## Publish a snapshot
+
+```bash
+alex publish
+```
+
+Runtime decisions include a content-addressed snapshot reference. That makes a decision replayable against the same vocabulary content later.
+
+## Export decision provenance
+
+```bash
+alex workspace export-decision-log \
+  --root . \
+  --action review_decision_saved
+```
+
+The export is useful for audits, handoff, or external analysis. It is not a substitute for the canonical lexicon file.
+
+## Review-first principle
+
+Optional semantic components may suggest a likely canonical neighbour. They never silently accept or publish a term. The reviewer remains the authority for vocabulary state.

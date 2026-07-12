@@ -1,0 +1,60 @@
+---
+title: Merge and CI checks
+description: Detect terminology drift in working diffs, feature branches, and pull requests.
+---
+
+Git can report a clean merge while two branches still introduce different names for the same concept. Agent Lexicon adds terminology review alongside tests, linting, and merge conflict checks.
+
+## Check a working diff
+
+```bash
+git diff | alex lint-diff --stdin
+```
+
+The report can distinguish declared deprecated terms, lexical near-misses, and new project terms. Optional semantic suggestions do not change deterministic exit behavior.
+
+## Compare two git refs
+
+```bash
+alex check-merge \
+  --root . \
+  --base main \
+  --head feature-branch \
+  --include 'src/**'
+```
+
+To fail CI when reviewable drift is present:
+
+```bash
+alex check-merge \
+  --root . \
+  --base origin/main \
+  --head HEAD \
+  --fail-on-review
+```
+
+## Minimal GitHub Actions job
+
+```yaml
+name: Terminology review
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  terminology-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install agent-lexicon
+      - run: alex validate lexicon/lexicon.yaml --lint --strict-lint
+      - run: alex check-merge --root . --base origin/${{ github.base_ref }} --head HEAD
+```
+
+Start review-first. Add `--fail-on-review` when terminology approval is ready to become a required merge gate.

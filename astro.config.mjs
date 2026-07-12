@@ -11,7 +11,7 @@ export default defineConfig({
     starlight({
       title: 'SkeinRank',
       description:
-        'Open-source Domain Language Control Plane that turns messy aliases into governed runtime context for enterprise search, RAG, and AI-agent workflows.',
+        'Open-source terminology governance from coding-agent repositories to runtime search, RAG, and AI-agent workflows.',
       logo: {
         src: './src/assets/logo.png',
         alt: 'SkeinRank',
@@ -66,7 +66,7 @@ export default defineConfig({
         },
         {
           tag: 'meta',
-          attrs: { property: 'og:image:alt', content: 'SkeinRank — Domain Language Control Plane for search, RAG, and AI agents' },
+          attrs: { property: 'og:image:alt', content: 'SkeinRank — terminology governance for coding agents, search, RAG, and AI agents' },
         },
         {
           tag: 'meta',
@@ -74,14 +74,14 @@ export default defineConfig({
         },
         {
           tag: 'meta',
-          attrs: { name: 'twitter:title', content: 'SkeinRank — Domain Language Control Plane for Search, RAG, and AI Agents' },
+          attrs: { name: 'twitter:title', content: 'SkeinRank — terminology governance from dev-time to runtime' },
         },
         {
           tag: 'meta',
           attrs: {
             name: 'twitter:description',
             content:
-              'Open-source Domain Language Control Plane that turns messy aliases into governed runtime context for enterprise search, RAG, and AI-agent workflows.',
+              'Open-source terminology governance from coding-agent repositories to runtime search, RAG, and AI-agent workflows.',
           },
         },
         {
@@ -114,18 +114,39 @@ export default defineConfig({
       },
       sidebar: [
         {
-          label: 'Start here',
+          label: 'Documentation',
           items: [
-            { label: 'Overview', slug: '' },
+            { label: 'Choose a product', slug: 'docs' },
+            { label: 'How they work together', slug: 'docs/ecosystem/how-they-work-together' },
+            { label: 'Benchmarks and evidence', slug: 'docs/evidence' },
+          ],
+        },
+        {
+          label: 'Agent Lexicon · Dev-time',
+          items: [
+            { label: 'Overview', slug: 'docs/agent-lexicon' },
+            { label: 'Installation', slug: 'docs/agent-lexicon/installation' },
+            { label: 'Quickstart', slug: 'docs/agent-lexicon/quickstart' },
+            { label: 'Review and publish', slug: 'docs/agent-lexicon/review-publish' },
+            { label: 'Agent context', slug: 'docs/agent-lexicon/context' },
+            { label: 'Merge and CI checks', slug: 'docs/agent-lexicon/merge-checks' },
+            { label: 'MCP server', slug: 'docs/agent-lexicon/mcp' },
+            { label: 'CLI reference', slug: 'docs/agent-lexicon/reference' },
+          ],
+        },
+        {
+          label: 'SkeinRank · Runtime',
+          items: [
+            { label: 'Overview', slug: 'docs/skeinrank' },
             { label: 'Installation', slug: 'getting-started/installation' },
-            { label: 'Quickstart', slug: 'getting-started/quickstart' },
+            { label: 'SDK quickstart', slug: 'getting-started/quickstart' },
             { label: 'Docker beta quickstart', slug: 'getting-started/docker-beta-quickstart' },
             { label: 'CLI', slug: 'getting-started/cli' },
             { label: 'Python SDK', slug: 'getting-started/python-sdk' },
           ],
         },
         {
-          label: 'Concepts',
+          label: 'SkeinRank concepts',
           items: [
             { label: 'Mental model', slug: 'concepts/mental-model' },
             { label: 'Side-car model', slug: 'concepts/sidecar-model' },
@@ -140,13 +161,13 @@ export default defineConfig({
           ],
         },
         {
-          label: 'Integrations',
+          label: 'SkeinRank integrations',
           items: [
             { label: 'MCP integration', slug: 'integrations/mcp' },
           ],
         },
         {
-          label: 'Operations',
+          label: 'SkeinRank operations',
           items: [
             { label: 'GitOps delivery', slug: 'ops/gitops-delivery' },
             { label: 'Blue/green rollout', slug: 'ops/blue-green-rollout' },
@@ -154,7 +175,7 @@ export default defineConfig({
           ],
         },
         {
-          label: 'Platform preview',
+          label: 'SkeinRank platform preview',
           items: [
             { label: 'Governance console', slug: 'platform-preview/governance-console' },
             { label: 'Elasticsearch workflow', slug: 'platform-preview/elasticsearch-workflow' },
@@ -162,7 +183,7 @@ export default defineConfig({
           ],
         },
         {
-          label: 'Reference',
+          label: 'SkeinRank reference',
           items: [
             { label: 'Python API', slug: 'reference/python-api' },
             { label: 'API integration', slug: 'reference/api-integration' },

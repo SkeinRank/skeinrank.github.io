@@ -1,0 +1,44 @@
+---
+title: How Agent Lexicon and SkeinRank work together
+description: A reviewable terminology lifecycle from coding-agent vocabulary to runtime bindings and snapshots.
+---
+
+Agent Lexicon and SkeinRank are separate products with separate deployment boundaries. They can be used independently. Together they describe one terminology governance lifecycle.
+
+<div class="sr-lifecycle-flow" aria-label="Terminology governance lifecycle">
+  <article><span>1</span><strong>Discover</strong><p>Agent Lexicon scans repository code and documentation for candidate project language.</p></article>
+  <article><span>2</span><strong>Review</strong><p>Humans accept canonical terms, aliases, deprecations, scopes, and tool rules.</p></article>
+  <article><span>3</span><strong>Publish</strong><p>A git-tracked lexicon snapshot becomes the repository vocabulary used by agents and CI.</p></article>
+  <article><span>4</span><strong>Promote</strong><p>Approved organization-level terminology is mapped into a SkeinRank profile through an explicit review or import workflow.</p></article>
+  <article><span>5</span><strong>Bind</strong><p>SkeinRank binds a reviewed snapshot to a search index, application context, or runtime workflow.</p></article>
+  <article><span>6</span><strong>Observe</strong><p>Evidence and drift findings feed the next vocabulary review instead of silently mutating production language.</p></article>
+</div>
+
+## Responsibility split
+
+| Layer | Agent Lexicon | SkeinRank |
+|---|---|---|
+| Primary scope | Repository, branch, diff, tool call | Organization, profile, index, runtime binding |
+| Main user | Developer or coding agent | Search/RAG/platform team |
+| State | Git-tracked lexicon + local review workspace | Profiles, bindings, evidence, snapshots |
+| Decision path | Resolve, guard, lint, check merge | Canonicalize, enrich, bind, publish, roll back |
+| Typical integration | CLI, CI, local MCP | SDK, REST API, governance console, Elasticsearch |
+
+## Current integration boundary
+
+This page describes the operating model, not an automatic synchronization service. Today:
+
+- each product can run without the other;
+- vocabulary handoff should remain explicit and reviewable;
+- teams decide which repository terms belong in an organization-level runtime profile;
+- the source lexicon and the runtime snapshot retain their own version and provenance.
+
+That boundary is intentional. It prevents a newly discovered identifier in one repository from silently becoming production vocabulary everywhere.
+
+## Recommended adoption path
+
+1. Start with Agent Lexicon in one repository.
+2. Review whether naming drift is a measurable cost in pull requests or agent sessions.
+3. Promote stable, cross-team concepts into a SkeinRank profile.
+4. Bind that profile to one search or RAG context.
+5. Expand only after the review and rollback workflow is understood.

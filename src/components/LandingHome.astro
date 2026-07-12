@@ -5,6 +5,8 @@ import controlPlaneOverview from '../assets/diagrams/control-plane-overview.jpeg
 const repoUrl = 'https://github.com/SkeinRank/skeinrank';
 const lexiconRepoUrl = 'https://github.com/SkeinRank/agent-lexicon';
 const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
+const lexiconDocsUrl = '/docs/agent-lexicon/quickstart/';
+const skeinrankDocsUrl = '/docs/skeinrank/';
 ---
 
 <section class="sr-landing" aria-labelledby="sr-home-title">
@@ -22,7 +24,7 @@ const platformPreviewUrl = '/platform-preview/end-to-end-demo/';
         </p>
 
         <div class="sr-actions" aria-label="Primary actions">
-          <a class="sr-btn sr-btn-primary" href={lexiconRepoUrl} target="_blank" rel="noreferrer">Get agent-lexicon</a>
+          <a class="sr-btn sr-btn-primary" href={lexiconDocsUrl}>Start with agent-lexicon</a>
           <a class="sr-btn sr-btn-secondary" href={platformPreviewUrl}>Runtime platform preview</a>
         </div>
       </div>
@@ -95,14 +97,14 @@ alex publish
         href="https://pypi.org/project/agent-lexicon/"
         target="_blank"
         rel="noreferrer"
-        aria-label="PyPI package agent-lexicon 0.7.0"
-      >agent-lexicon 0.7.0</a>
+        aria-label="Open agent-lexicon on PyPI"
+      >agent-lexicon · PyPI</a>
       <a
         href="https://pypi.org/project/skeinrank/"
         target="_blank"
         rel="noreferrer"
-        aria-label="PyPI package skeinrank 0.12.0"
-      >skeinrank 0.12.0</a>
+        aria-label="Open skeinrank on PyPI"
+      >skeinrank · PyPI</a>
       <a
         href={repoUrl}
         target="_blank"
@@ -137,8 +139,8 @@ alex publish
             <li>MCP server so agents read one canonical vocabulary</li>
           </ul>
           <div class="sr-ladder-actions">
-            <a class="sr-btn sr-btn-primary" href={lexiconRepoUrl} target="_blank" rel="noreferrer">GitHub</a>
-            <a class="sr-btn sr-btn-ghost" href="https://pypi.org/project/agent-lexicon/" target="_blank" rel="noreferrer">PyPI</a>
+            <a class="sr-btn sr-btn-primary" href="/docs/agent-lexicon/">Documentation</a>
+            <a class="sr-btn sr-btn-ghost" href={lexiconRepoUrl} target="_blank" rel="noreferrer">GitHub</a>
           </div>
         </article>
 
@@ -157,8 +159,8 @@ alex publish
             <li>Audit which version each binding is pinned to, and why</li>
           </ul>
           <div class="sr-ladder-actions">
-            <a class="sr-btn sr-btn-secondary" href={platformPreviewUrl}>Platform preview</a>
-            <a class="sr-btn sr-btn-ghost" href={repoUrl} target="_blank" rel="noreferrer">GitHub</a>
+            <a class="sr-btn sr-btn-secondary" href={skeinrankDocsUrl}>Documentation</a>
+            <a class="sr-btn sr-btn-ghost" href={platformPreviewUrl}>Platform preview</a>
           </div>
         </article>
       </div>
@@ -420,7 +422,7 @@ alex publish
         <p>Start with <code>pipx install agent-lexicon</code> for the first aha moment in your terminal, then run the full skeinrank control-plane stack when you want UI, API, bindings, evidence, and enrichment workflows.</p>
       </div>
       <div class="sr-cta-actions">
-        <a class="sr-btn sr-btn-primary" href={lexiconRepoUrl} target="_blank" rel="noreferrer">Get agent-lexicon</a>
+        <a class="sr-btn sr-btn-primary" href={lexiconDocsUrl}>Start with agent-lexicon</a>
         <a class="sr-btn sr-btn-secondary" href="/getting-started/docker-beta-quickstart/">Run Docker beta</a>
       </div>
     </section>

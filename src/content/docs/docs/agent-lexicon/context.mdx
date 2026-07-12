@@ -1,0 +1,50 @@
+---
+title: Agent context
+sidebar:
+  label: Agent context
+description: Generate a compact canonical vocabulary brief before an AI coding task.
+---
+
+A coding agent should see the project vocabulary before it invents a competing one. The `context` command formats a published lexicon as a compact task brief.
+
+```bash
+alex context lexicon/lexicon.yaml
+```
+
+Typical output separates:
+
+```text
+Use these canonical terms:
+- ContextSpace
+- RuntimeSnapshot
+
+Avoid:
+- WorkspaceScope (use "ContextSpace" instead)
+```
+
+## Where to use it
+
+Insert the generated brief:
+
+- before a coding-agent task;
+- into a reusable repository instruction;
+- into a benchmark seeded condition;
+- through an MCP-compatible agent workflow.
+
+## What it does not do
+
+The context command does not scan the repository, accept candidates, or modify the lexicon. It renders already reviewed vocabulary for consumption by an agent.
+
+## During and after the task
+
+Use the context brief before work begins, then inspect the diff:
+
+```bash
+git diff | alex lint-diff --stdin
+```
+
+At pull-request or merge time, use:
+
+```bash
+alex check-merge --base main --head HEAD
+```

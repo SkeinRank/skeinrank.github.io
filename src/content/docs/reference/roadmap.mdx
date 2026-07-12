@@ -1,32 +1,49 @@
 ---
-title: Roadmap
-description: A careful public roadmap for the early SkeinRank website.
+title: Ecosystem roadmap
+description: Near-term documentation, integration, benchmark, and platform priorities for Agent Lexicon and SkeinRank.
 ---
 
-This roadmap keeps the public story clear without overselling unfinished pieces.
+The roadmap separates shipped product paths from future integration work. It is intentionally scoped and does not imply release dates.
 
-## Near term
+## Documentation and adoption
 
-- Keep the local SDK/CLI path stable.
-- Add concise examples for dictionary validation, extraction, and canonicalization.
-- Add screenshots of the governance UI after the end-to-end case is verified.
-- Add a minimal before/after retrieval demo.
-- Add generated Python API reference after public interfaces settle.
+- Keep one documentation portal with distinct Agent Lexicon and SkeinRank paths.
+- Expand task-oriented tutorials without duplicating exhaustive repository reference docs.
+- Add versioned documentation when compatibility guarantees stabilize.
+- Publish migration notes when public schemas or CLI contracts change.
 
-## Platform validation
+## Agent Lexicon
 
-- Run PostgreSQL-backed governance API locally.
-- Run UI against the API with auth enabled.
-- Validate dictionary import/export.
-- Test suggestion approval with evidence snapshots.
-- Run Elasticsearch dry-runs and enrichment jobs.
-- Validate alias swap and rollback flow.
+- Deepen repository onboarding and review guidance.
+- Expand CI examples for review-first and blocking terminology policies.
+- Improve evidence quality for documentation markup, generated identifiers, and example-local names.
+- Keep optional semantic suggestions separate from deterministic enforcement.
+- Validate shared-workspace designs before presenting them as a networked product.
+
+## SkeinRank
+
+- Harden the governance API and console for pilot deployments.
+- Expand import, export, and reviewable handoff workflows.
+- Improve runtime binding diagnostics and rollback documentation.
+- Add more search-provider examples beyond the current Elasticsearch path.
+- Continue reproducible cross-version terminology evaluation on additional documentation corpora.
+
+## Ecosystem integration
+
+- Define an explicit, auditable handoff from repository lexicons to organization-level SkeinRank profiles.
+- Preserve independent snapshots and provenance across the dev-time and runtime layers.
+- Add integration examples only after the contracts are implemented and tested.
+
+## Evidence
+
+- Keep canonical benchmark inputs, commits, labels, and reports public.
+- Report label coverage, cutoffs, misses, and hard cases alongside headline metrics.
+- Add new corpora and models without rewriting or hiding previous results.
 
 ## Later
 
-- Production deployment notes.
-- More provider examples.
-- Versioned docs.
-- Public demo dataset.
-- Benchmarks or evaluation pages.
-- Governance playbook for teams.
+- production deployment and compatibility policy;
+- broader provider and storage integrations;
+- public demo datasets;
+- team governance playbooks;
+- hosted services only if their operational and security model is ready.

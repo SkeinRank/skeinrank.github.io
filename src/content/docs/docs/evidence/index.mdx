@@ -1,0 +1,56 @@
+---
+title: Benchmarks and evidence
+description: Reproducible, scoped evidence for Agent Lexicon and SkeinRank terminology workflows.
+---
+
+The benchmark repositories are designed to make narrow product claims testable. They do not claim that terminology drift is solved for every project, model, or corpus.
+
+<div class="sr-evidence-grid">
+  <article>
+    <span class="sr-docs-product-stage">Agent Lexicon</span>
+    <h2>Paired coding-agent benchmark</h2>
+    <p>The same 10 coding tasks were run with and without a canonical vocabulary brief: 3 repeats, 2 conditions, 60 runs total.</p>
+    <div class="sr-metric-pair">
+      <div><strong>0% → 60%</strong><span>exact canonical name</span></div>
+      <div><strong>10% → 100%</strong><span>canonical term inside compounds</span></div>
+    </div>
+    <p class="sr-evidence-note">Synthetic paired benchmark, Claude Sonnet 4.6, temperature 0. The independent scorer reads raw model output.</p>
+    <a href="https://github.com/SkeinRank/agent-lexicon-benchmark">Open benchmark repository →</a>
+  </article>
+
+  <article>
+    <span class="sr-docs-product-stage">SkeinRank</span>
+    <h2>Apache Airflow documentation benchmark</h2>
+    <p>SkeinRank discovered cross-version terminology candidates without a gold term list, known-renames file, release-note hints, or labels during discovery. Human labels were applied after ranking.</p>
+    <div class="sr-metric-pair">
+      <div><strong>P@5 100%</strong><span>Airflow 2.7 → 3.0</span></div>
+      <div><strong>P@10 90%</strong><span>100% label coverage</span></div>
+    </div>
+    <p class="sr-evidence-note">The harder Airflow 2.3 → 2.7 window remains published at P@5 40% and P@10 20% rather than being hidden.</p>
+    <a href="https://github.com/SkeinRank/skeinrank-benchmark">Open benchmark repository →</a>
+  </article>
+</div>
+
+## What the Airflow result demonstrates
+
+For Airflow `2.7.0 → 3.0.0`, the top-ranked candidates included `asset`, `auth manager`, `AssetAlias`, `ObjectStoragePath`, `asset events`, `bundles`, `outlet_events`, `dag bundles`, and `JWT`.
+
+The maintained true label `airflow.sdk` was discovered by core but excluded by the prose-only review policy because all 79 occurrences were code context. The report records that failure stage instead of treating the candidate as unknown.
+
+- [Canonical Airflow report](https://github.com/SkeinRank/skeinrank-benchmark/blob/main/results/airflow/20260712T042651Z/report.md)
+- [Machine-readable Airflow report](https://github.com/SkeinRank/skeinrank-benchmark/blob/main/results/airflow/20260712T042651Z/report.json)
+
+## Additional open-source evidence
+
+The [OSS drift report](https://github.com/SkeinRank/oss-drift-report) measures terminology residue and naming transitions in real open-source histories. It complements the product benchmarks by showing why renamed concepts remain operationally difficult long after a code rename is complete.
+
+## Reporting rule
+
+Always state:
+
+- the dataset or repository;
+- exact commits or versions;
+- discovery and filtering policy;
+- label coverage;
+- metric cutoff;
+- known misses and limitations.

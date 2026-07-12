@@ -1814,3 +1814,333 @@ starlight-theme-select.sr-theme-cycle select {
   outline: 2px solid var(--sr-platform-highlight, #22d3ee);
   outline-offset: 4px;
 }
+
+/* Documentation Architecture Refresh: product chooser, ecosystem docs, and evidence pages. */
+.sr-docs-portal-intro,
+.sr-product-doc-hero {
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 1.5rem;
+  padding: clamp(1.35rem, 3vw, 2rem);
+  border: 1px solid color-mix(in srgb, var(--sl-color-gray-5) 58%, transparent);
+  border-radius: 1.4rem;
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--sl-color-accent) 18%, transparent), transparent 38%),
+    color-mix(in srgb, var(--sl-color-black) 82%, transparent);
+  box-shadow: 0 22px 70px rgba(2, 6, 23, 0.18);
+}
+
+:root[data-theme='light'] .sr-docs-portal-intro,
+:root[data-theme='light'] .sr-product-doc-hero {
+  border-color: rgba(100, 116, 139, 0.2);
+  background:
+    radial-gradient(circle at top right, rgba(109, 40, 217, 0.11), transparent 40%),
+    rgba(255, 255, 255, 0.97);
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+}
+
+.sr-docs-portal-intro h2,
+.sr-product-doc-hero h2 {
+  max-width: 19ch;
+  margin: 0.45rem 0 0.7rem;
+  font-size: clamp(1.75rem, 4vw, 2.65rem);
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+}
+
+.sr-docs-portal-intro p,
+.sr-product-doc-hero p {
+  max-width: 72ch;
+  margin: 0;
+  color: var(--sl-color-gray-2);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+:root[data-theme='light'] .sr-docs-portal-intro p,
+:root[data-theme='light'] .sr-product-doc-hero p {
+  color: #475569;
+}
+
+.sr-docs-eyebrow,
+.sr-product-doc-hero > span,
+.sr-docs-product-stage {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: color-mix(in srgb, var(--sl-color-accent-high) 82%, white);
+  font-size: 0.76rem;
+  font-weight: 820;
+  letter-spacing: 0.11em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.sr-docs-product-grid,
+.sr-evidence-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.4rem 0 2rem;
+}
+
+.sr-docs-product-card,
+.sr-evidence-grid > article {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: 1.35rem;
+  border: 1px solid color-mix(in srgb, var(--sl-color-gray-5) 58%, transparent);
+  border-radius: 1.25rem;
+  background: color-mix(in srgb, var(--sl-color-black) 85%, transparent);
+  box-shadow: 0 16px 48px rgba(2, 6, 23, 0.14);
+}
+
+.sr-docs-product-card-agent {
+  background:
+    linear-gradient(145deg, rgba(14, 116, 144, 0.11), transparent 52%),
+    color-mix(in srgb, var(--sl-color-black) 85%, transparent);
+}
+
+.sr-docs-product-card-runtime {
+  background:
+    linear-gradient(145deg, rgba(109, 40, 217, 0.13), transparent 52%),
+    color-mix(in srgb, var(--sl-color-black) 85%, transparent);
+}
+
+:root[data-theme='light'] .sr-docs-product-card,
+:root[data-theme='light'] .sr-evidence-grid > article {
+  border-color: rgba(100, 116, 139, 0.2);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 16px 44px rgba(15, 23, 42, 0.075);
+}
+
+.sr-docs-product-card h2,
+.sr-evidence-grid h2 {
+  margin: 0.55rem 0 0.65rem;
+  font-size: 1.5rem;
+  letter-spacing: -0.035em;
+}
+
+.sr-docs-product-card p,
+.sr-docs-product-card li,
+.sr-evidence-grid p {
+  color: var(--sl-color-gray-2);
+  line-height: 1.65;
+}
+
+:root[data-theme='light'] .sr-docs-product-card p,
+:root[data-theme='light'] .sr-docs-product-card li,
+:root[data-theme='light'] .sr-evidence-grid p {
+  color: #475569;
+}
+
+.sr-docs-product-card ul {
+  flex: 1;
+  margin: 0.7rem 0 1.2rem;
+  padding-left: 1.2rem;
+}
+
+.sr-docs-product-card li + li {
+  margin-top: 0.38rem;
+}
+
+.sr-docs-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 1rem;
+  margin-top: 1.05rem;
+}
+
+.sr-docs-card-actions a {
+  font-weight: 760;
+  text-decoration: none;
+}
+
+.sr-docs-card-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.55rem;
+  padding: 0.62rem 0.95rem;
+  border-radius: 0.8rem;
+  color: white !important;
+  background: linear-gradient(135deg, #6d28d9, #2563eb);
+  box-shadow: 0 10px 28px rgba(79, 70, 229, 0.24);
+}
+
+.sr-docs-card-primary:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+}
+
+.sr-docs-link-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin: 1rem 0 1.8rem;
+}
+
+.sr-docs-link-grid-three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.sr-docs-link-grid > a {
+  display: grid;
+  gap: 0.35rem;
+  min-height: 100%;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--sl-color-gray-5) 56%, transparent);
+  border-radius: 1rem;
+  color: inherit;
+  background: color-mix(in srgb, var(--sl-color-gray-6) 24%, transparent);
+  text-decoration: none;
+  transition: transform 160ms ease, border-color 160ms ease, background-color 160ms ease;
+}
+
+.sr-docs-link-grid > a:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--sl-color-accent) 42%, transparent);
+  background: color-mix(in srgb, var(--sl-color-accent) 8%, transparent);
+}
+
+.sr-docs-link-grid strong {
+  color: var(--sl-color-white);
+}
+
+.sr-docs-link-grid span {
+  color: var(--sl-color-gray-3);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+:root[data-theme='light'] .sr-docs-link-grid strong {
+  color: #0f172a;
+}
+
+:root[data-theme='light'] .sr-docs-link-grid span {
+  color: #475569;
+}
+
+.sr-product-doc-hero-agent {
+  border-top: 3px solid #0891b2;
+}
+
+.sr-product-doc-hero-runtime {
+  border-top: 3px solid #7c3aed;
+}
+
+.sr-lifecycle-flow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin: 1.35rem 0 2rem;
+}
+
+.sr-lifecycle-flow article {
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--sl-color-gray-5) 58%, transparent);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--sl-color-gray-6) 20%, transparent);
+}
+
+.sr-lifecycle-flow article > span {
+  display: inline-grid;
+  place-items: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  margin-bottom: 0.7rem;
+  border-radius: 999px;
+  color: white;
+  background: linear-gradient(135deg, #0891b2, #7c3aed);
+  font-size: 0.8rem;
+  font-weight: 820;
+}
+
+.sr-lifecycle-flow strong {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 1rem;
+}
+
+.sr-lifecycle-flow p {
+  margin: 0;
+  color: var(--sl-color-gray-3);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.sr-metric-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin: 1rem 0;
+}
+
+.sr-metric-pair > div {
+  padding: 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--sl-color-accent) 22%, transparent);
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, var(--sl-color-accent) 7%, transparent);
+}
+
+.sr-metric-pair strong,
+.sr-metric-pair span {
+  display: block;
+}
+
+.sr-metric-pair strong {
+  font-size: 1.25rem;
+  letter-spacing: -0.03em;
+}
+
+.sr-metric-pair span {
+  margin-top: 0.2rem;
+  color: var(--sl-color-gray-3);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.sr-evidence-note {
+  font-size: 0.88rem;
+}
+
+/* Make the sidebar product split obvious without changing legacy URLs. */
+.sidebar-pane details > summary {
+  letter-spacing: -0.01em;
+}
+
+.sidebar-pane details:nth-of-type(2) > summary {
+  color: color-mix(in srgb, #22d3ee 78%, var(--sl-color-white));
+}
+
+.sidebar-pane details:nth-of-type(3) > summary {
+  color: color-mix(in srgb, #a78bfa 82%, var(--sl-color-white));
+}
+
+@media (max-width: 900px) {
+  .sr-docs-product-grid,
+  .sr-evidence-grid,
+  .sr-docs-link-grid-three,
+  .sr-lifecycle-flow {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .sr-docs-product-grid,
+  .sr-docs-link-grid,
+  .sr-evidence-grid,
+  .sr-metric-pair {
+    grid-template-columns: 1fr;
+  }
+
+  .sr-docs-portal-intro,
+  .sr-product-doc-hero,
+  .sr-docs-product-card,
+  .sr-evidence-grid > article {
+    border-radius: 1rem;
+  }
+}

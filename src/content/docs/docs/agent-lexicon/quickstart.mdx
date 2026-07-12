@@ -1,0 +1,83 @@
+---
+title: Agent Lexicon quickstart
+description: Initialize, scan, review, publish, and use a repository vocabulary.
+---
+
+This path starts with an empty repository and ends with a published terminology snapshot that agents and CI can consume.
+
+## 1. Initialize the workspace
+
+Run this from the repository root:
+
+```bash
+alex init
+```
+
+The command creates:
+
+- `lexicon/` for the git-tracked vocabulary;
+- `.agent-lexicon/` for the local workspace and configuration;
+- default scan paths and ignore behavior.
+
+## 2. Discover candidate terms
+
+Use the configured paths:
+
+```bash
+alex scan
+```
+
+Or override them for one run:
+
+```bash
+alex scan README.md docs src
+```
+
+Add a quality report when tuning discovery:
+
+```bash
+alex scan --quality-report
+```
+
+## 3. Review the evidence
+
+```bash
+alex review
+```
+
+The local review UI shows candidate terms and line-numbered evidence. Accept, reject, or defer candidates; discovery itself does not publish vocabulary.
+
+## 4. Publish accepted decisions
+
+```bash
+alex publish
+```
+
+Publishing creates the reviewed lexicon snapshot used by deterministic runtime and merge checks.
+
+## 5. Give an agent canonical context
+
+```bash
+alex context lexicon/lexicon.yaml
+```
+
+The output is a compact brief of canonical terms and language to avoid. It is designed to be inserted before an agent task without handing the agent the entire review workspace.
+
+## 6. Check terminology before merge
+
+```bash
+alex check-merge --root . --base main --head HEAD
+```
+
+Use a blocking review gate when the team is ready:
+
+```bash
+alex check-merge --root . --base main --head HEAD --fail-on-review
+```
+
+## Next steps
+
+- [Review and publish](/docs/agent-lexicon/review-publish/)
+- [Agent context](/docs/agent-lexicon/context/)
+- [Merge and CI checks](/docs/agent-lexicon/merge-checks/)
+- [MCP server](/docs/agent-lexicon/mcp/)

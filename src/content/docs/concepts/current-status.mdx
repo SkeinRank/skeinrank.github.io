@@ -1,57 +1,42 @@
 ---
-title: Current status
-description: What is ready, what is beta, and what should not be over-marketed yet.
+title: SkeinRank current status
+description: What is available in the SkeinRank core, what remains a platform beta, and how to evaluate it honestly.
 ---
 
-This page is intentionally explicit. The public website should look professional without pretending the whole platform is already a production v1.0 distribution.
+SkeinRank is an actively developed open-source project. The local SDK and CLI are the lowest-friction adoption path; the governance platform remains a beta environment for evaluation and pilot work.
 
 ## Available now
 
-- Local dictionary validation
-- Local text extraction and canonicalization
-- Local document text helpers
-- Public Python SDK path
-- Lightweight `skeinrank` CLI
-- FastAPI extraction endpoint
-- Demo corpus and evaluation artifacts
-- Explainable passport/debug output
+- Python SDK and CLI for dictionary validation and canonicalization
+- local document helpers and dictionary onboarding workflows
+- terminology discovery and drift reports with context-aware evidence
+- explainable passport and debug output
+- profiles, aliases, slots, bindings, and immutable snapshot models
+- reproducible Apache Airflow documentation benchmark artifacts
 
-## Beta / platform preview
+## Platform beta
 
-- Governance API
-- PostgreSQL-backed terminology store
+- PostgreSQL-backed governance API
 - React governance console
-- Dashboard command center
-- Terms, Suggestions, Guardrails, API Access, and Users
-- Elasticsearch bindings, dry-runs, evidence snapshots, enrichment jobs, alias-swap metadata, and rollback metadata
-- Runtime snapshots audit
-- Search Playground for binding-aware query preview and search verification
-- Integrations graph view for Profile → Binding → Index → Snapshot topology
-- Docker Compose beta quickstart for local platform evaluation
-- API integration documentation for binding-aware runtime search
+- evidence-backed proposal review
+- Elasticsearch bindings, dry-runs, enrichment jobs, and alias-swap metadata
+- snapshot audit and rollback metadata
+- Search Playground for binding-aware query preview
+- integrations graph for Profile → Binding → Index → Snapshot topology
+- Docker Compose quickstart for local evaluation
 
-## Not positioned as finished yet
+## Not claimed yet
 
-- Production-ready v1.0 deployment story
-- Public hosted SaaS offering
-- Multi-tenant product packaging
-- Upgrade guides and compatibility policy
-- Full security and privacy hardening guide
-- Public pricing or commercial SaaS positioning
+- a hosted multi-tenant SaaS product
+- a complete production hardening and upgrade guide
+- universal benchmark accuracy across all corpora
+- automatic synchronization with every repository lexicon
+- a replacement for semantic retrieval or the application search engine
 
-## Recommended website tone
+## Recommended evaluation path
 
-Use this tone until the product is fully tested and released as a production distribution:
-
-```text
-SkeinRank is available today as a local SDK/CLI for terminology extraction and canonicalization.
-The governance console can be tested through the Docker beta quickstart as a beta control plane for profiles, bindings, enrichment, snapshots, and search verification.
-```
-
-## Recommended product framing
-
-```text
-SkeinRank is an open-source side-car control plane for domain-aware search and RAG.
-It helps teams manage terminology profiles, bind them to search indexes, run enrichment jobs,
-audit runtime snapshots, and verify canonicalized search behavior.
-```
+1. Run the local SDK quickstart.
+2. Test dictionary onboarding and drift discovery on a corpus you understand.
+3. Review evidence and known false-positive classes.
+4. Start the Docker beta only when runtime bindings and snapshot governance are relevant.
+5. Treat any production rollout as an explicit pilot with rollback and observability.

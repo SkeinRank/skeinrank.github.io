@@ -1,0 +1,54 @@
+---
+title: Agent Lexicon installation
+description: Install Agent Lexicon as a global CLI or a project library.
+---
+
+Agent Lexicon requires Python 3.10 or newer. The deterministic core has no runtime dependencies.
+
+## Recommended: install the CLI with pipx
+
+```bash
+pipx install agent-lexicon
+```
+
+Both command names are available:
+
+```bash
+agent-lexicon --help
+alex --help
+```
+
+Use `alex` throughout these docs as the shorter alias.
+
+## Install with shell completion
+
+```bash
+pipx install "agent-lexicon[completion]"
+activate-global-python-argcomplete
+```
+
+Completion is optional. The CLI works without it.
+
+## Install as a Python dependency
+
+```bash
+python -m pip install agent-lexicon
+```
+
+Optional analysis extras remain opt-in:
+
+```bash
+python -m pip install "agent-lexicon[oov]"
+python -m pip install "agent-lexicon[semantic]"
+```
+
+The optional semantic path may improve reviewer suggestions. It does not decide whether a term is accepted or whether deterministic checks pass.
+
+## Verify the installation
+
+```bash
+alex --version
+alex --help
+```
+
+Then continue to the [Agent Lexicon quickstart](/docs/agent-lexicon/quickstart/).

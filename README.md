@@ -1,15 +1,14 @@
 # SkeinRank Website
 
-Public website and documentation for **SkeinRank** — an open-source Domain Language Control Plane for enterprise search, RAG, and AI-agent workflows.
-
-SkeinRank helps teams turn messy aliases and domain jargon into governed runtime context: profiles, bindings, snapshots, evidence checks, MCP integrations, and search-ready canonicalization.
+Public website and documentation portal for the **SkeinRank ecosystem**: Agent Lexicon for repository and coding-agent vocabulary, and SkeinRank for runtime terminology governance in search, RAG, and AI-agent workflows.
 
 ## What this site contains
 
-- Product landing page for SkeinRank with hero and architecture diagrams.
-- Documentation for local evaluation and early adoption.
-- Quickstarts for Docker beta, CLI, and Python SDK usage.
-- Concept docs for profiles, bindings, snapshots, side-car deployment, dictionary JSON, passport output, and architecture flows.
+- Ecosystem landing page connecting Agent Lexicon and SkeinRank.
+- `/docs/` product chooser with separate dev-time and runtime documentation paths.
+- Agent Lexicon quickstarts for scan, review, publish, context, merge checks, and MCP.
+- SkeinRank SDK, platform, concepts, operations, and API documentation.
+- Shared ecosystem and benchmark evidence sections.
 - Platform preview docs for the governance console and Elasticsearch workflow.
 
 ## Tech stack

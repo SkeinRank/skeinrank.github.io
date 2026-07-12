@@ -1,0 +1,78 @@
+---
+title: Documentation
+description: Choose the dev-time Agent Lexicon path or the runtime SkeinRank path, then follow the terminology governance lifecycle across both products.
+---
+
+<div class="sr-docs-portal-intro">
+  <span class="sr-docs-eyebrow">SkeinRank ecosystem</span>
+  <h2>One documentation portal. Two product paths.</h2>
+  <p>
+    Start with the layer that matches the problem in front of you. Agent Lexicon keeps coding agents and
+    pull requests aligned with a repository vocabulary. SkeinRank governs approved terminology in search,
+    RAG, and runtime workflows.
+  </p>
+</div>
+
+<div class="sr-docs-product-grid">
+  <article class="sr-docs-product-card sr-docs-product-card-agent">
+    <span class="sr-docs-product-stage">Dev-time</span>
+    <h2>Agent Lexicon</h2>
+    <p>
+      A deterministic, repository-local vocabulary layer for AI coding agents, branches, diffs, and tool calls.
+    </p>
+    <ul>
+      <li>Discover candidate project terms from code and documentation.</li>
+      <li>Review decisions locally and publish a versioned lexicon snapshot.</li>
+      <li>Give agents canonical context before a task.</li>
+      <li>Detect terminology drift in diffs and pull requests.</li>
+    </ul>
+    <div class="sr-docs-card-actions">
+      <a class="sr-docs-card-primary" href="/docs/agent-lexicon/quickstart/">Start the quickstart</a>
+      <a href="/docs/agent-lexicon/">Explore Agent Lexicon</a>
+    </div>
+  </article>
+
+  <article class="sr-docs-product-card sr-docs-product-card-runtime">
+    <span class="sr-docs-product-stage">Runtime</span>
+    <h2>SkeinRank</h2>
+    <p>
+      A Domain Language Control Plane for governed dictionaries, bindings, snapshots, and terminology-aware runtime context.
+    </p>
+    <ul>
+      <li>Canonicalize noisy terms with the Python SDK or CLI.</li>
+      <li>Bind approved terminology profiles to search contexts and indexes.</li>
+      <li>Review evidence-backed changes before publishing snapshots.</li>
+      <li>Audit which terminology version a runtime binding uses.</li>
+    </ul>
+    <div class="sr-docs-card-actions">
+      <a class="sr-docs-card-primary" href="/getting-started/quickstart/">Start the SDK quickstart</a>
+      <a href="/docs/skeinrank/">Explore SkeinRank</a>
+    </div>
+  </article>
+</div>
+
+## Use both as one lifecycle
+
+Agent Lexicon and SkeinRank solve different parts of the same governance problem. They are independently useful and independently deployable; using both creates a reviewable path from repository language to runtime language.
+
+<div class="sr-docs-link-grid">
+  <a href="/docs/ecosystem/how-they-work-together/">
+    <strong>How the products work together</strong>
+    <span>See the dev-time → review → runtime operating model and its current integration boundary.</span>
+  </a>
+  <a href="/docs/evidence/">
+    <strong>Benchmarks and evidence</strong>
+    <span>Read scoped, reproducible results for coding-agent naming consistency and documentation drift discovery.</span>
+  </a>
+</div>
+
+## Choose by task
+
+| You need to… | Start with |
+|---|---|
+| Keep AI coding agents on one project vocabulary | [Agent Lexicon quickstart](/docs/agent-lexicon/quickstart/) |
+| Review newly discovered terms before publishing them | [Review and publish](/docs/agent-lexicon/review-publish/) |
+| Block or inspect terminology drift in a PR | [Merge and CI checks](/docs/agent-lexicon/merge-checks/) |
+| Canonicalize noisy text in Python or the CLI | [SkeinRank SDK quickstart](/getting-started/quickstart/) |
+| Bind terminology to an Elasticsearch runtime | [Elasticsearch workflow](/platform-preview/elasticsearch-workflow/) |
+| Understand the full terminology lifecycle | [How they work together](/docs/ecosystem/how-they-work-together/) |

@@ -1,0 +1,35 @@
+---
+title: Agent Lexicon MCP server
+description: Expose the published repository vocabulary to MCP-compatible agents over stdio.
+---
+
+Run the local MCP server from the repository root:
+
+```bash
+alex mcp serve \
+  --root . \
+  --lexicon lexicon/lexicon.yaml
+```
+
+List the published tool definitions:
+
+```bash
+alex mcp tools
+```
+
+## Available tools
+
+The current server exposes deterministic terminology operations for:
+
+- `resolve_term`
+- `check_language`
+- `guard_tool_call`
+- `find_evidence`
+- `submit_proposal`
+- `get_snapshot`
+
+## Intended boundary
+
+The MCP server is a local stdio integration. It gives an agent access to reviewed vocabulary and proposal workflows without turning the deterministic core into a hidden model call.
+
+For runtime search and organization-level bindings, continue to the [SkeinRank documentation](/docs/skeinrank/).

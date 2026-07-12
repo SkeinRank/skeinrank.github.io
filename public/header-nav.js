@@ -1,17 +1,17 @@
 (() => {
-  const repoUrl = 'https://github.com/SkeinRank/skeinrank';
+  const repoUrl = 'https://github.com/SkeinRank';
   const links = [
     {
       label: 'Docs',
-      href: '/getting-started/installation/',
-      section: 'getting-started',
-      description: 'Install guides, concepts, and API reference',
+      href: '/docs/',
+      section: 'docs',
+      description: 'Choose Agent Lexicon or SkeinRank documentation',
     },
     {
-      label: 'Quickstart',
-      href: '/getting-started/quickstart/',
-      section: 'quickstart',
-      description: 'Validate a dictionary and canonicalize terms',
+      label: 'Benchmarks',
+      href: '/docs/evidence/',
+      section: 'evidence',
+      description: 'Reproducible terminology benchmarks and reports',
     },
     {
       label: 'Platform Preview',
@@ -34,18 +34,18 @@
     if (link.external) return false;
     const targetPath = normalizePath(link.href);
 
-    if (link.section === 'quickstart') {
-      return currentPath === targetPath;
+    if (link.section === 'evidence') {
+      return currentPath.startsWith('/docs/evidence');
     }
 
     if (link.section === 'platform-preview') {
       return currentPath.startsWith('/platform-preview');
     }
 
-    if (link.section === 'getting-started') {
+    if (link.section === 'docs') {
       return currentPath !== '/' &&
-        currentPath !== '/getting-started/quickstart' &&
-        !currentPath.startsWith('/platform-preview');
+        !currentPath.startsWith('/platform-preview') &&
+        !currentPath.startsWith('/docs/evidence');
     }
 
     return currentPath === targetPath;
@@ -119,16 +119,14 @@
     github.href = repoUrl;
     github.target = '_blank';
     github.rel = 'noreferrer';
-    github.setAttribute('aria-label', 'Open SkeinRank on GitHub');
+    github.setAttribute('aria-label', 'Open the SkeinRank organization on GitHub');
     github.title = 'GitHub';
     github.appendChild(makeGitHubIcon());
 
     const sdk = document.createElement('a');
     sdk.className = 'sr-header-try-sdk';
-    sdk.href = 'https://github.com/SkeinRank/agent-lexicon';
-    sdk.target = '_blank';
-    sdk.rel = 'noreferrer';
-    sdk.textContent = 'Try CLI';
+    sdk.href = '/docs/';
+    sdk.textContent = 'Get started';
 
     actions.append(github, sdk);
     return actions;
@@ -225,13 +223,11 @@
 
     const cta = document.createElement('a');
     cta.className = 'sr-home-mobile-drawer-cta';
-    cta.href = 'https://github.com/SkeinRank/agent-lexicon';
-    cta.target = '_blank';
-    cta.rel = 'noreferrer';
-    cta.textContent = 'Try CLI';
+    cta.href = '/docs/';
+    cta.textContent = 'Get started';
 
     const note = document.createElement('p');
-    note.textContent = 'Open-source domain language control plane for search, RAG, and AI-agent workflows.';
+    note.textContent = 'Open-source terminology governance from coding-agent workflows to runtime search and RAG.';
 
     footer.append(cta, note);
     drawer.append(drawerHeader, linkList, footer);

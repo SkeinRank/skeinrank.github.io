@@ -1,0 +1,54 @@
+---
+title: Agent Lexicon
+description: Deterministic repository vocabulary for AI coding agents, pull requests, and tool calls.
+---
+
+<div class="sr-product-doc-hero sr-product-doc-hero-agent">
+  <span>Dev-time terminology governance</span>
+  <h2>One canonical vocabulary across agents, branches, and tool calls.</h2>
+  <p>
+    Agent Lexicon discovers project language, records review decisions, publishes an immutable vocabulary snapshot,
+    and gives deterministic resolve, guard, diff, merge, and MCP interfaces to coding agents.
+  </p>
+  <div class="sr-docs-card-actions">
+    <a class="sr-docs-card-primary" href="/docs/agent-lexicon/quickstart/">Run the quickstart</a>
+    <a href="https://github.com/SkeinRank/agent-lexicon">Open GitHub</a>
+  </div>
+</div>
+
+## Use Agent Lexicon when
+
+- multiple agents or branches introduce competing names for the same project concept;
+- terminology needs to be reviewed like code instead of living only in prompts;
+- a tool call must be allowed, blocked, or clarified from deterministic language rules;
+- pull requests need a terminology review alongside tests and linting;
+- agents need a compact canonical vocabulary before starting a task.
+
+## Core workflow
+
+```text
+scan repository
+      ↓
+review evidence-backed candidates
+      ↓
+publish a lexicon snapshot
+      ↓
+context / resolve / guard / lint-diff / check-merge / MCP
+```
+
+The local workflow is review-first. Discovery can suggest candidates, but accepted vocabulary is explicit and versioned.
+
+## Documentation map
+
+<div class="sr-docs-link-grid sr-docs-link-grid-three">
+  <a href="/docs/agent-lexicon/installation/"><strong>Installation</strong><span>Install with pipx or pip and verify the CLI.</span></a>
+  <a href="/docs/agent-lexicon/quickstart/"><strong>Quickstart</strong><span>Go from an empty project to a published lexicon.</span></a>
+  <a href="/docs/agent-lexicon/review-publish/"><strong>Review and publish</strong><span>Understand workspace evidence, decisions, and snapshots.</span></a>
+  <a href="/docs/agent-lexicon/context/"><strong>Agent context</strong><span>Give an agent the canonical terms and deprecated language to avoid.</span></a>
+  <a href="/docs/agent-lexicon/merge-checks/"><strong>Merge and CI checks</strong><span>Detect drift in working diffs and pull requests.</span></a>
+  <a href="/docs/agent-lexicon/mcp/"><strong>MCP server</strong><span>Expose deterministic terminology tools over stdio.</span></a>
+</div>
+
+## Product boundary
+
+Agent Lexicon is repository-local and deterministic by default. Optional semantic extras may rank suggestions for a human reviewer, but they do not replace deterministic enforcement. Shared network storage and automatic synchronization with SkeinRank are not implied by this documentation.

@@ -1,24 +1,57 @@
 ---
-title: Installation
-description: Install SkeinRank locally from PyPI/TestPyPI or from a source checkout.
+title: SkeinRank installation
+description: Install the SkeinRank core package or start the local governance platform beta.
 ---
 
-SkeinRank can be tried in two ways:
+SkeinRank has two adoption paths:
 
-- local SDK/CLI for dictionary validation, extraction, and canonicalization;
-- Docker beta stack for the governance console, API, PostgreSQL, Elasticsearch, RabbitMQ worker, and optional observability profile.
+- the lightweight Python SDK and CLI for dictionary validation, extraction, discovery, and canonicalization;
+- the Docker beta stack for the governance console, API, PostgreSQL, Elasticsearch, RabbitMQ worker, and optional observability profile.
+
+Looking for repository vocabulary and pull-request checks? Start with [Agent Lexicon installation](/docs/agent-lexicon/installation/).
 
 ## Requirements
 
-- Python 3.10+
-- Node.js 22+ for this website scaffold
-- Poetry for source checkout development
-- Docker Compose V2 for the platform beta stack
+### Core SDK and CLI
 
+- Python 3.10+
+
+### Platform beta
+
+- Git
+- Docker Compose V2
+- enough local memory for PostgreSQL, Elasticsearch, RabbitMQ, the API, workers, and the web console
+
+## Install the core package
+
+```bash
+python -m pip install skeinrank
+```
+
+Verify the installation with the built-in demo dictionary:
+
+```bash
+python -c "import skeinrank; print(skeinrank.canonicalize('k8s pg timeout'))"
+```
+
+Expected output:
+
+```text
+kubernetes postgresql timeout
+```
+
+Continue to the [SkeinRank SDK quickstart](/getting-started/quickstart/).
+
+## Install from the repository
+
+```bash
+git clone https://github.com/SkeinRank/skeinrank.git
+cd skeinrank/packages/skeinrank-core
+poetry install
+poetry run pytest -q
+```
 
 ## Run the platform beta with Docker
-
-For the full governance console path, use the Docker beta quickstart:
 
 ```bash
 git clone https://github.com/SkeinRank/skeinrank.git
@@ -36,60 +69,3 @@ http://127.0.0.1:5173
 Read the full guide for auth, observability, reset commands, and troubleshooting:
 
 [Open Docker beta quickstart](/getting-started/docker-beta-quickstart/)
-
-## Install the core package
-
-Install the lightweight core SDK from PyPI:
-
-```bash
-python -m pip install skeinrank
-```
-
-Try the built-in demo dictionary immediately:
-
-```bash
-python -c "import skeinrank; print(skeinrank.canonicalize('k8s pg timeout'))"
-```
-
-For TestPyPI smoke testing:
-
-```bash
-python -m pip install \
-  --index-url https://test.pypi.org/simple/ \
-  --extra-index-url https://pypi.org/simple/ \
-  skeinrank
-```
-
-## Install from the repository
-
-```bash
-git clone https://github.com/SkeinRank/skeinrank.git
-cd skeinrank/packages/skeinrank-core
-poetry install
-poetry run pytest -q
-```
-
-## Website local run
-
-This ZIP is a separate website repository scaffold.
-
-```bash
-npm install
-npm run dev
-```
-
-Open the local URL printed by Astro, usually:
-
-```text
-http://localhost:4321
-```
-
-## GitHub Pages target
-
-Use a separate repository:
-
-```text
-SkeinRank/skeinrank.github.io
-```
-
-That repository can serve GitHub Pages at `https://skeinrank.github.io` and later use the custom domain `https://skeinrank.io` through GitHub Pages settings and DNS.

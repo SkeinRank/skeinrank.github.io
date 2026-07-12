@@ -21,13 +21,13 @@ const landing = readFileSync('src/components/LandingHome.astro', 'utf8');
 assert.match(landing, /sr-diagram-showcase/, 'landing should render the new overview diagram section');
 assert.ok(!landing.includes('<div class="sr-hero-proof"'), 'landing should not render the stretched hero proof strip');
 assert.ok(!landing.includes('<div class="sr-mobile-flow"'), 'landing should not render the extra mobile flow cards below hero CTAs');
-assert.match(landing, /Get agent-lexicon/, 'landing hero should expose the agent-lexicon CLI-first primary CTA');
+assert.match(landing, /Start with agent-lexicon/, 'landing hero should route the CLI-first CTA into the product docs');
 assert.match(landing, /data-copy-target="sr-hero-install-copy"/, 'landing should include a copy action for the hero install command');
 assert.match(landing, /data-copy-target="sr-hero-python-copy"/, 'landing should include a copy action for the hero CLI first-run snippet');
 assert.match(landing, /<strong>agent-lexicon<\/strong>/, 'landing should label the hero terminal card as an agent-lexicon CLI proof');
-assert.match(landing, /agent-lexicon<\/span> <span class="sr-code-arg">init/, 'hero CLI snippet should start with an initialization step');
+assert.match(landing, /sr-code-command">alex<\/span> <span class="sr-code-arg">init/, 'hero CLI snippet should start with an initialization step');
 assert.match(landing, /sr-code-comment sr-code-result/, 'CLI quickstart output should be shown as highlighted terminal results');
-assert.match(landing, /agent-lexicon scan README\.md docs src/, 'hero code should show a runnable scan command after init');
+assert.match(landing, /sr-code-command">alex<\/span> <span class="sr-code-arg">scan<\/span> README\.md docs src/, 'hero code should show a runnable scan command after init');
 assert.match(landing, /Snapshot published/, 'hero code should end with a publishable first-run result');
 assert.ok(!landing.includes('→ kubernetes postgresql timeout'), 'hero code should not use arrow output syntax');
 assert.match(landing, /sr-code-command/, 'install command should use the same syntax-highlighted code window style');
@@ -42,7 +42,7 @@ assert.match(landing, /sr-trust-strip/, 'landing should include a concise projec
 assert.match(landing, /each invents its own names/, 'hero subtitle should align with the multi-agent terminology drift narrative');
 assert.ok(!landing.includes('Domain language control plane for search, RAG &amp; agents'), 'hero should not lead with a heavy control-plane eyebrow');
 assert.ok(!landing.includes('<span class="sr-pulse"'), 'hero should not use a status-like pulse indicator before the headline');
-assert.match(landing, /Why this layer exists/, 'landing should explain the product layer immediately after the hero');
+assert.match(landing, /Start in the terminal\. Scale to a runtime control plane\./, 'landing should explain the two-product path immediately after the hero');
 assert.match(landing, /Embeddings find similarity\. They do not govern your company vocabulary\./, 'landing should avoid weak synonym-style examples and state the product boundary clearly');
 assert.match(landing, /SkeinRank is not trying to replace semantic search/, 'language section should position SkeinRank beside semantic search');
 assert.match(landing, /canonical terms, aliases, evidence, owners, runtime bindings, and pinned snapshots/, 'language section should describe the governed terminology model');
@@ -67,17 +67,17 @@ assert.match(landing, /sr-soft-rise/, 'landing should keep a lightweight one-sho
 assert.match(landing, /prefers-reduced-motion: no-preference/, 'landing motion should only run when the user has not reduced motion');
 assert.match(landing, /prefers-reduced-motion: reduce/, 'landing motion should respect reduced-motion preferences');
 assert.ok(
-  landing.indexOf('Why this layer exists') < landing.indexOf('From domain language to runtime context'),
+  landing.indexOf('Embeddings find similarity. They do not govern your company vocabulary.') < landing.indexOf('From domain language to runtime context'),
   'language layer explanation should appear before architecture details',
 );
-assert.match(landing, /How it works/, 'architecture section should be framed after the problem as a how-it-works section');
+assert.match(landing, /From terminology governance to verified search behavior\./, 'architecture section should explain the governed runtime workflow');
 assert.match(landing, /Read side-car model/, 'overview section should link to the side-car model without duplicating a separate section');
 assert.ok(!landing.includes('aria-labelledby="sr-dashboard-title"'), 'landing should not duplicate the side-car model as a separate dashboard section');
-assert.match(landing, /Honest status/, 'status section should be framed as an honest status check near the end');
+assert.match(landing, /Public positioning: usable core, beta governance platform\./, 'status section should state the product maturity honestly near the end');
 assert.match(landing, /href="https:\/\/pypi.org\/project\/skeinrank\/"[\s\S]*target="_blank"[\s\S]*rel="noreferrer"/, 'external PyPI status link should open in a new tab');
 assert.match(landing, /href=\{repoUrl\}[\s\S]*target="_blank"[\s\S]*rel="noreferrer"/, 'external GitHub status link should open in a new tab');
-assert.match(landing, /agent-lexicon 0\.7\.0/, 'status strip should mention the current agent-lexicon PyPI version');
-assert.match(landing, /skeinrank 0\.12\.0/, 'status strip should mention the current skeinrank PyPI version');
+assert.match(landing, /agent-lexicon · PyPI/, 'status strip should link to Agent Lexicon without hard-coding a stale package version');
+assert.match(landing, /skeinrank · PyPI/, 'status strip should link to SkeinRank without hard-coding a stale package version');
 assert.match(landing, /Zero dependencies/, 'status strip should highlight the dependency-free CLI');
 assert.match(landing, /a \+ a::before/, 'status strip should use lightweight inline separators instead of boxed cards');
 assert.ok(!landing.includes('<span>PyPI</span>'), 'status strip should not render heavy label/value cards');
@@ -104,10 +104,10 @@ const headerNav = readFileSync('public/header-nav.js', 'utf8');
 assert.ok(!headerNav.includes("label: 'GitHub'"), 'GitHub should not be rendered as a primary nav pill');
 assert.match(headerNav, /buildHeaderActions/, 'header should create a right-side action group');
 assert.match(headerNav, /sr-header-github-action/, 'GitHub should be a right-side icon action');
-assert.match(headerNav, /sr-header-try-sdk/, 'navbar should expose Try SDK as the primary action');
+assert.match(headerNav, /sr-header-try-sdk/, 'navbar should expose the compact get-started action');
 assert.match(headerNav, /rightGroup\.appendChild\(actions\)/, 'navbar actions should mount inside the right-side header group');
 assert.match(headerNav, /target = '_blank'/, 'external header GitHub action should open in a new tab');
-assert.match(headerNav, /cta\.textContent = 'Try CLI'/, 'mobile drawer CTA should point to the agent-lexicon CLI');
+assert.match(headerNav, /cta\.textContent = 'Get started'/, 'mobile drawer CTA should route into the documentation portal');
 
 const customCss = readFileSync('src/styles/custom.css', 'utf8');
 assert.match(customCss, /sr-header-actions/, 'site CSS should style the right-side navbar action group');
@@ -116,7 +116,7 @@ assert.match(customCss, /white-space: nowrap;/, 'navbar actions should not wrap 
 assert.match(customCss, /sr-theme-cycle-label/, 'theme toggle should be icon-only');
 assert.match(customCss, /display: none;/, 'theme toggle label should be hidden');
 assert.match(customCss, /flex: 0 0 5\.25rem/, 'home search should be compact instead of a centered wide field');
-assert.match(customCss, /sr-header-try-sdk/, 'site CSS should style the Try SDK navbar CTA');
+assert.match(customCss, /sr-header-try-sdk/, 'site CSS should style the compact get-started navbar CTA');
 
 const astroConfig = readFileSync('astro.config.mjs', 'utf8');
 const expectedSidebarSlugs = [
@@ -137,8 +137,10 @@ for (const slug of expectedSidebarSlugs) {
   );
 }
 
-assert.match(astroConfig, /label: ['"]Integrations['"]/, 'sidebar should include an Integrations section');
-assert.match(astroConfig, /label: ['"]Operations['"]/, 'sidebar should include an Operations section');
+assert.match(astroConfig, /label: ['"]Agent Lexicon · Dev-time['"]/, 'sidebar should expose Agent Lexicon as a first-class product');
+assert.match(astroConfig, /label: ['"]SkeinRank · Runtime['"]/, 'sidebar should expose SkeinRank as a separate runtime product');
+assert.match(astroConfig, /label: ['"]SkeinRank integrations['"]/, 'sidebar should keep SkeinRank integrations grouped under the runtime product');
+assert.match(astroConfig, /label: ['"]SkeinRank operations['"]/, 'sidebar should keep SkeinRank operations grouped under the runtime product');
 
 const lightboxScript = readFileSync('public/platform-preview-lightbox.js', 'utf8');
 assert.match(lightboxScript, /AUTO_IMAGE_SELECTOR = '.sr-diagram-image, .sr-platform-screenshot'/, 'lightbox script should auto-bind diagrams and screenshots');
@@ -161,3 +163,57 @@ for (const docsPath of [
   const doc = readFileSync(docsPath, 'utf8');
   assert.match(doc, /class="sr-diagram-image"/, `${docsPath} should mark diagrams as lightbox-enabled images`);
 }
+
+
+const docsPortal = readFileSync('src/content/docs/docs/index.mdx', 'utf8');
+assert.match(docsPortal, /One documentation portal\. Two product paths\./, 'docs home should act as a product chooser');
+assert.match(docsPortal, /Agent Lexicon/, 'docs home should expose the dev-time product');
+assert.match(docsPortal, /SkeinRank/, 'docs home should expose the runtime product');
+assert.match(docsPortal, /How the products work together/, 'docs home should link the shared lifecycle');
+assert.match(docsPortal, /Benchmarks and evidence/, 'docs home should link the evidence section');
+
+const newDocsPaths = [
+  'src/content/docs/docs/index.mdx',
+  'src/content/docs/docs/agent-lexicon/index.mdx',
+  'src/content/docs/docs/agent-lexicon/installation.mdx',
+  'src/content/docs/docs/agent-lexicon/quickstart.mdx',
+  'src/content/docs/docs/agent-lexicon/review-publish.mdx',
+  'src/content/docs/docs/agent-lexicon/context.mdx',
+  'src/content/docs/docs/agent-lexicon/merge-checks.mdx',
+  'src/content/docs/docs/agent-lexicon/mcp.mdx',
+  'src/content/docs/docs/agent-lexicon/reference.mdx',
+  'src/content/docs/docs/skeinrank/index.mdx',
+  'src/content/docs/docs/ecosystem/how-they-work-together.mdx',
+  'src/content/docs/docs/evidence/index.mdx',
+];
+
+for (const docsPath of newDocsPaths) {
+  assert.ok(existsSync(docsPath), `${docsPath} should exist after the documentation architecture refresh`);
+}
+
+const lexiconQuickstart = readFileSync('src/content/docs/docs/agent-lexicon/quickstart.mdx', 'utf8');
+for (const command of ['alex init', 'alex scan', 'alex review', 'alex publish', 'alex context', 'alex check-merge']) {
+  assert.ok(lexiconQuickstart.includes(command), `Agent Lexicon quickstart should include ${command}`);
+}
+
+const ecosystem = readFileSync('src/content/docs/docs/ecosystem/how-they-work-together.mdx', 'utf8');
+assert.match(ecosystem, /not an automatic synchronization service/, 'ecosystem docs should state the current integration boundary honestly');
+
+const evidence = readFileSync('src/content/docs/docs/evidence/index.mdx', 'utf8');
+assert.match(evidence, /0% → 60%/, 'evidence hub should include the strict Agent Lexicon benchmark result');
+assert.match(evidence, /10% → 100%/, 'evidence hub should include the compound Agent Lexicon benchmark result');
+assert.match(evidence, /P@5 100%/, 'evidence hub should include the Airflow top-five result');
+assert.match(evidence, /P@10 90%/, 'evidence hub should include the Airflow top-ten result');
+assert.match(evidence, /Human labels were applied after ranking/, 'evidence hub should separate discovery from evaluation labels');
+
+const installation = readFileSync('src/content/docs/getting-started/installation.mdx', 'utf8');
+assert.ok(!installation.includes('Website local run'), 'public product installation docs should not contain website contributor instructions');
+assert.ok(!installation.includes('GitHub Pages target'), 'public product installation docs should not contain site deployment instructions');
+
+const roadmap = readFileSync('src/content/docs/reference/roadmap.mdx', 'utf8');
+assert.ok(!roadmap.includes('Add screenshots of the governance UI'), 'roadmap should not promise screenshots that are already shipped');
+assert.ok(!roadmap.includes('Benchmarks or evaluation pages'), 'roadmap should not list benchmark pages as future work after they are published');
+
+assert.match(customCss, /sr-docs-product-grid/, 'site CSS should style the two-product documentation chooser');
+assert.match(customCss, /sr-lifecycle-flow/, 'site CSS should style the ecosystem lifecycle');
+assert.match(customCss, /sr-evidence-grid/, 'site CSS should style benchmark evidence cards');
