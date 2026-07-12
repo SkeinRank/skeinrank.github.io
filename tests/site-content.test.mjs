@@ -172,6 +172,19 @@ assert.match(docsPortal, /SkeinRank/, 'docs home should expose the runtime produ
 assert.match(docsPortal, /How the products work together/, 'docs home should link the shared lifecycle');
 assert.match(docsPortal, /Benchmarks and evidence/, 'docs home should link the evidence section');
 
+const tableDocs = [
+  'src/content/docs/docs/index.mdx',
+  'src/content/docs/docs/agent-lexicon/reference.mdx',
+  'src/content/docs/docs/ecosystem/how-they-work-together.mdx',
+];
+
+for (const docsPath of tableDocs) {
+  const doc = readFileSync(docsPath, 'utf8');
+  assert.match(doc, /class="sr-doc-table-wrap"/, `${docsPath} should use the responsive documentation table wrapper`);
+  assert.match(doc, /<table class="sr-mini-table/, `${docsPath} should render an explicit HTML table in MDX`);
+  assert.ok(!/^\|.*\|\n\|[-:| ]+\|/m.test(doc), `${docsPath} should not rely on unsupported pipe-table parsing in MDX`);
+}
+
 const newDocsPaths = [
   'src/content/docs/docs/index.mdx',
   'src/content/docs/docs/agent-lexicon/index.mdx',
@@ -217,3 +230,5 @@ assert.ok(!roadmap.includes('Benchmarks or evaluation pages'), 'roadmap should n
 assert.match(customCss, /sr-docs-product-grid/, 'site CSS should style the two-product documentation chooser');
 assert.match(customCss, /sr-lifecycle-flow/, 'site CSS should style the ecosystem lifecycle');
 assert.match(customCss, /sr-evidence-grid/, 'site CSS should style benchmark evidence cards');
+assert.match(customCss, /sr-doc-table-wrap/, 'site CSS should provide responsive overflow for documentation tables');
+assert.match(customCss, /sr-mini-table-wide/, 'site CSS should keep three-column documentation tables readable on narrow screens');

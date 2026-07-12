@@ -208,13 +208,26 @@ body:has(.sr-landing) .sl-container {
   background: rgba(255, 237, 213, 0.84);
 }
 
+.sr-doc-table-wrap {
+  width: 100%;
+  margin: 1.25rem 0 1.75rem;
+  overflow-x: auto;
+  border-radius: 1rem;
+  -webkit-overflow-scrolling: touch;
+}
+
 .sr-mini-table {
   width: 100%;
+  margin: 0;
   overflow: hidden;
   border: 1px solid rgba(148, 163, 184, 0.2);
   border-collapse: separate;
   border-spacing: 0;
   border-radius: 1rem;
+}
+
+.sr-mini-table-wide {
+  min-width: 44rem;
 }
 
 .sr-mini-table th,
@@ -235,6 +248,11 @@ body:has(.sr-landing) .sl-container {
   letter-spacing: 0.08em;
   text-align: left;
   text-transform: uppercase;
+}
+
+.sr-mini-table td code {
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 :root[data-theme='light'] .sr-mini-table th {

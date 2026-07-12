@@ -16,13 +16,24 @@ Agent Lexicon and SkeinRank are separate products with separate deployment bound
 
 ## Responsibility split
 
-| Layer | Agent Lexicon | SkeinRank |
-|---|---|---|
-| Primary scope | Repository, branch, diff, tool call | Organization, profile, index, runtime binding |
-| Main user | Developer or coding agent | Search/RAG/platform team |
-| State | Git-tracked lexicon + local review workspace | Profiles, bindings, evidence, snapshots |
-| Decision path | Resolve, guard, lint, check merge | Canonicalize, enrich, bind, publish, roll back |
-| Typical integration | CLI, CI, local MCP | SDK, REST API, governance console, Elasticsearch |
+<div class="sr-doc-table-wrap">
+  <table class="sr-mini-table sr-mini-table-wide">
+    <thead>
+      <tr>
+        <th scope="col">Layer</th>
+        <th scope="col">Agent Lexicon</th>
+        <th scope="col">SkeinRank</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Primary scope</td><td>Repository, branch, diff, tool call</td><td>Organization, profile, index, runtime binding</td></tr>
+      <tr><td>Main user</td><td>Developer or coding agent</td><td>Search/RAG/platform team</td></tr>
+      <tr><td>State</td><td>Git-tracked lexicon + local review workspace</td><td>Profiles, bindings, evidence, snapshots</td></tr>
+      <tr><td>Decision path</td><td>Resolve, guard, lint, check merge</td><td>Canonicalize, enrich, bind, publish, roll back</td></tr>
+      <tr><td>Typical integration</td><td>CLI, CI, local MCP</td><td>SDK, REST API, governance console, Elasticsearch</td></tr>
+    </tbody>
+  </table>
+</div>
 
 ## Current integration boundary
 

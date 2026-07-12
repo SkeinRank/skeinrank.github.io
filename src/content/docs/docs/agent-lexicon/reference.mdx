@@ -5,20 +5,30 @@ sidebar:
 description: A task-oriented map of the main Agent Lexicon commands.
 ---
 
-| Task | Command |
-|---|---|
-| Initialize a repository | `alex init` |
-| Discover candidate terms | `alex scan` |
-| Open the local review UI | `alex review` |
-| Publish accepted decisions | `alex publish` |
-| Generate an agent vocabulary brief | `alex context lexicon/lexicon.yaml` |
-| Resolve terminology in text | `alex resolve <lexicon> "text"` |
-| Gate a tool call | `alex guard <lexicon> "text" --tool <name>` |
-| Lint a working diff | `alex lint-diff --stdin` |
-| Check terminology between refs | `alex check-merge --base main --head HEAD` |
-| Validate and lint a lexicon | `alex validate lexicon/lexicon.yaml --lint` |
-| Serve MCP tools | `alex mcp serve --root . --lexicon lexicon/lexicon.yaml` |
-| Export review provenance | `alex workspace export-decision-log --root .` |
+<div class="sr-doc-table-wrap">
+  <table class="sr-mini-table">
+    <thead>
+      <tr>
+        <th scope="col">Task</th>
+        <th scope="col">Command</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Initialize a repository</td><td><code>alex init</code></td></tr>
+      <tr><td>Discover candidate terms</td><td><code>alex scan</code></td></tr>
+      <tr><td>Open the local review UI</td><td><code>alex review</code></td></tr>
+      <tr><td>Publish accepted decisions</td><td><code>alex publish</code></td></tr>
+      <tr><td>Generate an agent vocabulary brief</td><td><code>alex context lexicon/lexicon.yaml</code></td></tr>
+      <tr><td>Resolve terminology in text</td><td><code>alex resolve &lt;lexicon&gt; "text"</code></td></tr>
+      <tr><td>Gate a tool call</td><td><code>alex guard &lt;lexicon&gt; "text" --tool &lt;name&gt;</code></td></tr>
+      <tr><td>Lint a working diff</td><td><code>alex lint-diff --stdin</code></td></tr>
+      <tr><td>Check terminology between refs</td><td><code>alex check-merge --base main --head HEAD</code></td></tr>
+      <tr><td>Validate and lint a lexicon</td><td><code>alex validate lexicon/lexicon.yaml --lint</code></td></tr>
+      <tr><td>Serve MCP tools</td><td><code>alex mcp serve --root . --lexicon lexicon/lexicon.yaml</code></td></tr>
+      <tr><td>Export review provenance</td><td><code>alex workspace export-decision-log --root .</code></td></tr>
+    </tbody>
+  </table>
+</div>
 
 For exhaustive flags and release-specific behavior, use the installed CLI help:
 
