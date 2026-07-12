@@ -18,6 +18,10 @@ export default defineConfig({
       },
       favicon: '/favicon.ico',
       customCss: ['./src/styles/custom.css'],
+      components: {
+        ThemeProvider: './src/components/ThemeProvider.astro',
+        ThemeSelect: './src/components/ThemeSelect.astro',
+      },
       head: [
         {
           tag: 'link',

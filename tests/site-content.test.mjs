@@ -81,6 +81,8 @@ assert.match(landing, /agent-lexicon · PyPI/, 'status strip should link to Agen
 assert.match(landing, /skeinrank · PyPI/, 'status strip should link to SkeinRank without hard-coding a stale package version');
 assert.match(landing, /Zero dependencies/, 'status strip should highlight the dependency-free CLI');
 assert.match(landing, /a \+ a::before/, 'status strip should use lightweight inline separators instead of boxed cards');
+assert.match(landing, /justify-content: center;[\s\S]*?gap: 0\.45rem 0\.85rem;/, 'mobile status strip should wrap around centered gaps');
+assert.match(landing, /\.sr-trust-strip a \+ a::before \{[\s\S]*?display: none;/, 'mobile status strip should hide separators that can wrap onto their own line');
 assert.ok(!landing.includes('<span>PyPI</span>'), 'status strip should not render heavy label/value cards');
 assert.ok(!landing.includes('grid-template-columns: repeat(4, minmax(0, 1fr))'), 'status strip should not use boxed card grid layout');
 assert.match(landing, /controlPlaneOverview/, 'landing should import only the featured control-plane diagram');
@@ -121,7 +123,20 @@ assert.match(customCss, /sr-header-try-sdk/, 'site CSS should style the compact 
 assert.match(customCss, /:root\[data-theme='light'\] html\.sr-home-page \.sr-home-mobile-menu-panel/, 'light theme mobile drawer should have explicit surface styling');
 assert.match(customCss, /:root\[data-theme='light'\] html\.sr-home-page \.sr-home-mobile-drawer-brand/, 'light theme mobile drawer should force readable link colors');
 
+const themeProvider = readFileSync('src/components/ThemeProvider.astro', 'utf8');
+assert.match(themeProvider, /: 'dark';/, 'first-time visitors should resolve to the dark theme');
+assert.match(themeProvider, /localStorage\.getItem\(storageKey\)/, 'stored theme preferences should still take precedence');
+
+const themeSelect = readFileSync('src/components/ThemeSelect.astro', 'utf8');
+assert.match(themeSelect, /const defaultTheme: Theme = 'dark'/, 'theme picker should default to dark without a stored preference');
+assert.match(themeSelect, /applyTheme\(loadTheme\(\)\);/, 'initial dark mode should apply without persisting a synthetic user choice');
+assert.match(themeSelect, /applyTheme\(parseTheme\(event\.currentTarget\.value\), true\)/, 'explicit theme changes should persist to localStorage');
+assert.match(themeSelect, /localStorage\.setItem\(storageKey, theme\)/, 'dark, light, and system choices should all survive reloads');
+
 const astroConfig = readFileSync('astro.config.mjs', 'utf8');
+assert.match(astroConfig, /ThemeProvider: '\.\/src\/components\/ThemeProvider\.astro'/, 'Starlight should use the SkeinRank dark-default theme provider');
+assert.match(astroConfig, /ThemeSelect: '\.\/src\/components\/ThemeSelect\.astro'/, 'Starlight should use the matching dark-default theme picker');
+
 const expectedSidebarSlugs = [
   'concepts/sidecar-control-plane',
   'concepts/bindings-runtime-context',

@@ -1,0 +1,54 @@
+---
+// SkeinRank defaults first-time visitors to dark mode.
+// A stored Starlight preference still wins on every later visit.
+---
+
+<script is:inline>
+  window.StarlightThemeProvider = (() => {
+    const storageKey = 'starlight-theme';
+    const storedTheme =
+      typeof localStorage !== 'undefined' && localStorage.getItem(storageKey);
+    const initialMode =
+      storedTheme === 'light' || storedTheme === 'dark' || storedTheme === 'auto'
+        ? storedTheme
+        : 'dark';
+    const resolvedTheme =
+      initialMode === 'auto'
+        ? window.matchMedia('(prefers-color-scheme: light)').matches
+          ? 'light'
+          : 'dark'
+        : initialMode;
+
+    document.documentElement.dataset.theme = resolvedTheme;
+
+    return {
+      updatePickers(theme = initialMode) {
+        document.querySelectorAll('starlight-theme-select').forEach((picker) => {
+          const select = picker.querySelector('select');
+          if (select) select.value = theme;
+
+          const template = document.querySelector('#theme-icons');
+          const newIcon = template && template.content.querySelector('.' + theme);
+          if (newIcon) {
+            const oldIcon = picker.querySelector('svg.label-icon');
+            if (oldIcon) oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+          }
+        });
+      },
+    };
+  })();
+</script>
+
+<template id="theme-icons">
+  <svg class="light" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41" />
+  </svg>
+  <svg class="dark" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M20.5 14.2A8.2 8.2 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z" />
+  </svg>
+  <svg class="auto" viewBox="0 0 24 24" aria-hidden="true">
+    <rect x="3" y="4" width="18" height="12" rx="2" />
+    <path d="M8 20h8M12 16v4" />
+  </svg>
+</template>

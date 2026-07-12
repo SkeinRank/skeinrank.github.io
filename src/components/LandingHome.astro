@@ -3872,8 +3872,19 @@ alex publish
     }
 
     .sr-trust-strip {
-      justify-content: flex-start;
+      justify-content: center;
+      gap: 0.45rem 0.85rem;
       margin-top: -2.4rem;
+      padding-inline: 0.25rem;
+      text-align: center;
+    }
+
+    .sr-trust-strip a {
+      white-space: nowrap;
+    }
+
+    .sr-trust-strip a + a::before {
+      display: none;
     }
   }
 
