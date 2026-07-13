@@ -75,6 +75,8 @@ assert.match(landing, /From terminology governance to verified search behavior\.
 assert.match(landing, /Read side-car model/, 'overview section should link to the side-car model without duplicating a separate section');
 assert.ok(!landing.includes('aria-labelledby="sr-dashboard-title"'), 'landing should not duplicate the side-car model as a separate dashboard section');
 assert.match(landing, /Public positioning: usable core, beta governance platform\./, 'status section should state the product maturity honestly near the end');
+assert.ok(!/\.sr-feature-card\s*\{[^}]*min-height:\s*100%/s.test(landing), 'feature cards should avoid percentage min-height because Safari can create a cyclic grid height while resizing');
+assert.match(landing, /\.sr-feature-card\s*\{[^}]*min-height:\s*0;/s, 'feature cards should use a definite zero minimum so the grid can size rows from content in Safari');
 assert.match(landing, /href="https:\/\/pypi.org\/project\/skeinrank\/"[\s\S]*target="_blank"[\s\S]*rel="noreferrer"/, 'external PyPI status link should open in a new tab');
 assert.match(landing, /href=\{repoUrl\}[\s\S]*target="_blank"[\s\S]*rel="noreferrer"/, 'external GitHub status link should open in a new tab');
 assert.match(landing, /agent-lexicon · PyPI/, 'status strip should link to Agent Lexicon without hard-coding a stale package version');
