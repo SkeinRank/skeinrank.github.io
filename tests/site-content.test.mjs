@@ -248,6 +248,10 @@ const roadmap = readFileSync('src/content/docs/reference/roadmap.mdx', 'utf8');
 assert.ok(!roadmap.includes('Add screenshots of the governance UI'), 'roadmap should not promise screenshots that are already shipped');
 assert.ok(!roadmap.includes('Benchmarks or evaluation pages'), 'roadmap should not list benchmark pages as future work after they are published');
 
+assert.ok(!/\.sr-docs-product-card,\s*\n\.sr-evidence-grid > article \{[^}]*min-height:\s*100%/s.test(customCss), 'documentation cards should avoid percentage min-height because Safari can create a cyclic grid height');
+assert.match(customCss, /\.sr-docs-product-card,\s*\n\.sr-evidence-grid > article \{[^}]*min-height:\s*0;/s, 'documentation cards should use a definite zero minimum in Safari');
+assert.match(customCss, /\.sr-docs-product-grid,\s*\n\.sr-evidence-grid \{[^}]*align-items:\s*stretch;/s, 'documentation card rows should stretch from the grid instead of percentage heights');
+assert.ok(!/\.sr-docs-card-primary:hover\s*\{[^}]*transform:/s.test(customCss), 'documentation CTA hover should not move the hit target in Safari');
 assert.match(customCss, /sr-docs-product-grid/, 'site CSS should style the two-product documentation chooser');
 assert.match(customCss, /sr-lifecycle-flow/, 'site CSS should style the ecosystem lifecycle');
 assert.match(customCss, /sr-evidence-grid/, 'site CSS should style benchmark evidence cards');
