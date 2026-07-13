@@ -77,6 +77,7 @@ assert.ok(!landing.includes('aria-labelledby="sr-dashboard-title"'), 'landing sh
 assert.match(landing, /Public positioning: usable core, beta governance platform\./, 'status section should state the product maturity honestly near the end');
 assert.ok(!/\.sr-feature-card\s*\{[^}]*min-height:\s*100%/s.test(landing), 'feature cards should avoid percentage min-height because Safari can create a cyclic grid height while resizing');
 assert.match(landing, /\.sr-feature-card\s*\{[^}]*min-height:\s*0;/s, 'feature cards should use a definite zero minimum so the grid can size rows from content in Safari');
+assert.match(landing, /\.sr-feature-card > p\s*\{[^}]*margin-bottom:\s*0\.9rem;/s, 'feature descriptions should keep clear spacing above status badges');
 assert.match(landing, /href="https:\/\/pypi.org\/project\/skeinrank\/"[\s\S]*target="_blank"[\s\S]*rel="noreferrer"/, 'external PyPI status link should open in a new tab');
 assert.match(landing, /href=\{repoUrl\}[\s\S]*target="_blank"[\s\S]*rel="noreferrer"/, 'external GitHub status link should open in a new tab');
 assert.match(landing, /agent-lexicon · PyPI/, 'status strip should link to Agent Lexicon without hard-coding a stale package version');
