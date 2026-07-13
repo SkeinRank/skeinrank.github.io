@@ -192,6 +192,9 @@ assert.match(docsPortal, /Agent Lexicon/, 'docs home should expose the dev-time 
 assert.match(docsPortal, /SkeinRank/, 'docs home should expose the runtime product');
 assert.match(docsPortal, /How the products work together/, 'docs home should link the shared lifecycle');
 assert.match(docsPortal, /Benchmarks and evidence/, 'docs home should link the evidence section');
+assert.ok(!docsPortal.includes('Explore Agent Lexicon'), 'Agent Lexicon product card should expose one unambiguous CTA');
+assert.ok(!docsPortal.includes('Explore SkeinRank'), 'SkeinRank product card should expose one unambiguous CTA');
+assert.equal((docsPortal.match(/class="sr-docs-card-primary"/g) ?? []).length, 2, 'docs product cards should render exactly one primary CTA each');
 
 const tableDocs = [
   'src/content/docs/docs/index.mdx',
